@@ -13,14 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('work_times', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
-            $table->smallInteger('type')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->unsignedBigInteger('user_id');
+            $table->string('current_mode', 30);
+            $table->json('custom_times');
+            $table->json('every_day_times');
+            $table->json('weekdays_times');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('work_times');
     }
 };
