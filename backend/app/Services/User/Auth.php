@@ -2,11 +2,17 @@
 
 namespace App\Services\User;
 
+use App\Exceptions\AuthException;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\ValidateEmailTokenRequest;
+use App\Mail\EmailVerificationMail;
 use App\Repositories\Contracts\User\AuthRepo;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class Auth implements \App\Services\Contracts\User\Auth
 {
@@ -18,14 +24,15 @@ class Auth implements \App\Services\Contracts\User\Auth
         $this->authRepo = $repo;
     }
 
-    public function register(RegisterRequest $request): array
+    public function registerWithEmail(RegisterRequest $request): bool
     {
-        $user = $this->authRepo->createUser($request->email, $request->password);
+        $user = $this->authRepo->createUser($request->email);
 
-        return [
-            'access_token' => $user->createToken('auth_token')->plainTextToken,
-            'token_type' => 'Bearer',
-        ];
+        Mail::to($request->email)->send(new EmailVerificationMail(
+            $url = route('email.validate-token') . '?token=' . $user->createToken('email_verification')->plainTextToken
+        ));
+
+        return $user->wasRecentlyCreated;
     }
 
     /**
@@ -34,19 +41,32 @@ class Auth implements \App\Services\Contracts\User\Auth
     public function login(LoginRequest $request): array
     {
         if (!\Illuminate\Support\Facades\Auth::attempt($request->only('email', 'password'))) {
-            throw new AuthorizationException;
+            throw new AuthException("Invalid password or email");
         }
 
-        $user = $this->authRepo->getOne($request['email']);
+        $user = $this->authRepo->getOneByField('email', $request['email']);
 
         return [
-            'access_token' => $user->createToken('auth_token')->plainTextToken,
+            'access_token' => $user->createToken('email_verification')->plainTextToken,
             'token_type' => 'Bearer',
         ];
     }
 
-    public function logout()
+    public function logout(Request $request): bool
     {
-        // TODO: Implement logout() method.
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        if (is_null($token)){
+            throw new AuthException();
+
+        }
+        return $token->delete();
     }
+
+    public function validateToken(ValidateEmailTokenRequest $request): string
+    {
+        $user = $this->authRepo->getOneByField('id',PersonalAccessToken::findToken($request->token)->tokenable_id);
+
+        return $user->email;
+    }
+
 }

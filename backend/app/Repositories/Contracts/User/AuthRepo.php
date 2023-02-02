@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 
 interface AuthRepo
 {
-    public function createUser(string $email, string $password): Eloquent|Model;
-    public function getOne(string $email): Eloquent|Model;
+    public function createUser(string $email): Eloquent|Model;
+    public function getOneByField(string $field, string $value): Eloquent|Model;
 }

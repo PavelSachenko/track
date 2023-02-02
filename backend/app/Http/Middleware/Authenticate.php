@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\AuthException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -14,9 +15,8 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        dd("asd");
         if (! $request->expectsJson()) {
-            return route('login');
+            throw new AuthException("not authorized user");
         }
     }
 }

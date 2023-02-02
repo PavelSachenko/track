@@ -9,16 +9,15 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
 {
-    public function createUser(string $email, string $password): \Eloquent|Model
+    public function createUser(string $email): \Eloquent|Model
     {
         return User::create([
             'email' => $email,
-            'password' => Hash::make($password),
         ]);
     }
-    public function getOne(string $email): \Eloquent|Model
+    public function getOneByField(string $field, string $value): \Eloquent|Model
     {
-        return User::where('email', $email)->firstOrFail();
+        return User::where($field, $value)->firstOrFail();
     }
 
 }
