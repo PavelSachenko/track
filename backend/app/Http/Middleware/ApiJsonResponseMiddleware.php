@@ -9,8 +9,7 @@ class ApiJsonResponseMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        response()->header('Content-Type', 'application/json');
-
+        //TODO here need json header
         return $next($request);
     }
 }

@@ -16,4 +16,9 @@ class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
             'password' => Hash::make($password),
         ]);
     }
+    public function getOne(string $email): \Eloquent|Model
+    {
+        return User::where('email', $email)->firstOrFail();
+    }
+
 }
