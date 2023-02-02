@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\User\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,12 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/test', function (Request $request){
-    return $validatedData;
-    return "hello world";
-});
