@@ -4,6 +4,7 @@ namespace App\Services\User;
 
 use App\Exceptions\AuthException;
 use App\Exceptions\InvalidTokenException;
+use App\Http\Requests\Auth\EmailRegistrationRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ValidateEmailTokenRequest;
@@ -27,7 +28,7 @@ class Auth implements \App\Services\Contracts\User\Auth
         $this->authRepo = $repo;
     }
 
-    public function registerWithEmail(RegisterRequest $request): bool
+    public function registerWithEmail(EmailRegistrationRequest $request): bool
     {
         $user = $this->authRepo->createEmptyUserWithEmail($request->email);
 

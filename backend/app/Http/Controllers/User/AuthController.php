@@ -15,22 +15,10 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
-
-    public function registration(RegistrationRequest $request, Auth $auth)
-    {
-        return response()->json($auth->registrationConcreteUser($request));
-    }
-
     public function emailRegistration(EmailRegistrationRequest $request, Auth $auth)
     {
         return response()->json($auth->registerWithEmail($request));
     }
-
-    public function login(LoginRequest $request, Auth $auth)
-    {
-        return response()->json($auth->login($request));
-    }
-
 
     public function validateEmailToken(ValidateEmailTokenRequest $request, Auth $auth)
     {
@@ -39,11 +27,24 @@ class AuthController extends Controller
 
 
 
+    public function registration(RegistrationRequest $request, Auth $auth)
+    {
+        return response()->json($auth->registrationConcreteUser($request));
+    }
+
+    public function login(LoginRequest $request, Auth $auth)
+    {
+        return response()->json($auth->login($request));
+    }
 
     public function logout(Request $request, Auth $auth)
     {
         return response()->json($auth->logout($request));
     }
+
+
+
+
     public function test(Request $request)
     {
         return PersonalAccessToken::findToken($request->get('token'));
