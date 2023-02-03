@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,4 +42,13 @@ Route::prefix('/auth')->group(function (){
 
         Route::post('verify', [AuthController::class, 'verify'],);
     });
+});
+
+/*
+|--------------------------------------------------------------------------
+| api/user ...
+|--------------------------------------------------------------------------
+*/
+Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function (){
+    Route::get('', [UserController::class, 'index']);
 });

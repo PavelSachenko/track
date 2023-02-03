@@ -9,5 +9,6 @@
     <body>
     <h1>Verification Email</h1>
     <button rel="{{$url}}">Verify</button>
+    <p> url: {{$url}}></p>
     </body>
     </html>

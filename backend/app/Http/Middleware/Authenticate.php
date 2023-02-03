@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\AuthException;
+use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -19,4 +20,17 @@ class Authenticate extends Middleware
             throw new AuthException("not authorized user");
         }
     }
+
+    public function handle($request, Closure $next, ...$guards)
+    {
+        $this->authenticate($request, $guards);
+
+        \Auth::setUser(\Auth::user()->defineUserType());
+
+        return $next($request);
+    }
+
+
+
+
 }

@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
 
-class EmailRegistrationRequest extends FormRequest
+class EmailRegistrationRequest extends BaseRequest
 {
     public function rules(): array
     {

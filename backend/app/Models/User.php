@@ -45,8 +45,8 @@ class User extends Authenticatable
     const TYPE_AGENCY = 2;
 
     const TYPE_TABLES = [
-      self::TYPE_AGENT => 'agents',
-      self::TYPE_AGENCY => 'agencies',
+        self::TYPE_AGENT => 'agents',
+        self::TYPE_AGENCY => 'agencies',
     ];
 
     /**
@@ -77,4 +77,32 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function defineUserType()
+    {
+        switch ($this->type) {
+            case self::TYPE_AGENT:
+                return $this->agent;
+                break;
+            case self::TYPE_AGENCY:
+                return $this->agency;
+                break;
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationship
+    |--------------------------------------------------------------------------
+    */
+    public function agent(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Agent::class, 'user_id', 'id');
+    }
+
+    public function agency()
+    {
+        return $this->hasOne(Agency::class, 'user_id');
+    }
+
 }

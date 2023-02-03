@@ -58,14 +58,15 @@ class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
                     'email_verified_at' => date('Y-m-d H:i:s'),
                     'type' => $userType
                 ]);
+            $user = $this->getOneByField('id', $userID);
 
             unset($params['password'], $params['type']);
             $params['user_id'] = $userID;
+            $params['email'] = $user->email;
 
             DB::table(User::TYPE_TABLES[$userType])
                 ->insert($params);
 
-            $user = $this->getOneByField('id', $userID);
 
             DB::commit();
 

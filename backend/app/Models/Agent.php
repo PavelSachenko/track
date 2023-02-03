@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * App\Models\Agent
@@ -31,7 +33,26 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Agent whereUserId($value)
  * @mixin \Eloquent
  */
-class Agent extends Model
+class Agent extends Authenticatable
 {
-    use HasFactory;
+    protected $appends = ['type'];
+    protected $guarded = ['created_at'];
+
+    protected $hidden = [
+        'user_id',
+    ];
+
+    protected function firstName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => ucfirst($value),
+            set: fn ($value) => strtolower($value),
+        );
+    }
+
+    public function getTypeAttribute(): int
+    {
+        return User::TYPE_AGENT;
+    }
+
 }
