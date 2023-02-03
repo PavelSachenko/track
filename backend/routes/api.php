@@ -25,15 +25,20 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::prefix('/auth')->group(function (){
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout']);
-
     Route::get('/test', [AuthController::class, 'test']);
+
+    Route::post('/registration', [AuthController::class, 'registration']);
+    Route::post('/login', [AuthController::class, 'login']);
+
 
     Route::post('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');;
     Route::prefix('/email')->group(function () {
+
+        Route::post('/registration', [AuthController::class, 'emailRegistration']);
+        Route::get('/validate-token', [AuthController::class, 'validateEmailToken'])->name('email.validate-token');
+
+
         Route::post('verify', [AuthController::class, 'verify'],);
-        Route::get('validate-token', [AuthController::class, 'validateEmailToken'])->name('email.validate-token');
     });
 });

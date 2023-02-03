@@ -50,7 +50,11 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        if (get_class($e) == AuthException::class){
+        if (in_array(get_class($e), [
+                AuthException::class,
+                InvalidTokenException::class
+            ])){
+
             return response()->json([
                "errors" => [
                    "message" => $e->getMessage(),

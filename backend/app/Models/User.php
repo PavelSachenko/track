@@ -41,6 +41,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const TYPE_AGENT = 1;
+    const TYPE_AGENCY = 2;
+
+    const TYPE_TABLES = [
+      self::TYPE_AGENT => 'agents',
+      self::TYPE_AGENCY => 'agencies',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
