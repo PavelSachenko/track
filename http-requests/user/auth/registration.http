@@ -1,0 +1,24 @@
+### Send email registration
+POST {{host}}/api/auth/email/registration
+Content-Type: application/json
+
+{
+  "email": "{{email}}"
+}
+
+### Verify token from email
+GET {{host}}/api/auth/email/validate-token?token={{emaiToken}}
+
+
+### Registration
+POST {{host}}/api/auth/registration
+Content-Type: application/json
+
+{
+  "name": "{{name}}",
+  "type": 1,
+  "password": "{{password}}",
+  "password_confirmation": "{{password}}",
+  "token": "{{emaiToken}}"
+}
+

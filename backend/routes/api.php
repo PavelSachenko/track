@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Agent\SubscriptionController as AgentSubscriptionController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -15,10 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 /*
 |--------------------------------------------------------------------------
 | api/auth ...
@@ -27,20 +24,11 @@ use Illuminate\Support\Facades\Route;
 */
 Route::prefix('/auth')->group(function (){
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/test', [AuthController::class, 'test']);
-
     Route::post('/registration', [AuthController::class, 'registration']);
     Route::post('/login', [AuthController::class, 'login']);
-
-
-    Route::post('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');;
     Route::prefix('/email')->group(function () {
-
         Route::post('/registration', [AuthController::class, 'emailRegistration']);
         Route::get('/validate-token', [AuthController::class, 'validateEmailToken'])->name('email.validate-token');
-
-
-        Route::post('verify', [AuthController::class, 'verify'],);
     });
 });
 
@@ -51,4 +39,20 @@ Route::prefix('/auth')->group(function (){
 */
 Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function (){
     Route::get('', [UserController::class, 'index']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| api/agent/
+| api/agent/subscription
+|--------------------------------------------------------------------------
+*/
+Route::group(['prefix' => '/agent', 'middleware' => 'auth:sanctum'], function (){
+
+    Route::prefix('/subscription')->group(function (){
+        Route::get('count-followers', [AgentSubscriptionController::class, 'countFollowers']);
+        Route::get('followers', [AgentSubscriptionController::class, 'followers']);
+        Route::get('count-requests', [AgentSubscriptionController::class, 'countRequests']);
+    });
+
 });

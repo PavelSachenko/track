@@ -5,19 +5,18 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\EmailRegistrationRequest;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ValidateEmailTokenRequest;
 use App\Http\Requests\Auth\RegistrationRequest;
 use App\Services\Contracts\User\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 use Laravel\Sanctum\PersonalAccessToken;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
     public function emailRegistration(EmailRegistrationRequest $request, Auth $auth)
     {
-        return response()->json($auth->registerWithEmail($request));
+        return response()->json($auth->registerWithEmail($request), Response::HTTP_CREATED);
     }
 
     public function validateEmailToken(ValidateEmailTokenRequest $request, Auth $auth)
@@ -29,7 +28,7 @@ class AuthController extends Controller
 
     public function registration(RegistrationRequest $request, Auth $auth)
     {
-        return response()->json($auth->registrationConcreteUser($request));
+        return response()->json($auth->registrationConcreteUser($request), Response::HTTP_CREATED);
     }
 
     public function login(LoginRequest $request, Auth $auth)
@@ -41,19 +40,4 @@ class AuthController extends Controller
     {
         return response()->json($auth->logout($request));
     }
-
-
-
-
-    public function test(Request $request)
-    {
-        return PersonalAccessToken::findToken($request->get('token'));
-//        return response()->json($auth->logout($request));
-    }
-
-    public function me(Request $request, Response $response)
-    {
-        return "hello";
-    }
-
 }

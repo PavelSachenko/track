@@ -1,0 +1,6 @@
+GET {{host}}/api/agent/subscription/count-followers
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/agent/subscription/count-requests
+Authorization: Bearer {{token}}

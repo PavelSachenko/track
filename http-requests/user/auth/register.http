@@ -1,7 +1,0 @@
-POST https://track.local/api/register
-Content-Type: application/json
-
-{
-  "email": "pavel31@gmail.com",
-  "password": "qwerty"
-}
