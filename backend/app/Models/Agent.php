@@ -42,6 +42,11 @@ class Agent extends Authenticatable
         'user_id',
     ];
 
+    public function getIdAttribute()
+    {
+        return $this->user_id;
+    }
+
     protected function firstName(): Attribute
     {
         return Attribute::make(

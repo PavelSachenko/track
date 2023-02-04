@@ -198,6 +198,7 @@ return [
         App\Providers\User\AuthServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         \App\Providers\User\AuthServiceProvider::class,
+        App\Providers\Agency\FollowerServiceProvider::class,
     ],
 
     /*

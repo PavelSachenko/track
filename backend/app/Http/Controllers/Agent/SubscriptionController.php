@@ -20,4 +20,14 @@ class SubscriptionController extends Controller
     {
         return response()->json([]);
     }
+
+    public function accept()
+    {
+        return response()->json([]);
+    }
+
+    public function decline()
+    {
+        return response()->json([]);
+    }
 }

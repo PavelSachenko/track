@@ -10,7 +10,6 @@ class RegistrationRequest extends BaseRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-//            'email' => ['string', 'email', 'max:255', 'unique:users'],
             'phone' => ['string', 'regex:/^[?+]?\d{7,14}$/', 'min:7', 'max:14'],
             'url' => ['url'],
             'type' => ['required', 'integer'],

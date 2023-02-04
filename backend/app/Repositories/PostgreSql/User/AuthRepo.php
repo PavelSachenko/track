@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\MySql\User;
+namespace App\Repositories\PostgreSql\User;
 
 use App\Exceptions\InvalidTokenException;
 use App\Http\Requests\Auth\RegisterRequest;

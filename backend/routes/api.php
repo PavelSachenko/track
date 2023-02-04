@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Agent\SubscriptionController as AgentSubscriptionController;
+use App\Http\Controllers\Agency\SubscriptionController as AgencySubscriptionController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -47,12 +48,21 @@ Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function (){
 | api/agent/subscription
 |--------------------------------------------------------------------------
 */
-Route::group(['prefix' => '/agent', 'middleware' => 'auth:sanctum'], function (){
+Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], function (){
 
     Route::prefix('/subscription')->group(function (){
+        Route::post('accept', [AgentSubscriptionController::class, 'accept']);
+        Route::post('decline', [AgentSubscriptionController::class, 'decline']);
         Route::get('count-followers', [AgentSubscriptionController::class, 'countFollowers']);
         Route::get('followers', [AgentSubscriptionController::class, 'followers']);
         Route::get('count-requests', [AgentSubscriptionController::class, 'countRequests']);
+    });
+
+});
+
+Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']], function (){
+    Route::prefix('/subscription')->group(function (){
+        Route::post('send-request', [AgencySubscriptionController::class, 'sendRequest']);
     });
 
 });

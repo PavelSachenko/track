@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * App\Models\Agency
@@ -31,7 +32,21 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Agency whereUserId($value)
  * @mixin \Eloquent
  */
-class Agency extends Model
+class Agency extends Authenticatable
 {
     use HasFactory;
+
+
+    protected $appends = ['type'];
+    protected $guarded = ['created_at'];
+
+    protected $hidden = [
+        'user_id',
+    ];
+
+    public function getIdAttribute()
+    {
+        return $this->user_id;
+    }
+
 }

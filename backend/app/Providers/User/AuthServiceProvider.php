@@ -2,7 +2,7 @@
 
 namespace App\Providers\User;
 
-use App\Repositories\MySql\User\AuthRepo;
+use App\Repositories\PostgreSql\User\AuthRepo;
 use App\Services\Contracts\User\Auth as ContractAuth;
 use App\Services\User\Auth;
 use Illuminate\Support\ServiceProvider;

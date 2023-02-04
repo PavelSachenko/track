@@ -52,7 +52,8 @@ class Handler extends ExceptionHandler
     {
         if (in_array(get_class($e), [
                 AuthException::class,
-                InvalidTokenException::class
+                InvalidTokenException::class,
+                ForbiddenException::class,
             ])){
 
             return response()->json([
