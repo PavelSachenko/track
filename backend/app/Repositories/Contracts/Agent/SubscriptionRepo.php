@@ -6,5 +6,7 @@ interface SubscriptionRepo
 {
     public function createSubscriptionFromRequest(int $subscriptionRequestID): bool;
     public function changeStatusSubscriptionFromRequest(int $subscriptionRequestID): bool;
+    public function countSubscriber(): int;
+    public function countRequestToSubscribe(): int;
 
 }

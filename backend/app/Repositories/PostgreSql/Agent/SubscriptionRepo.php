@@ -44,4 +44,19 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             ->where('id', $subscriptionRequestID)
             ->update(['status' => SubscriptionRequest::STATUS_TYPE_REJECT]);
     }
+
+
+    public function countSubscriber(): int
+    {
+        return DB::table('subscriptions')
+            ->where('user_id', \Auth::user()->id)
+            ->count();
+    }
+    public function countRequestToSubscribe(): int
+    {
+        return DB::table('subscription_requests')
+            ->where('user_receiver_id', \Auth::user()->id)
+            ->where('status', '<>',SubscriptionRequest::STATUS_TYPE_REJECT)
+            ->count();
+    }
 }

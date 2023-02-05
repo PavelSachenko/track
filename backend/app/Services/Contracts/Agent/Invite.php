@@ -8,4 +8,5 @@ interface Invite
 {
     public function accept(DecisionInviteRequest $request): bool;
     public function decline(DecisionInviteRequest $request): bool;
+    public function countRequests(): int;
 }

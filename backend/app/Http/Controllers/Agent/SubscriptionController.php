@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
 
     public function countFollowers()
     {
-        return response()->json(0);
+        return response()->json($this->follower->countFollowers());
     }
 
     public function followers()
@@ -27,7 +27,7 @@ class SubscriptionController extends Controller
 
     public function countRequests()
     {
-        return response()->json([]);
+        return response()->json($this->follower->countRequests());
     }
 
     public function accept(DecisionInviteRequest $request)

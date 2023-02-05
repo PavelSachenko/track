@@ -24,4 +24,13 @@ class Follower implements \App\Services\Contracts\Agent\Follower
         return $this->subscriptionRepo->changeStatusSubscriptionFromRequest($request->id);
     }
 
+    public function countFollowers(): int
+    {
+        return $this->subscriptionRepo->countSubscriber();
+    }
+
+    public function countRequests(): int
+    {
+        return $this->subscriptionRepo->countRequestToSubscribe();
+    }
 }
