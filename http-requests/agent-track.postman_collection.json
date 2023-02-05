@@ -240,12 +240,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/api/user",
+							"raw": "{{api}}/user",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"api",
 								"user"
 							]
 						}
@@ -335,7 +334,7 @@
 									"formdata": [
 										{
 											"key": "id",
-											"value": "10",
+											"value": "15",
 											"type": "text"
 										}
 									]
@@ -380,7 +379,7 @@
 									]
 								},
 								"url": {
-									"raw": "{{api}}/agent/subscription/decline?id=10",
+									"raw": "{{api}}/agent/subscription/decline?id=15",
 									"host": [
 										"{{api}}"
 									],
@@ -392,7 +391,108 @@
 									"query": [
 										{
 											"key": "id",
-											"value": "10"
+											"value": "15"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "count-followers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agent/subscription/count-followers",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"subscription",
+										"count-followers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "count-requests",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agent/subscription/count-requests",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"subscription",
+										"count-requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all-followers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agent/subscription/followers?limit=20&offset=0&search=ag",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"subscription",
+										"followers"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "20"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "search",
+											"value": "ag"
 										}
 									]
 								}

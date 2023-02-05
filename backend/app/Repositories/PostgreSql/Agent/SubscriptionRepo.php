@@ -6,6 +6,7 @@ namespace App\Repositories\PostgreSql\Agent;
 use App\Exceptions\BadRequestException;
 use App\Models\Subscription;
 use App\Models\SubscriptionRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class SubscriptionRepo implements \App\Repositories\Contracts\Agent\SubscriptionRepo
@@ -60,7 +61,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             ->count();
     }
 
-    public function getAllSubscriber(array $searchParams): array
+    public function getAllSubscriber(int $limit, int $offset, string $search): array
     {
         return DB::table('subscriptions', 's')
             ->leftJoin('agencies as a', 'a.user_id', '=', 's.user_subscriber_id')
@@ -76,7 +77,10 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
                 'a.updated_at',
                 ])
             ->where('s.user_id', \Auth::user()->id)
-            ->where($searchParams)
+            ->where('a.name', 'like',  $search . '%')
+            ->orWhere('a.email', 'like',  $search . '%')
+            ->limit($limit)
+            ->offset($offset)
             ->orderByDesc('s.created_at')
             ->get()->toArray();
     }
