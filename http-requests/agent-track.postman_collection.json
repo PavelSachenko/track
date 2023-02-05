@@ -1,0 +1,437 @@
+{
+	"info": {
+		"_postman_id": "6f5e3d7b-e562-4b05-abc6-25f0cb80d20f",
+		"name": "agent-track",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "email-registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/auth/email/registration",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"auth",
+								"email",
+								"registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validate-email-token",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "test@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "pasha",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "sadasdasd",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password_confirmation",
+									"value": "qwerty",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "token",
+									"value": "5|Cocl4hURf4H2M2xjQJjkeehVCRKkx4OmYz5iTwIC",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/auth/email/validate-token?token={{emailToken}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"auth",
+								"email",
+								"validate-token"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{emailToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "complete registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{name}}",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "{{type}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "token",
+									"value": "{{emailToken}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/auth/registration",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"auth",
+								"registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/auth/login",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{api}}/api/auth/logout",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/api/user",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "agency",
+			"item": [
+				{
+					"name": "subscription",
+					"item": [
+						{
+							"name": "send-request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "{{agentEmail}}",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/agency/subscription/send-request",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agency",
+										"subscription",
+										"send-request"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "agent",
+			"item": [
+				{
+					"name": "subscription",
+					"item": [
+						{
+							"name": "accept",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "10",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/agent/subscription/accept",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"subscription",
+										"accept"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "decline",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "35",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/agent/subscription/decline?id=10",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"subscription",
+										"decline"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
