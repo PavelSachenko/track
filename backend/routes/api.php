@@ -44,8 +44,8 @@ Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function (){
 
 /*
 |--------------------------------------------------------------------------
-| api/agent/
-| api/agent/subscription
+| api/agent ...
+| api/agent/subscription ...
 |--------------------------------------------------------------------------
 */
 Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], function (){
@@ -63,13 +63,17 @@ Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], 
 
 /*
 |--------------------------------------------------------------------------
-| api/agency/
-| api/agency/subscription
+| api/agency ...
+| api/agency/subscription ...
 |--------------------------------------------------------------------------
 */
 Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']], function (){
     Route::prefix('/subscription')->group(function (){
         Route::post('send-request', [AgencySubscriptionController::class, 'sendRequest']);
+
+        Route::get('count-follows', [AgencySubscriptionController::class, 'countFollows']);
+        Route::get('count-requests', [AgencySubscriptionController::class, 'countRequests']);
+        Route::get('follows', [AgencySubscriptionController::class, 'follows']);
     });
 
 });

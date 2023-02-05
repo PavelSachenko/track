@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Agency\Followers;
+namespace App\Http\Requests\Agency\Subscription;
 
 use App\Http\Requests\BaseRequest;
 use App\Rules\SelfEmailRule;
-use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property string $email

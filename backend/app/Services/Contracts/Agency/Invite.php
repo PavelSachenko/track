@@ -2,7 +2,7 @@
 
 namespace App\Services\Contracts\Agency;
 
-use App\Http\Requests\Agency\Followers\SendInviteRequest;
+use App\Http\Requests\Agency\Subscription\SendInviteRequest;
 
 interface Invite
 {

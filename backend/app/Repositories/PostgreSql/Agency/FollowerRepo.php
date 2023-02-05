@@ -5,10 +5,11 @@ namespace App\Repositories\PostgreSql\Agency;
 
 use App\Exceptions\BadRequestException;
 use App\Models\SubscriptionRequest;
+use App\Repositories\Contracts\Agency\SubscriptionRepo;
 use App\Repositories\Contracts\User\AuthRepo;
 use Illuminate\Support\Facades\DB;
 
-class FollowerRepo implements \App\Repositories\Contracts\Agency\InviteRepo
+class FollowerRepo implements SubscriptionRepo
 {
 
     private AuthRepo $auth;
@@ -61,4 +62,41 @@ class FollowerRepo implements \App\Repositories\Contracts\Agency\InviteRepo
         return $this->auth->createEmptyUserWithEmail($email)->id;
     }
 
+    public function countFollows(): int
+    {
+        return DB::table('subscriptions')
+            ->where('user_subscriber_id', \Auth::user()->id)
+            ->count();
+    }
+
+    public function countRequest(): int
+    {
+        return DB::table('subscription_requests')
+            ->where('user_sender_id', \Auth::user()->id)
+            ->count();
+    }
+
+    public function getAllFollows(int $limit, int $offset, string $search): array
+    {
+        return DB::table('subscriptions', 's')
+            ->leftJoin('agents as a', 'a.user_id', '=', 's.user_id')
+            ->select([
+                'a.user_id as id',
+                'a.name',
+                'a.email',
+                'a.phone',
+                'a.description',
+                'a.img',
+                'a.is_available',
+                'a.created_at',
+                'a.updated_at',
+            ])
+            ->where('s.user_id', \Auth::user()->id)
+            ->where('a.name', 'like',  $search . '%')
+            ->orWhere('a.email', 'like',  $search . '%')
+            ->limit($limit)
+            ->offset($offset)
+            ->orderByDesc('s.created_at')
+            ->get()->toArray();
+    }
 }
