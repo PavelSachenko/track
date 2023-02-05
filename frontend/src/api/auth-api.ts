@@ -9,7 +9,7 @@ const login = (values: ILoginFormValues) => {
   Credentials.set('email', values.email);
   Credentials.set('password', values.password);
 
-  return axiosInstance.post('login', Credentials);
+  return axiosInstance.post('auth/login', Credentials);
 };
 
 const sendEmailForRegister = (email: string) => {

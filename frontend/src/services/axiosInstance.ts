@@ -8,13 +8,13 @@ const currentHostname = window && window.location && window.location.hostname;
 let backendHostname;
 
 if (currentHostname === 'localhost') {
-  backendHostname = 'api.track-agent.agency';
+  backendHostname = 'track.local';
 }
 else if (currentHostname === '192.168.1.128') {
-    backendHostname = 'api.track-agent.agency';
+    backendHostname = 'track.local';
 }
 else if (currentHostname === 'app.track-agent.agency') {
-    backendHostname = 'api.track-agent.agency';
+    backendHostname = 'track.local';
 }
 else if (currentHostname === 'app.gencytrack.me') {
   backendHostname = 'api.gencytrack.me';
