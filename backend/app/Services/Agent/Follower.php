@@ -37,6 +37,6 @@ class Follower implements \App\Services\Contracts\Agent\Follower
 
     public function getAllFollowers(AllFollowersRequest $request): array
     {
-        return $this->subscriptionRepo->getAllSubscriber($request->limit, $request->offset, $request->search);
+        return $this->subscriptionRepo->getAllSubscriber($request->limit, $request->offset, $request->search? : '');
     }
 }
