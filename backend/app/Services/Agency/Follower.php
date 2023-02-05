@@ -8,7 +8,6 @@ use App\Repositories\PostgreSql\Agency\FollowerRepo;
 
 class Follower implements \App\Services\Contracts\Agency\Follower
 {
-
     private FollowerRepo $followerRepo;
 
     public function __construct(FollowerRepo $repo)

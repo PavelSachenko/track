@@ -2,6 +2,7 @@
 
 namespace App\Services\Agent;
 
+use App\Http\Requests\Agent\Subscription\AllFollowersRequest;
 use App\Http\Requests\Agent\Subscription\DecisionInviteRequest;
 use App\Repositories\Contracts\Agent\SubscriptionRepo;
 
@@ -32,5 +33,10 @@ class Follower implements \App\Services\Contracts\Agent\Follower
     public function countRequests(): int
     {
         return $this->subscriptionRepo->countRequestToSubscribe();
+    }
+
+    public function getAllFollowers(AllFollowersRequest $request): array
+    {
+        return $this->subscriptionRepo->getAllSubscriber($request->only(['limit', 'offset', 'search']));
     }
 }

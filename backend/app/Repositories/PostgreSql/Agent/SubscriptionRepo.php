@@ -59,4 +59,26 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             ->where('status', '<>',SubscriptionRequest::STATUS_TYPE_REJECT)
             ->count();
     }
+
+    public function getAllSubscriber(array $searchParams): array
+    {
+        return DB::table('subscriptions', 's')
+            ->leftJoin('agencies as a', 'a.user_id', '=', 's.user_subscriber_id')
+            ->select([
+                'a.user_id as id',
+                'a.name',
+                'a.email',
+                'a.phone',
+                'a.description',
+                'a.img',
+                'a.url',
+                'a.created_at',
+                'a.updated_at',
+                ])
+            ->where('s.user_id', \Auth::user()->id)
+            ->where($searchParams)
+            ->orderByDesc('s.created_at')
+            ->get()->toArray();
+    }
+
 }
