@@ -21,12 +21,7 @@
 									"value": "{{email}}",
 									"type": "text"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api}}/auth/email/registration",
@@ -299,6 +294,100 @@
 										"agency",
 										"subscription",
 										"send-request"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "count-follows",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agency/subscription/count-follows",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agency",
+										"subscription",
+										"count-follows"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "count-requests",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agency/subscription/count-requests",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agency",
+										"subscription",
+										"count-requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "follows",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{api}}/agency/subscription/follows",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agency",
+										"subscription",
+										"follows"
 									]
 								}
 							},
