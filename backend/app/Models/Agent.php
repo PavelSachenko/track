@@ -35,7 +35,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class Agent extends Authenticatable
 {
-    protected $appends = ['type'];
+    protected $appends = ['type', 'workTime'];
     protected $guarded = ['created_at'];
 
     protected $hidden = [
@@ -47,17 +47,15 @@ class Agent extends Authenticatable
         return $this->user_id;
     }
 
-    protected function firstName(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => ucfirst($value),
-            set: fn ($value) => strtolower($value),
-        );
-    }
-
     public function getTypeAttribute(): int
     {
         return User::TYPE_AGENT;
+    }
+
+    public function getWorkTimeAttribute(): array
+    {
+        // TODO get correct work time
+        return ["day" => (int)date('N', strtotime(date('l'))), "from" => "08:00", "to" => "20:00"];
     }
 
 }

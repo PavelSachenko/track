@@ -40,13 +40,16 @@ class Agency extends Authenticatable
     protected $appends = ['type'];
     protected $guarded = ['created_at'];
 
-    protected $hidden = [
-        'user_id',
-    ];
+    protected $hidden = ['user_id'];
 
-    public function getIdAttribute()
+    public function getIdAttribute(): int
     {
         return $this->user_id;
+    }
+
+    public function getTypeAttribute(): int
+    {
+        return User::TYPE_AGENCY;
     }
 
 }
