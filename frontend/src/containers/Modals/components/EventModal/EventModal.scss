@@ -1,0 +1,202 @@
+@import '../../../../scss/variables.scss';
+
+.event-modal {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 20px 48px;
+  width: 90vw;
+  max-width: 400px;
+  border: 1px solid $border-color;
+
+  &__title {
+    margin: 0;
+    color: $black;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  &__date {
+    margin: 0 auto;
+    margin-top: 14px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: $primary;
+    font-size: 14px;
+    background-color: rgba($primary, 0.05);
+  }
+
+  &__date-icon {
+    margin-right: 8px;
+  }
+
+  &__field {
+    margin-top: 21px;
+
+    &--event-time {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &--unavailable {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: $black;
+    }
+  }
+
+  &__event-time-wrap {
+    position: relative;
+    display: flex;
+    width: 100%;
+  }
+
+  &__event-time {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    &:first-child {
+      margin-right: 5%;
+    }
+  }
+
+  &__error-wrap {
+    position: relative;
+  }
+
+  &__error {
+    position: absolute;
+    z-index: 10;
+    left: 0px;
+    top: 4px;
+    color: #dc3545;
+    font-size: 12px;
+    
+    &--general {
+      top: 12px;
+    }
+  }
+
+  .time-select {
+    font-size: 14px;
+    
+    &__control {
+      height: 40px;
+      border-color: $border-color;
+
+      &--is-focused {
+        box-shadow: none;
+      }
+
+      &--menu-is-open {
+        box-shadow: none;
+        border-color: lighten($color: $primary, $amount: 25);
+      }
+    }
+
+    &__dropdown-indicator {
+      margin-right: 8px;
+      width: 15px;
+      height: 15px;
+      color: $text-light-color;
+      
+      svg {
+        fill: $text-light-color;
+      }
+    }
+
+    &__single-value {
+      color: $black;
+    }
+
+    &__option {
+      &--is-focused {
+        background-color: lighten($color: $primary, $amount: 57);
+      }
+
+      &--is-selected {
+        background-color: lighten($color: $primary, $amount: 25);
+      }
+    }
+
+    &__menu {
+      border: 1px solid $border-color;
+      box-shadow: none;
+    }
+  }
+
+  .agency-select {
+    font-size: 14px;
+    
+    &__control {
+      height: 40px;
+      border-color: $border-color;
+
+      &--is-focused {
+        box-shadow: none;
+      }
+
+      &--menu-is-open {
+        box-shadow: none;
+        border-color: lighten($color: $primary, $amount: 25);
+      }
+    }
+
+    &__dropdown-indicator {
+      svg {
+        fill: $text-light-color;
+      }
+    }
+
+    &__single-value {
+      color: $black;
+    }
+
+    &__option {
+      &--is-focused {
+        background-color: lighten($color: $primary, $amount: 57);
+      }
+
+      &--is-selected {
+        background-color: lighten($color: $primary, $amount: 25);
+      }
+    }
+
+    &__menu {
+      border: 1px solid $border-color;
+      box-shadow: none;
+    }
+  }
+
+  &__textarea {
+    max-height: 112px;
+
+    &:focus { //FIXME
+      border-color: lighten($color: $primary, $amount: 25);
+      box-shadow: none;
+    }
+  }
+
+  &__btns {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 35px;
+  }
+
+  &__delete-btn {
+    margin-right: auto;
+    padding: 0 10px;
+    color: $orange;
+  }
+
+  &__delete-icon {
+    height: 25px;
+    fill: $orange;
+  }
+
+  &__cancel-btn {
+    margin-right: 18px;
+  }
+}

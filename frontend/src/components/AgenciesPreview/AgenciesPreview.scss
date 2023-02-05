@@ -1,0 +1,126 @@
+@import '../../scss/variables.scss';
+
+.agency-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  padding: 36px 0 30px;
+
+  &__icon {
+    width: 109px;
+  }
+
+  &__title {
+    margin: 0;
+    margin-top: 28px;
+    color: $text-color;
+    font-size: 18px;
+  }
+
+  &__description {
+    margin-top: 14px;
+    padding: 0 16vw;
+    color: $text-color;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  &__invites {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 35px;
+    padding: 0 15px;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  &__invites-count {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-right: 30px;
+  }
+
+  &__invites-count-text {
+    margin-left: 9px;
+    color: $text-color;
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+
+    & > span {
+      color: $primary;
+      font-weight: normal;
+    }
+  }
+
+  &__invites-count-icon {
+    width: 17px;
+    min-width: 17px;
+    fill: $text-color;
+  }
+
+  &__invites-btn {
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    background-color: $green;
+  }
+
+  .agency-instructions {
+    &__title {
+      margin: 0;
+      margin-top: 35px;
+      color: $primary;
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    &__list {
+      margin: 0;
+      margin-top: 37px;
+      padding: 0 30px 0 32px;
+      list-style-type: none;
+    }
+
+    &__item {
+      position: relative;
+      margin-top: 22px;
+      padding-left: 32px;
+      counter-increment: counter;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &::before {
+        content: counter(counter);
+        position: absolute;
+        left: 0px;
+        color: $text-color;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+    
+    &__item-title {
+      margin: 0;
+      color: $text-color;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    &__item-text {
+      margin-top: 7px;
+      color: $text-light-color;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+  }
+}

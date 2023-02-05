@@ -1,0 +1,36 @@
+@import '../../scss/variables.scss'; 
+
+.agencies {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding-top: 22px;
+
+  &__title {
+    margin: 0;
+    text-align: center;
+    color: $black;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &__count {
+    font-weight: normal;
+    color: $text-light-color;
+  }
+
+  &__list {
+    margin-top: 20px;
+  }
+
+  &__list-item {
+    margin-bottom: 10px;
+  }
+
+  &__spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-75px, -75px);
+  }
+}

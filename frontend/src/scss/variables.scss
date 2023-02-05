@@ -1,0 +1,52 @@
+$color-rhino: #363062;
+$color-east-bay: #4d4c7d;
+$color-rum: #827397;
+$color-blossom: #d8b9c3;
+
+
+
+
+$primary: #201D9F;
+$red: #ed143d;
+$black: #2d3748;
+$green: #57aa5b;
+$orange: #ff3d00; 
+
+$text-color: #718096;
+$text-light-color: #a0aec0;
+$border-color: #e2e8f0;
+$bg-color: #edf2f7;
+
+
+@mixin scrollBars($color: $border-color) {
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-button {
+        height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color;
+        border-radius: 3px;
+        margin: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: darken($color: $color, $amount: 5%);
+    }
+}
+
+// Set hover only for the PC version of the site
+@mixin hover-supported {
+    @media not all and (pointer: coarse) {
+        &:hover {
+            @content;
+        }
+    }
+}

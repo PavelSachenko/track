@@ -1,0 +1,44 @@
+@import '../../../../scss/variables.scss';
+
+.success-register-modal {
+  max-width: 500px;
+  padding: 37px 24px 45px;
+  text-align: center;
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: rgba($green, .1);
+
+    svg {
+      width: 20px;
+      fill: $green;
+    }
+  }
+
+  &__header {
+    margin: 0;
+    margin-top: 22px;
+    color: $black;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__text {
+    margin-top: 18px;
+    color: $text-color;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  &__button {
+    min-width: 96px;
+    margin-top: 34px;
+    background-color: $green;
+  }
+}

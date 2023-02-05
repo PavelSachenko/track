@@ -1,0 +1,62 @@
+@import '../../../../scss/variables.scss';
+
+.decline-invite-modal {
+  width: 90vw;
+  max-width: 400px;
+  padding: 38px 20px 48px;
+  text-align: center;
+
+  &__icon-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: rgba($orange, .1);
+  }
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 23px;
+    height: 23px;
+    border: 2px solid $orange;
+    border-radius: 50%;
+
+    svg {
+      width: 9px;
+      fill: $orange;
+    }
+  }
+
+  &__header {
+    margin: 0;
+    margin-top: 22px;
+    color: $black;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__text {
+    margin-top: 18px;
+    color: $text-color;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  &__btns {
+    margin-top: 34px;
+  }
+
+  &__close-btn {
+    margin-right: 18px;
+    color: $black;
+
+    &:hover {
+      color: $black;
+    }
+  }
+}

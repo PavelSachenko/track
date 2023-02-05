@@ -1,0 +1,49 @@
+@import '../../scss/variables.scss';
+
+.notifications {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding-top: 24px;
+
+  &__title {
+    margin: 0;
+    text-align: center;
+    color: $black;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-top: 21px;
+  }
+
+  &__list-item {
+    margin-bottom: 7px;
+  }
+
+  &__spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-75px, -75px);
+  }
+
+  &__empty-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    margin-top: -21px;
+    color: $text-light-color;
+    font-size: 16px;
+  }
+
+  .global-preloader {
+    width: 100%;
+    height: 100%;
+  }
+}

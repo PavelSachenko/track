@@ -1,0 +1,41 @@
+@import '../../scss/variables.scss';
+
+.slider {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  user-select: none;
+
+  &__slider-left-path {
+    height: 5px;
+    background-color: $primary;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  &__slider-right-path {
+    flex-grow: 1;
+    height: 5px;
+    background-color: lightgrey;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  &__thumb {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 100%;
+    background-color: $primary;
+    transition: transform linear .1s, box-shadow linear .1s;
+    cursor: pointer;
+
+    &.active {
+      box-shadow: 0 0 0 6px rgba($primary, 0.2);
+      transform: scale(1.15);
+      transition: transform linear .1s, box-shadow linear .1s;
+    }
+  }
+}

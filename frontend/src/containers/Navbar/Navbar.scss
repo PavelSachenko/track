@@ -1,0 +1,86 @@
+@import '../../scss/variables.scss';
+
+.navbar {
+  position: fixed;
+  z-index: 50;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid $border-color;
+  background-color: #fff;
+  transition: bottom ease-in-out .5s;
+
+  &--hidden {
+    bottom: -80px;
+  }
+
+  &__list {
+    display: flex;
+    justify-content: space-around;
+    padding: 11px 0 15px;
+  }
+
+  &__item {
+    flex-grow: 1;
+    flex-basis: 25%;
+    align-self: flex-end;
+    padding: 0 2px;
+  }
+
+  &__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  &__icon {
+    position: relative;
+    width: 32px;
+    height: 32px;
+
+    &--notification {
+      width: 34px;
+      height: 32px;
+    }
+
+    svg {
+      fill: $text-light-color;
+      transition: fill linear .1s;
+    }
+  }
+
+  &__unread-count {
+    position: absolute;
+    top: -3px;
+    left: 19px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    height: 22px;
+    width: 22px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    color: $primary;
+    font-size: 11px;
+    background-color: #ffd569;
+  }
+
+  &__item-title {
+    margin-top: 7px;
+    color: $text-light-color;
+    font-size: 13px;
+    transition: color linear .1s;
+  }
+
+  &__item--active {
+    svg {
+      fill: $primary;
+    }
+
+    .navbar__item-title {
+      color: $primary;
+    }
+  }
+}

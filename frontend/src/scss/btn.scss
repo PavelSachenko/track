@@ -1,0 +1,147 @@
+@import './variables.scss';
+
+.btn {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+  padding: 15px 25px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  color: #fff;
+  border: 1px solid transparent;
+
+  &:disabled {
+    background-color: $text-color;
+    cursor: not-allowed;
+
+    @include hover-supported() {
+      background-color: #64738f;
+    }
+  }
+
+  // &--info {
+  //   background-color: $turquoise;
+
+  //   &:hover {
+  //     background-color: #49c8c8;
+  //   }
+
+  //   &:not(:disabled):active:focus {
+  //     box-shadow: 0 0 0 0.2rem rgba(102, 209, 209, 0.5);
+  //   }
+  // }
+
+  &--primary {
+    background-color: $primary;
+
+    &:disabled,
+    &:disabled:hover {
+      background-color: $primary;
+    }
+
+    &:not(:disabled):active:focus {
+      box-shadow: 0 0 0 0.2rem rgba(135, 144, 247, 0.5);
+    }
+
+    @include hover-supported() {
+      background-color: #4e5bf2;
+    }
+  }
+
+  &--secondary {
+    // background-color: $primary;
+    color: $primary;
+
+    &:hover {
+      // background-color: #4e5bf2;
+    }
+
+    &:not(:disabled):active:focus {
+      // box-shadow: 0 0 0 0.2rem rgba(135, 144, 247, 0.5);
+    }
+  }
+  
+  &--cancel {
+    background-color: #fff;
+    border: 1px solid $border-color;
+    color: $text-light-color;
+
+    &:disabled,
+    &:disabled:hover {
+      background-color: #fff;
+    }
+
+    &:not(:disabled):active:focus {
+      box-shadow: 0 0 0 0.2rem lighten($color: $border-color, $amount: 1);
+    }
+
+    @include hover-supported() {
+      border: 1px solid darken($color: $border-color, $amount: 20);
+      color: darken($color: $text-light-color, $amount: 20);
+    }
+  }
+
+  &--success {
+    background-color: $green;
+
+    // &:hover {
+    //   background-color: #0d9448;
+    // }
+
+    &:not(:disabled):active:focus {
+      box-shadow: 0 0 0 0.2rem rgba(52, 194, 114, 0.5);
+    }
+
+    @include hover-supported() {
+      background-color: darken($color: $green, $amount: 6);
+    }
+  }
+
+  &--danger {
+    background-color: $red;
+
+    &:disabled,
+    &:disabled:hover {
+      background-color: $red;
+    }
+
+    &:not(:disabled):active:focus {
+      box-shadow: 0 0 0 0.2rem rgba(255, 82, 125, 0.5);
+    }
+
+    @include hover-supported() {
+      background-color: #ff0d49;
+    }
+  }
+
+  // &--warning {
+  //   background-color: $orange;
+  //   color: #000;
+
+  //   &:hover {
+  //     background-color: #d7a103;
+  //   }
+
+  //   &:not(:disabled):active:focus {
+  //     box-shadow: 0 0 0 0.2rem rgba(218, 165, 11, 0.5);
+  //   }
+  // }
+
+  &--delete {
+    background-color: $orange;
+
+    &:disabled,
+    &:disabled:hover {
+      background-color: $orange;
+    }
+
+    &:not(:disabled):active:focus {
+      box-shadow: 0 0 0 0.2rem rgba($orange, 0.3);
+    }
+
+    @include hover-supported() {
+      background-color: darken($color: $orange, $amount: 6);
+    }
+  }
+}

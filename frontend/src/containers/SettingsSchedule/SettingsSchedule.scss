@@ -1,0 +1,101 @@
+@import '../../scss/variables.scss';
+
+.settings-schedule {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 15px 0 30px;
+
+  &__header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    margin: auto;
+    color: $black;
+    font-size: 18px;
+  }
+
+  &__field {
+    display: grid;
+    grid-template-columns: 1fr 55px 1fr;
+    align-items: end;
+    margin-top: 8px;
+  }
+
+  &__field-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__time-divider {
+    margin: auto;
+    margin-bottom: 17px;
+    width: 23px;
+    height: 2px;
+    background-color: $border-color;
+  }
+
+  &__spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-75px, -75px);
+  }
+
+  .mode-select,
+  .time-select {
+    font-size: 14px;
+    
+    &__control {
+      height: 40px;
+      border-color: $border-color;
+
+      &--is-focused {
+        box-shadow: none;
+      }
+
+      &--menu-is-open {
+        box-shadow: none;
+        border-color: lighten($color: $primary, $amount: 25);
+      }
+    }
+
+    &__dropdown-indicator {
+      color: $text-light-color;
+    }
+
+    &__single-value {
+      color: $black;
+    }
+
+    &__option {
+      &--is-focused {
+        background-color: lighten($color: $primary, $amount: 57);
+      }
+
+      &--is-selected {
+        background-color: lighten($color: $primary, $amount: 25);
+      }
+    }
+
+    &__menu {
+      border: 1px solid $border-color;
+      box-shadow: 0px 4px 14px rgba(226, 232, 240, 1);
+    }
+  }
+
+  .time-select {  
+    &__dropdown-indicator {
+      margin-right: 8px;
+      width: 15px;
+      height: 15px;
+      
+      svg {
+        fill: $text-light-color;
+      }
+    }
+  }
+}

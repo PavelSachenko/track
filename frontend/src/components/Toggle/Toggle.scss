@@ -1,0 +1,54 @@
+@import '../../scss/variables.scss'; 
+
+.toggle {
+  position: relative;
+  display: inline-block;
+
+  &__checkbox {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    width: 0;
+  }
+
+  &__title {
+    font-size: 10px;
+    color: #404040;
+    font-weight: 600;
+  }
+
+  &__main {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 49px;
+    max-width: 55px;
+    height: 30px;
+    border-radius: 200px;
+    cursor: pointer;
+    transition: background-color linear .1s;
+
+    &--true {
+      background-color: $primary;
+    }
+    &--false {
+      background-color: #cbd5e0;
+    }
+  }
+
+  &__indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    background-color: #fff;
+    transition: transform 0.3s;
+
+    &--true {
+      transform: translateX(calc(100% - 2px));
+    }
+    &--false {
+      transform: translateX(calc(0% + 3px));
+    }
+  }
+}

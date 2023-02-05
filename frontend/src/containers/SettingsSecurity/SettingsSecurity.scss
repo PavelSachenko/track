@@ -1,0 +1,51 @@
+@import '../../scss//variables.scss';
+
+.settings-security {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding-top: 15px;
+  padding-bottom: 50px;
+
+  &__header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    margin: auto;
+    color: $black;
+    font-size: 18px;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  &__delete {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    margin-top: 13px;
+    margin-bottom: 50px;
+    padding: 5px 0;
+    color: $orange;
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  &__delete-icon {
+    margin-right: 9px;
+    height: 17px;
+    fill: $orange;
+  }
+
+  &__save-btn {
+    margin: auto;
+    margin-bottom: 0;
+    width: min-content;
+  }
+}

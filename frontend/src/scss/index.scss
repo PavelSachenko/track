@@ -1,0 +1,39 @@
+@import './normalize.scss';
+@import './fonts.scss';
+@import './form.scss';
+@import './btn.scss';
+@import './variables.scss';
+@import './animations.scss';
+
+body {
+  @include scrollBars;
+
+  margin: 0;
+  font-family: Inter;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.link {
+  color: $primary;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.round-img {
+  border-radius: 50%;
+  background: #fff;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
