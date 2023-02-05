@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Agent\Settings\ScheduleController;
 use App\Http\Controllers\Agent\SubscriptionController as AgentSubscriptionController;
 use App\Http\Controllers\Agency\SubscriptionController as AgencySubscriptionController;
 use App\Http\Controllers\User\AuthController;
@@ -46,6 +47,9 @@ Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function (){
 |--------------------------------------------------------------------------
 | api/agent ...
 | api/agent/subscription ...
+|
+| api/agent/settings:
+| api/agent/settings/schedule ...
 |--------------------------------------------------------------------------
 */
 Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], function (){
@@ -57,6 +61,15 @@ Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], 
         Route::get('count-followers', [AgentSubscriptionController::class, 'countFollowers']);
         Route::get('followers', [AgentSubscriptionController::class, 'followers']);
         Route::get('count-requests', [AgentSubscriptionController::class, 'countRequests']);
+    });
+
+    Route::prefix('/settings')->group(function (){
+        Route::prefix('/schedule')->group(function (){
+            Route::get('work-time', [ScheduleController::class, 'getWorkTime']);
+            Route::patch('set-working-status', [ScheduleController::class, 'setWorkStatus']);
+            Route::patch('set-work-time', [ScheduleController::class, 'setWorkTime']);
+
+        });
     });
 
 });
