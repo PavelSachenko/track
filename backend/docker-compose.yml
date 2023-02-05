@@ -39,7 +39,7 @@ services:
             POSTGRES_USER: "admin"
             POSTGRES_PASSWORD: "pass"
         ports:
-            - "5433:5432"
+            - "5435:5432"
         volumes:
             - ./docker/postgres:/var/lib/postgresql/data
         networks:
