@@ -52,7 +52,8 @@ Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], 
 
     Route::prefix('/subscription')->group(function (){
         Route::post('accept', [AgentSubscriptionController::class, 'accept']);
-        Route::post('decline', [AgentSubscriptionController::class, 'decline']);
+        Route::patch('decline', [AgentSubscriptionController::class, 'decline']);
+
         Route::get('count-followers', [AgentSubscriptionController::class, 'countFollowers']);
         Route::get('followers', [AgentSubscriptionController::class, 'followers']);
         Route::get('count-requests', [AgentSubscriptionController::class, 'countRequests']);
@@ -60,6 +61,12 @@ Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], 
 
 });
 
+/*
+|--------------------------------------------------------------------------
+| api/agency/
+| api/agency/subscription
+|--------------------------------------------------------------------------
+*/
 Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']], function (){
     Route::prefix('/subscription')->group(function (){
         Route::post('send-request', [AgencySubscriptionController::class, 'sendRequest']);

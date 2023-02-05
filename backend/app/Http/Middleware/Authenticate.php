@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\AuthException;
+use App\Exceptions\ForbiddenException;
+use App\Models\User;
 use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
@@ -25,7 +27,20 @@ class Authenticate extends Middleware
     {
         $this->authenticate($request, $guards);
 
-        \Auth::setUser(\Auth::user()->defineUserType());
+        $user = null;
+        switch (\Auth::user()->type) {
+            case User::TYPE_AGENT:
+                $user = \Auth::user()->agent;
+                break;
+            case User::TYPE_AGENCY:
+                $user = \Auth::user()->agency;
+                break;
+        }
+        if (is_null($user)){
+            throw new ForbiddenException("Registration for user not completed");
+        }
+
+        \Auth::setUser($user);
 
         return $next($request);
     }

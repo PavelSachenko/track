@@ -24,10 +24,12 @@ return new class extends Migration
                 ->nullable()
                 ->comment("Message for invite subscribe, has default message `Greetings, we discussed this with you trough the phone. Hope you are accept our invite`");
             $table->string('token', 255);
+            $table->smallInteger('status')->default(1)->comment("1 - waiting, 2 - reject");
             $table->timestamps();
 
             $table->foreign('user_sender_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user_receiver_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->unique(['user_sender_id', 'user_receiver_id']);
         });
     }
 

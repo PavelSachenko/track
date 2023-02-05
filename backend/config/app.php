@@ -199,6 +199,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         \App\Providers\User\AuthServiceProvider::class,
         App\Providers\Agency\FollowerServiceProvider::class,
+        App\Providers\Agent\FollowerServiceProvider::class,
     ],
 
     /*

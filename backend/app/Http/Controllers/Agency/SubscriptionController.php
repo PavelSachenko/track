@@ -4,12 +4,18 @@ namespace App\Http\Controllers\Agency;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agency\Followers\SendInviteRequest;
-use App\Services\Agency\Follower;
+use App\Services\Contracts\Agency\Follower;
 
 class SubscriptionController extends Controller
 {
-    public function sendRequest(SendInviteRequest $request, Follower $follower)
+    private Follower $follower;
+
+    public function __construct(Follower $follower)
     {
-        return response()->json($follower->sendInvite($request));
+        $this->follower = $follower;
+    }
+    public function sendRequest(SendInviteRequest $request)
+    {
+        return response()->json($this->follower->sendInvite($request));
     }
 }

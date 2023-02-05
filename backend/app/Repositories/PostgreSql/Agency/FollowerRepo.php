@@ -3,6 +3,7 @@
 namespace App\Repositories\PostgreSql\Agency;
 
 
+use App\Exceptions\BadRequestException;
 use App\Models\SubscriptionRequest;
 use App\Repositories\Contracts\User\AuthRepo;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,10 @@ class FollowerRepo implements \App\Repositories\Contracts\Agency\InviteRepo
                 $id = $this->createEmptyUser($userReceiverEmail);
             }
 
-            $isCreated = DB::table('subscription_requests')->updateOrInsert([
+            if (\DB::table('subscriptions')->where([['user_id', $id], ['user_subscriber_id', \Auth::user()->id]])->exists())
+                throw new BadRequestException("You already have subscribed");
+
+            $isCreated = DB::table('subscription_requests')->insertOrIgnore([
                 'user_sender_id' => \Auth::user()->id,
                 'user_receiver_id' => $id,
                 'message' => $inviteMessage,
@@ -53,6 +57,7 @@ class FollowerRepo implements \App\Repositories\Contracts\Agency\InviteRepo
 
     private function createEmptyUser(string $email): int
     {
+        // TODO send email invite
         return $this->auth->createEmptyUserWithEmail($email)->id;
     }
 

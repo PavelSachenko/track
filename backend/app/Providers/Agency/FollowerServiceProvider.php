@@ -5,13 +5,16 @@ namespace App\Providers\Agency;
 use App\Repositories\PostgreSql\Agency\FollowerRepo;
 use App\Repositories\PostgreSql\User\AuthRepo;
 use App\Services\Agency\Follower;
+use App\Services\Contracts\Agency\Follower as FollowerContract;
 use Illuminate\Support\ServiceProvider;
 
 class FollowerServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->instance(Follower::class, new Follower(new FollowerRepo(new AuthRepo())));
+        $this->app->bind(FollowerContract::class, function ($app){
+            return new Follower($app->make(FollowerRepo::class, ['auth' => new AuthRepo()]));
+        });
     }
 
     public function boot()

@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubscriptionRequest extends Model
 {
     use HasFactory;
-
+    const STATUS_TYPE_WAITING = 1;
+    const STATUS_TYPE_REJECT = 2;
     protected $guarded = ['created_at'];
 }

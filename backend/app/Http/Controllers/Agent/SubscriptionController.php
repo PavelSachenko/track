@@ -3,9 +3,18 @@
 namespace App\Http\Controllers\Agent;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Agent\Subscription\DecisionInviteRequest;
+use App\Services\Contracts\Agent\Follower;
 
 class SubscriptionController extends Controller
 {
+    private Follower $follower;
+
+    public function __construct(Follower $follower)
+    {
+        $this->follower = $follower;
+    }
+
     public function countFollowers()
     {
         return response()->json(0);
@@ -21,13 +30,15 @@ class SubscriptionController extends Controller
         return response()->json([]);
     }
 
-    public function accept()
+    public function accept(DecisionInviteRequest $request)
     {
-        return response()->json([]);
+        return response()
+            ->json($this->follower->accept($request));
     }
 
-    public function decline()
+    public function decline(DecisionInviteRequest $request)
     {
-        return response()->json([]);
+        return response()
+            ->json($this->follower->decline($request));
     }
 }

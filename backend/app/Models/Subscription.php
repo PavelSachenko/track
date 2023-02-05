@@ -26,4 +26,5 @@ use Illuminate\Database\Eloquent\Model;
 class Subscription extends Model
 {
     use HasFactory;
+    protected $guarded = ['created_at'];
 }
