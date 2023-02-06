@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\AgentFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class Agent extends Authenticatable
 {
+    use HasFactory;
     protected $appends = ['type', 'workTime'];
     protected $guarded = ['created_at'];
 
@@ -58,4 +60,8 @@ class Agent extends Authenticatable
         return ["day" => (int)date('N', strtotime(date('l'))), "from" => "08:00", "to" => "20:00"];
     }
 
+//    protected static function newFactory(): AgentFactory
+//    {
+//        return AgentFactory::new();
+//    }
 }
