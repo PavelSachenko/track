@@ -53,17 +53,18 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             ->where('user_id', \Auth::user()->id)
             ->count();
     }
+
     public function countRequestToSubscribe(): int
     {
         return DB::table('subscription_requests')
             ->where('user_receiver_id', \Auth::user()->id)
-            ->where('status', '<>',SubscriptionRequest::STATUS_TYPE_REJECT)
+            ->where('status', '<>', SubscriptionRequest::STATUS_TYPE_REJECT)
             ->count();
     }
 
     public function getAllSubscriber(int $limit, int $offset, string $search): array
     {
-        return DB::table('subscriptions', 's')
+        $query = DB::table('subscriptions', 's')
             ->leftJoin('agencies as a', 'a.user_id', '=', 's.user_subscriber_id')
             ->select([
                 'a.user_id as id',
@@ -75,11 +76,15 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
                 'a.url',
                 'a.created_at',
                 'a.updated_at',
-                ])
-            ->where('s.user_id', \Auth::user()->id)
-            ->where('a.name', 'like',  $search . '%')
-            ->orWhere('a.email', 'like',  $search . '%')
-            ->limit($limit)
+            ])
+            ->where('s.user_id', \Auth::user()->id);
+
+        if ($search != '') {
+            $query->where('a.name', 'ilike', $search . '%')
+                ->orWhere('a.email', 'ilike', $search . '%');
+        }
+
+        return $query->limit($limit)
             ->offset($offset)
             ->orderByDesc('s.created_at')
             ->get()->toArray();

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Agency;
 use App\Models\Agent;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -43,19 +44,15 @@ class UserFactory extends Factory
 
     public function configure()
     {
-//        return $this->afterMaking(function (User $user) {
-//            //
-//        })->afterCreating(function (User $user) {
-//            if ($user->type == 1){
-//                Agent::create([
-//                    'user_id' => $user->id,
-//                    'email' => $user->email,
-//                    'name' => fake()->name,
-//                ]);
-//            }elseif ($user->type == 2){
-//
-//            }
-//
-//        });
+        return $this->afterMaking(function (User $user) {
+            //
+        })->afterCreating(function (User $user) {
+            if ($user->type == 1){
+                Agent::factory()->state(['user_id' => $user->id, 'email' => $user->email])->create();
+            }elseif ($user->type == 2){
+                Agency::factory()->state(['user_id' => $user->id, 'email' => $user->email])->create();
+            }
+
+        });
     }
 }

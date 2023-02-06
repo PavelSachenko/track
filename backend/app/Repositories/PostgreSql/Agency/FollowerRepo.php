@@ -78,8 +78,8 @@ class FollowerRepo implements SubscriptionRepo
 
     public function getAllFollows(int $limit, int $offset, string $search): array
     {
-        return DB::table('subscriptions', 's')
-            ->leftJoin('agents as a', 'a.user_id', '=', 's.user_id')
+        $query = DB::table('subscriptions', 's')
+            ->join('agents as a', 'a.user_id', '=', 's.user_id')
             ->select([
                 'a.user_id as id',
                 'a.name',
@@ -91,10 +91,15 @@ class FollowerRepo implements SubscriptionRepo
                 'a.created_at',
                 'a.updated_at',
             ])
-            ->where('s.user_id', \Auth::user()->id)
-            ->where('a.name', 'like',  $search . '%')
-            ->orWhere('a.email', 'like',  $search . '%')
-            ->limit($limit)
+            ->where('s.user_subscriber_id', \Auth::user()->id);
+
+        if ($search != '') {
+            $query
+                ->where('a.name', 'ilike', $search . '%')
+                ->orWhere('a.email', 'ilike', $search . '%');
+        }
+
+        return $query->limit($limit)
             ->offset($offset)
             ->orderByDesc('s.created_at')
             ->get()->toArray();

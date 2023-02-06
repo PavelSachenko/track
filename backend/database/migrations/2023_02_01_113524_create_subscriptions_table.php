@@ -21,6 +21,9 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user_subscriber_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->unique(['user_id', 'user_subscriber_id']);
+
         });
     }
 

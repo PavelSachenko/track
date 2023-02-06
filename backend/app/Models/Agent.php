@@ -60,8 +60,9 @@ class Agent extends Authenticatable
         return ["day" => (int)date('N', strtotime(date('l'))), "from" => "08:00", "to" => "20:00"];
     }
 
-//    protected static function newFactory(): AgentFactory
-//    {
-//        return AgentFactory::new();
-//    }
+    protected static function newFactory(): AgentFactory
+    {
+        return AgentFactory::new();
+    }
+
 }

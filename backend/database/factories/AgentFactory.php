@@ -20,11 +20,10 @@ class AgentFactory extends Factory
      */
     public function definition()
     {
-        $user = User::factory()->state(['type' => 1])->create();
         return [
-            'user_id' => $user->id,
+            'user_id' => null,
             'name' => fake()->firstName,
-            'email' => $user->email,
+            'email' => null,
             'phone' => $this->getPhoneNumber(),
             'is_available' => $this->getIsAvailable(),
             'description' => $this->getDescription(),
@@ -34,7 +33,7 @@ class AgentFactory extends Factory
     private function getPhoneNumber(): ?string
     {
         if(rand(1, 2) == 1)
-            return fake()->phoneNumber;
+            return "+" . fake()->numberBetween(1000000, 2147483646);
         return null;
     }
 
