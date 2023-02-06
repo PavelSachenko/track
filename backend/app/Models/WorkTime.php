@@ -32,4 +32,10 @@ use Illuminate\Database\Eloquent\Model;
 class WorkTime extends Model
 {
     use HasFactory;
+    protected $guarded = [];
+    protected $casts = [
+        'every_day_times' => 'array',
+        'custom_times' => 'array',
+        'weekdays_times' => 'array',
+    ];
 }

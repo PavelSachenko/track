@@ -200,6 +200,7 @@ return [
         \App\Providers\User\AuthServiceProvider::class,
         App\Providers\Agency\FollowerServiceProvider::class,
         App\Providers\Agent\FollowerServiceProvider::class,
+        App\Providers\Agent\SettingsServiceProvider::class,
     ],
 
     /*

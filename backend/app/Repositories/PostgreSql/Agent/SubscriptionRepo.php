@@ -65,7 +65,13 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
     {
         return DB::table('subscriptions', 's')
             ->leftJoin('agencies as a', 'a.user_id', '=', 's.user_subscriber_id')
-            ->select([
+            ->where('s.user_id', \Auth::user()->id)
+            ->where('a.name', 'like',  $search . '%')
+            ->orWhere('a.email', 'like',  $search . '%')
+            ->limit($limit)
+            ->offset($offset)
+            ->orderByDesc('s.created_at')
+            ->get([
                 'a.user_id as id',
                 'a.name',
                 'a.email',
@@ -75,14 +81,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
                 'a.url',
                 'a.created_at',
                 'a.updated_at',
-                ])
-            ->where('s.user_id', \Auth::user()->id)
-            ->where('a.name', 'like',  $search . '%')
-            ->orWhere('a.email', 'like',  $search . '%')
-            ->limit($limit)
-            ->offset($offset)
-            ->orderByDesc('s.created_at')
-            ->get()->toArray();
+            ])->toArray();
     }
 
 }
