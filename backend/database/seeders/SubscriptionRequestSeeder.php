@@ -49,7 +49,7 @@ class SubscriptionRequestSeeder extends Seeder
 
     private function getMainAgencyID(): int
     {
-        return $mainAgency = User::where('email', 'agency@gmail.com')
+        return User::where('email', 'agency@gmail.com')
             ->where('type', '2')
             ->first()->id;
     }
