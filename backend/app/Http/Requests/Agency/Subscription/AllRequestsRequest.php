@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Requests\Agent\Subscription;
+namespace App\Http\Requests\Agency\Subscription;
 
 use App\Http\Requests\BaseRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property int $limit
  * @property int $offset
  * @property string $search
  */
-class AllFollowersRequest extends BaseRequest
+class AllRequestsRequest  extends BaseRequest
 {
     protected function prepareForValidation()
     {
@@ -24,10 +25,8 @@ class AllFollowersRequest extends BaseRequest
             'search' => ['string', 'max:255'],
         ];
     }
-
     public function authorize(): bool
     {
         return true;
     }
-
 }

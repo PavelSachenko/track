@@ -39,7 +39,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
         }
     }
 
-    public function changeStatusSubscriptionFromRequest(int $subscriptionRequestID): bool
+    public function setRejectStatusForRequest(int $subscriptionRequestID): bool
     {
         return (bool)DB::table('subscription_requests')
             ->where('id', $subscriptionRequestID)
@@ -53,25 +53,20 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             ->where('user_id', \Auth::user()->id)
             ->count();
     }
+
     public function countRequestToSubscribe(): int
     {
         return DB::table('subscription_requests')
             ->where('user_receiver_id', \Auth::user()->id)
-            ->where('status', '<>',SubscriptionRequest::STATUS_TYPE_REJECT)
+            ->where('status', '<>', SubscriptionRequest::STATUS_TYPE_REJECT)
             ->count();
     }
 
     public function getAllSubscriber(int $limit, int $offset, string $search): array
     {
-        return DB::table('subscriptions', 's')
+        $query = DB::table('subscriptions', 's')
             ->leftJoin('agencies as a', 'a.user_id', '=', 's.user_subscriber_id')
-            ->where('s.user_id', \Auth::user()->id)
-            ->where('a.name', 'like',  $search . '%')
-            ->orWhere('a.email', 'like',  $search . '%')
-            ->limit($limit)
-            ->offset($offset)
-            ->orderByDesc('s.created_at')
-            ->get([
+            ->select([
                 'a.user_id as id',
                 'a.name',
                 'a.email',
@@ -81,7 +76,42 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
                 'a.url',
                 'a.created_at',
                 'a.updated_at',
-            ])->toArray();
+            ])
+            ->where('s.user_id', \Auth::user()->id);
+
+        if ($search != '') {
+            $query->where('a.name', 'ilike', $search . '%')
+                ->orWhere('a.email', 'ilike', $search . '%');
+        }
+
+        return $query->limit($limit)
+            ->offset($offset)
+            ->orderByDesc('s.created_at')
+            ->get()->toArray();
     }
+
+    public function getAllRequests(int $limit, int $offset, string $search): array
+    {
+        $query = DB::table('subscription_requests', 'sr')
+            ->leftJoin('agencies as a', 'a.user_id', '=', 'sr.user_sender_id')
+            ->select([
+                'sr.id',
+                'sr.created_at',
+                'a.email',
+                'a.name',
+            ])
+            ->where('sr.user_receiver_id', \Auth::user()->id);
+
+        if ($search != '') {
+            $query->where('a.name', 'ilike', $search . '%')
+                ->orWhere('a.email', 'ilike', $search . '%');
+        }
+
+        return $query->limit($limit)
+            ->offset($offset)
+            ->orderByDesc('sr.created_at')
+            ->get()->toArray();
+    }
+
 
 }

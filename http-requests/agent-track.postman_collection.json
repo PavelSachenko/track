@@ -392,6 +392,50 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "all-requests",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agency/subscription/requests?limit=20&offset=0",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agency",
+										"subscription",
+										"requests"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "20"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "search",
+											"value": "m",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
@@ -561,7 +605,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/agent/subscription/followers?limit=20&offset=0&search=ag",
+									"raw": "{{api}}/agent/subscription/followers?search=t",
 									"host": [
 										"{{api}}"
 									],
@@ -573,7 +617,52 @@
 									"query": [
 										{
 											"key": "limit",
-											"value": "20"
+											"value": "20",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "t"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all-requests",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agent/subscription/requests?limit=5&offset=0&search=m",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"subscription",
+										"requests"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "5"
 										},
 										{
 											"key": "offset",
@@ -581,7 +670,128 @@
 										},
 										{
 											"key": "search",
-											"value": "ag"
+											"value": "m"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "settings",
+					"item": [
+						{
+							"name": "set-is-available",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "is_available",
+											"value": "true",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/agent/settings/schedule/set-working-status?is_available=0",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"settings",
+										"schedule",
+										"set-working-status"
+									],
+									"query": [
+										{
+											"key": "is_available",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "my-work-times",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agent/settings/schedule/work-time",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"settings",
+										"schedule",
+										"work-time"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "set-work-time",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agent/settings/schedule/set-work-time?mode=custom&times=[{\"day\":1,\"from\":\"07:00\",\"to\":\"16:00\"},{\"day\":2,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":3,\"from\":\"08:00\",\"to\":\"19:00\"},{\"day\":4,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":5,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":6,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":7,\"from\":\"08:00\",\"to\":\"16:00\"}]",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"settings",
+										"schedule",
+										"set-work-time"
+									],
+									"query": [
+										{
+											"key": "mode",
+											"value": "custom"
+										},
+										{
+											"key": "times",
+											"value": "[{\"day\":1,\"from\":\"07:00\",\"to\":\"16:00\"},{\"day\":2,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":3,\"from\":\"08:00\",\"to\":\"19:00\"},{\"day\":4,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":5,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":6,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":7,\"from\":\"08:00\",\"to\":\"16:00\"}]"
 										}
 									]
 								}

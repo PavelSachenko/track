@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\SubscriptionRequestFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,4 +34,9 @@ class SubscriptionRequest extends Model
     const STATUS_TYPE_WAITING = 1;
     const STATUS_TYPE_REJECT = 2;
     protected $guarded = ['created_at'];
+
+    protected static function newFactory(): SubscriptionRequestFactory
+    {
+        return SubscriptionRequestFactory::new();
+    }
 }

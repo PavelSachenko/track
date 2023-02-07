@@ -3,13 +3,14 @@
 namespace App\Http\Requests\Agent\Subscription;
 
 use App\Http\Requests\BaseRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property int $limit
  * @property int $offset
  * @property string $search
  */
-class AllFollowersRequest extends BaseRequest
+class AllRequestsRequest extends BaseRequest
 {
     protected function prepareForValidation()
     {
@@ -29,5 +30,4 @@ class AllFollowersRequest extends BaseRequest
     {
         return true;
     }
-
 }

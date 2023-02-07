@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agency;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agency\Subscription\AllFollowsRequest;
+use App\Http\Requests\Agency\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agency\Subscription\SendInviteRequest;
 use App\Services\Contracts\Agency\Follower;
 
@@ -34,5 +35,10 @@ class SubscriptionController extends Controller
     public function follows(AllFollowsRequest $request)
     {
         return response()->json($this->follower->getAllFollows($request));
+    }
+
+    public function requests(AllRequestsRequest $request)
+    {
+        return response()->json($this->follower->getAllRequests($request));
     }
 }

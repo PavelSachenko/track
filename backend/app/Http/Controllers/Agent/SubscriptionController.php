@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agent;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agent\Subscription\AllFollowersRequest;
+use App\Http\Requests\Agent\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agent\Subscription\DecisionInviteRequest;
 use App\Services\Contracts\Agent\Follower;
 
@@ -41,5 +42,11 @@ class SubscriptionController extends Controller
     {
         return response()
             ->json($this->follower->decline($request));
+    }
+
+    public function requests(AllRequestsRequest $request)
+    {
+        return response()
+            ->json($this->follower->getAllRequests($request));
     }
 }

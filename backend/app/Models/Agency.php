@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\AgencyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -36,7 +37,6 @@ class Agency extends Authenticatable
 {
     use HasFactory;
 
-
     protected $appends = ['type'];
     protected $guarded = ['created_at'];
 
@@ -50,6 +50,11 @@ class Agency extends Authenticatable
     public function getTypeAttribute(): int
     {
         return User::TYPE_AGENCY;
+    }
+
+    protected static function newFactory(): AgencyFactory
+    {
+        return AgencyFactory::new();
     }
 
 }

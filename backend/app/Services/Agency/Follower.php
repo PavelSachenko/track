@@ -3,6 +3,7 @@
 namespace App\Services\Agency;
 
 use App\Http\Requests\Agency\Subscription\AllFollowsRequest;
+use App\Http\Requests\Agency\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agency\Subscription\SendInviteRequest;
 use App\Repositories\PostgreSql\Agency\FollowerRepo;
 
@@ -38,4 +39,10 @@ class Follower implements \App\Services\Contracts\Agency\Follower
     {
         return $this->followerRepo->getAllFollows($request->limit, $request->offset, $request->search? : '');
     }
+
+    public function getAllRequests(AllRequestsRequest $request): array
+    {
+        return $this->followerRepo->getAllRequests($request->limit, $request->offset, $request->search? : '');
+    }
+
 }

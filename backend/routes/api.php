@@ -61,6 +61,7 @@ Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], 
         Route::get('count-followers', [AgentSubscriptionController::class, 'countFollowers']);
         Route::get('followers', [AgentSubscriptionController::class, 'followers']);
         Route::get('count-requests', [AgentSubscriptionController::class, 'countRequests']);
+        Route::get('requests', [AgentSubscriptionController::class, 'requests']);
     });
 
     Route::prefix('/settings')->group(function (){
@@ -87,6 +88,7 @@ Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']]
         Route::get('count-follows', [AgencySubscriptionController::class, 'countFollows']);
         Route::get('count-requests', [AgencySubscriptionController::class, 'countRequests']);
         Route::get('follows', [AgencySubscriptionController::class, 'follows']);
+        Route::get('requests', [AgencySubscriptionController::class, 'requests']);
     });
 
 });
