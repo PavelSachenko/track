@@ -104,4 +104,27 @@ class FollowerRepo implements SubscriptionRepo
             ->orderByDesc('s.created_at')
             ->get()->toArray();
     }
+
+    public function getAllRequests(int $limit, int $offset, string $search): array
+    {
+        $query = DB::table('subscription_requests', 'sr')
+            ->leftJoin('agents as a', 'a.user_id', '=', 'sr.user_receiver_id')
+            ->select([
+                'sr.id',
+                'sr.created_at',
+                'a.email',
+                'a.name',
+            ])
+            ->where('sr.user_sender_id', \Auth::user()->id);
+
+        if ($search != '') {
+            $query->where('a.name', 'ilike', $search . '%')
+                ->orWhere('a.email', 'ilike', $search . '%');
+        }
+
+        return $query->limit($limit)
+            ->offset($offset)
+            ->orderByDesc('sr.created_at')
+            ->get()->toArray();
+    }
 }

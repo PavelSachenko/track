@@ -39,7 +39,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
         }
     }
 
-    public function changeStatusSubscriptionFromRequest(int $subscriptionRequestID): bool
+    public function setRejectStatusForRequest(int $subscriptionRequestID): bool
     {
         return (bool)DB::table('subscription_requests')
             ->where('id', $subscriptionRequestID)
@@ -89,5 +89,29 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             ->orderByDesc('s.created_at')
             ->get()->toArray();
     }
+
+    public function getAllRequests(int $limit, int $offset, string $search): array
+    {
+        $query = DB::table('subscription_requests', 'sr')
+            ->leftJoin('agencies as a', 'a.user_id', '=', 'sr.user_sender_id')
+            ->select([
+                'sr.id',
+                'sr.created_at',
+                'a.email',
+                'a.name',
+            ])
+            ->where('sr.user_receiver_id', \Auth::user()->id);
+
+        if ($search != '') {
+            $query->where('a.name', 'ilike', $search . '%')
+                ->orWhere('a.email', 'ilike', $search . '%');
+        }
+
+        return $query->limit($limit)
+            ->offset($offset)
+            ->orderByDesc('sr.created_at')
+            ->get()->toArray();
+    }
+
 
 }
