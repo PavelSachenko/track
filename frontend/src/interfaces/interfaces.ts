@@ -1,7 +1,7 @@
 export interface IAction {
   type: string;
   payload?: any;
-};
+}
 export interface IAnyObject {
   [key: string]: any;
 }
@@ -27,7 +27,7 @@ export interface ILoginValues {
 export interface IModal {
   type: string;
   props?: IAnyObject;
-};
+}
 
 export interface IAgent {
   id: number;
@@ -35,13 +35,12 @@ export interface IAgent {
   phone: null | string;
   description: null | string;
   img: null | string;
-  status: 0 | 1;
+  is_available: boolean;
   created_at: string;
   updated_at: string;
   type: number;
   email: string;
-  url: null | string;
-  wasAdded: null | string;
+  workTime: { day: number; from: string; to: string };
 }
 
 export interface IAgency {
@@ -60,7 +59,7 @@ export interface IAgency {
 export interface INotificationItem {
   type: string;
   data: INotification;
-} 
+}
 
 export interface INotification {
   id: number;
