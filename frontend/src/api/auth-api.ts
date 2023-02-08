@@ -17,7 +17,7 @@ const sendEmailForRegister = (email: string) => {
 
   Credentials.set("email", email);
 
-  return axiosInstance.post("email/verify", Credentials);
+  return axiosInstance.post("auth/email/registration", Credentials);
 };
 
 const isRegisterTokenValid = (token: string) => {
@@ -25,7 +25,7 @@ const isRegisterTokenValid = (token: string) => {
 
   Credentials.set("token", token);
 
-  return axiosInstance.post("email/validate-token", Credentials);
+  return axiosInstance.post("auth/email/validate-token", Credentials);
 };
 
 const register = (values: IRegisterFormValues) => {
@@ -41,7 +41,7 @@ const register = (values: IRegisterFormValues) => {
   values.description && NewUser.set("description", values.description);
   values.img && NewUser.set("img", values.img);
 
-  return axiosInstance.post("register", NewUser);
+  return axiosInstance.post("auth/registration", NewUser);
 };
 
 const sendEmailToResetPassword = (email: string) => {
