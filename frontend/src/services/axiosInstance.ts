@@ -1,35 +1,25 @@
-import axios from 'axios';
+import axios from "axios";
 
-import handleNetError from '../utils/handleNetError';
+import handleNetError from "../utils/handleNetError";
 
-const protocol = 'https://';
+const protocol = "https://";
 const currentHostname = window && window.location && window.location.hostname;
 
 let backendHostname;
 
-if (currentHostname === 'localhost') {
-  backendHostname = 'track.local';
-}
-else if (currentHostname === '192.168.1.128') {
-    backendHostname = 'track.local';
-}
-else if (currentHostname === 'app.track-agent.agency') {
-    backendHostname = 'track.local';
-}
-else if (currentHostname === 'app.gencytrack.me') {
-  backendHostname = 'api.gencytrack.me';
-}
-else if (currentHostname && currentHostname !== 'chromewebdata') {
+if (currentHostname === "localhost") {
+  backendHostname = "track.local";
+} else if (currentHostname === "track.local") {
+  backendHostname = "track.local";
+} else if (currentHostname && currentHostname !== "chromewebdata") {
   backendHostname = currentHostname;
-}
-else {
-  backendHostname = process.env.REACT_APP_BACKEND_HOST || 'unknownhosterror';
+} else {
+  backendHostname = process.env.REACT_APP_BACKEND_HOST || "unknownhosterror";
 }
 
-export const API_ROOT = protocol + backendHostname + '/api/';
+export const API_ROOT = protocol + backendHostname + "/api/";
 
 const axiosInstance = axios.create({ baseURL: API_ROOT });
-
 
 // axios.defaults.baseURL = API_ROOT;
 
@@ -41,34 +31,33 @@ const axiosInstance = axios.create({ baseURL: API_ROOT });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (config.url && !['login', 'register'].includes(config.url)) {
-      config.headers.Authorization = 'Bearer ' + token;
+    const token = localStorage.getItem("token");
+    if (config.url && !["login", "register"].includes(config.url)) {
+      config.headers.Authorization = "Bearer " + token;
     }
 
-    console.log('BASE', config);
+    console.log("BASE", config);
 
     return config;
   },
-  error => {
+  (error) => {
     return Promise.reject(error);
   }
 );
 
 axiosInstance.interceptors.response.use(
-  response => {
+  (response) => {
     // Do something with response data
     return Promise.resolve(response);
   },
-  err => {
+  (err) => {
     // Do something with response err
     if (err.response) {
-      console.log('API ERROR:) - ', err.response.data.code);
-      console.log('API ERROR22:) - ', err.response.data);
-    }
-    else {
-      console.error('API ERROR:) - ', err);
-      console.log('API ERROR22:) - ', err.message);
+      console.log("API ERROR:) - ", err.response.data.code);
+      console.log("API ERROR22:) - ", err.response.data);
+    } else {
+      console.error("API ERROR:) - ", err);
+      console.log("API ERROR22:) - ", err.message);
     }
 
     handleNetError(err);
