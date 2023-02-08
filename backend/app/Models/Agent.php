@@ -37,7 +37,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Agent extends Authenticatable
 {
     use HasFactory;
-    protected $appends = ['type', 'workTime'];
+    protected $appends = ['type'];
     protected $guarded = ['created_at'];
 
     protected $hidden = [
@@ -52,12 +52,6 @@ class Agent extends Authenticatable
     public function getTypeAttribute(): int
     {
         return User::TYPE_AGENT;
-    }
-
-    public function getWorkTimeAttribute(): array
-    {
-        // TODO get correct work time
-        return ["day" => (int)date('N', strtotime(date('l'))), "from" => "08:00", "to" => "20:00"];
     }
 
     protected static function newFactory(): AgentFactory
