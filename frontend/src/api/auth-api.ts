@@ -21,11 +21,17 @@ const sendEmailForRegister = (email: string) => {
 };
 
 const isRegisterTokenValid = (token: string) => {
-  const Credentials = new FormData();
+  const Credentials: {
+    params: {
+      token: string;
+    };
+  } = {
+    params: {
+      token,
+    },
+  };
 
-  Credentials.set("token", token);
-
-  return axiosInstance.post("auth/email/validate-token", Credentials);
+  return axiosInstance.get("auth/email/validate-token", Credentials);
 };
 
 const register = (values: IRegisterFormValues) => {

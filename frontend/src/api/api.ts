@@ -94,7 +94,7 @@ const getAgents = (config: IAgentsConfig) => {
     apiConfig.params.offset = config.offset;
   }
 
-  return axiosInstance.get("subscription/get-agency-follow", apiConfig);
+  return axiosInstance.get("agency/subscription/follows", apiConfig);
 };
 
 const getInvites = (offset?: number) => {
@@ -117,7 +117,7 @@ const getInvites = (offset?: number) => {
 };
 
 const getInvitesCount = () => {
-  return axiosInstance.get("subscription/get-count-invites");
+  return axiosInstance.get("agency/subscription/count-follows");
 };
 
 const sendInvite = (email: string) => {
@@ -136,9 +136,9 @@ const getNotificationsCount = () => {
   return axiosInstance.get("agent/subscription/count-requests");
 };
 
-// const getNotificationsCountAgency = () => {
-//   return axiosInstance.get("agency/subscription/count-requests");
-// };
+const getNotificationsCountAgency = () => {
+  return axiosInstance.get("agency/subscription/count-requests");
+};
 
 const getNotifications = (offset?: number) => {
   const apiConfig: {
@@ -180,7 +180,7 @@ const deleteInvite = (id: number) => {
 };
 
 const getWokTime = () => {
-  return axiosInstance.get("schedule/get-work-time");
+  return axiosInstance.get("schedule/get-work-time ");
 };
 
 const setWorkTime = (config: { mode: string; times: IDay | IDay[] }) => {
@@ -261,6 +261,7 @@ const API = {
   addEvent,
   deleteEvent,
   changeWorkingStatus,
+  getNotificationsCountAgency,
 };
 
 export default API;
