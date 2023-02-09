@@ -5,6 +5,7 @@ use App\Http\Controllers\Agent\Settings\ScheduleController as SettingScheduleCon
 use App\Http\Controllers\Agent\SubscriptionController as AgentSubscriptionController;
 use App\Http\Controllers\Agency\SubscriptionController as AgencySubscriptionController;
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\ResetPasswordController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,15 +24,23 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | api/auth ...
 | api/auth/email ...
+| api/auth/reset-password ...
 |--------------------------------------------------------------------------
 */
 Route::prefix('/auth')->group(function (){
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-    Route::post('/registration', [AuthController::class, 'registration']);
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('registration', [AuthController::class, 'registration']);
+    Route::post('login', [AuthController::class, 'login']);
+
     Route::prefix('/email')->group(function () {
-        Route::post('/registration', [AuthController::class, 'emailRegistration']);
-        Route::get('/validate-token', [AuthController::class, 'validateEmailToken'])->name('email.validate-token');
+        Route::post('registration', [AuthController::class, 'emailRegistration']);
+        Route::get('validate-token', [AuthController::class, 'validateEmailToken'])->name('email.validate-token');
+    });
+
+    Route::prefix('/reset-password')->group(function (){
+        Route::post('email-verification', [ResetPasswordController::class, 'emailVerification']);
+        Route::get('token-validation', [ResetPasswordController::class, 'emailVerification']);
+        Route::put('set-new-password', [ResetPasswordController::class, 'emailVerification']);
     });
 });
 

@@ -29,10 +29,13 @@ class Auth implements \App\Services\Contracts\User\Auth
     public function registerWithEmail(EmailRegistrationRequest $request): bool
     {
         $user = $this->authRepo->createEmptyUserWithEmail($request->email);
-
-        Mail::to($request->email)->send(new EmailVerificationMail(
-            $url = route('email.validate-token') . '?token=' . $user->createToken('email_verification')->plainTextToken
-        ));
+        $email = $request->email;
+        //send to queues
+        dispatch(function () use ($email, $user) {
+            Mail::to($email)->send(new EmailVerificationMail(
+                $url = route('email.validate-token') . '?token=' . $user->createToken('email_verification')->plainTextToken
+            ));
+        })->afterResponse();
 
         return $user->wasRecentlyCreated;
     }
@@ -40,7 +43,7 @@ class Auth implements \App\Services\Contracts\User\Auth
     public function registrationConcreteUser(RegistrationRequest $registrationRequest): array
     {
         $personalToken = PersonalAccessToken::findToken($registrationRequest->token);
-        if (is_null($personalToken)){
+        if (is_null($personalToken)) {
             throw new InvalidTokenException();
         }
         \Auth::setUser($personalToken->tokenable);
@@ -51,7 +54,7 @@ class Auth implements \App\Services\Contracts\User\Auth
             array_merge(
                 ['img' => \Img::uploadToS3($registrationRequest->file('img'))],
                 $registrationRequest->except(['password_confirmation', 'token', 'img']
-            ))
+                ))
         );
 
         $personalToken->delete();
@@ -84,7 +87,7 @@ class Auth implements \App\Services\Contracts\User\Auth
     public function logout(Request $request): bool
     {
         $token = PersonalAccessToken::findToken($request->bearerToken());
-        if (is_null($token)){
+        if (is_null($token)) {
             throw new AuthException();
 
         }
