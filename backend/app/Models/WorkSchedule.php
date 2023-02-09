@@ -34,4 +34,29 @@ use Illuminate\Database\Eloquent\Model;
 class WorkSchedule extends Model
 {
     use HasFactory;
+    protected $guarded = [];
+
+    const TYPE_WORK = 1;
+    const TYPE_REST = 2;
+    const TYPE_REQUEST = 3;
+
+    const TYPE = [
+        'work' => 1,
+        'rest' => 2,
+        'request' => 3
+    ];
+
+    protected $with = [
+        'agency'
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationship
+    |--------------------------------------------------------------------------
+    */
+    public function agency(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Agency::class, 'user_id', 'bound_user_id');
+    }
 }

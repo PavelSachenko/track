@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Agent\Settings\ScheduleController;
+use App\Http\Controllers\Agent\ScheduleController;
+use App\Http\Controllers\Agent\Settings\ScheduleController as SettingScheduleController;
 use App\Http\Controllers\Agent\SubscriptionController as AgentSubscriptionController;
 use App\Http\Controllers\Agency\SubscriptionController as AgencySubscriptionController;
 use App\Http\Controllers\User\AuthController;
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::prefix('/auth')->group(function (){
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/registration', [AuthController::class, 'registration']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::prefix('/email')->group(function () {
@@ -64,12 +65,19 @@ Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], 
         Route::get('requests', [AgentSubscriptionController::class, 'requests']);
     });
 
+
+    Route::prefix('/schedule')->group(function (){
+        Route::get('/', [ScheduleController::class, 'index']);
+        Route::post('/add-work-record', [ScheduleController::class, 'add']);
+        Route::delete('/drop-work-record', [ScheduleController::class, 'drop']);
+    });
+
+
     Route::prefix('/settings')->group(function (){
         Route::prefix('/schedule')->group(function (){
-            Route::get('work-time', [ScheduleController::class, 'getWorkTime']);
-            Route::patch('set-working-status', [ScheduleController::class, 'setWorkStatus']);
-            Route::patch('set-work-time', [ScheduleController::class, 'setWorkTime']);
-
+            Route::get('work-time', [SettingScheduleController::class, 'getWorkTime']);
+            Route::patch('set-working-status', [SettingScheduleController::class, 'setWorkStatus']);
+            Route::patch('set-work-time', [SettingScheduleController::class, 'setWorkTime']);
         });
     });
 

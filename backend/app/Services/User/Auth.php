@@ -43,11 +43,15 @@ class Auth implements \App\Services\Contracts\User\Auth
         if (is_null($personalToken)){
             throw new InvalidTokenException();
         }
+        \Auth::setUser($personalToken->tokenable);
 
         $user = $this->authRepo->createSpecialUserAndSetPassword(
             $personalToken->tokenable_id,
             $registrationRequest->type,
-            $registrationRequest->except(['password_confirmation', 'token'])
+            array_merge(
+                ['img' => \Img::uploadToS3($registrationRequest->file('img'))],
+                $registrationRequest->except(['password_confirmation', 'token', 'img']
+            ))
         );
 
         $personalToken->delete();

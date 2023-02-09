@@ -201,6 +201,7 @@ return [
         App\Providers\Agency\FollowerServiceProvider::class,
         App\Providers\Agent\FollowerServiceProvider::class,
         App\Providers\Agent\SettingsServiceProvider::class,
+        App\Providers\Agent\ScheduleServiceProvider::class,
     ],
 
     /*
@@ -216,6 +217,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Img' => \App\Facade\Img::class
     ])->toArray(),
 
 ];

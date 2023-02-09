@@ -54,7 +54,8 @@ class Handler extends ExceptionHandler
                 AuthException::class,
                 InvalidTokenException::class,
                 ForbiddenException::class,
-                BadRequestException::class
+                BadRequestException::class,
+                NotFoundException::class
             ])){
 
             return response()->json([

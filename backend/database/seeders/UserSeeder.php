@@ -39,6 +39,6 @@ class UserSeeder extends Seeder
         Agent::factory()->state(['user_id' => $defaultAgentID, 'email' => 'agent@gmail.com'])->create();
         Agency::factory()->state(['user_id' => $defaultAgencyID, 'email' => 'agency@gmail.com'])->create();
 
-        User::factory()->count(200)->create();
+        User::factory()->count(300)->create();
     }
 }

@@ -17,15 +17,18 @@ return new class extends Migration
         Schema::create('work_schedules', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('bound_user_id');
-            $table->smallInteger('type');
+            $table->unsignedBigInteger('bound_user_id')->nullable();
+            $table->smallInteger('type')->comment('1 - work, 2 - rest, 3 - request');
             $table->timestamp('from');
             $table->timestamp('to');
-            $table->string('description', 500);
+            $table->string('description', 500)->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('bound_user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->unique(['user_id', 'from', 'to', 'bound_user_id']);
+
         });
     }
 

@@ -49,30 +49,26 @@ class SubscriptionRequestSeeder extends Seeder
 
     private function getMainAgencyID(): int
     {
-        return $mainAgency = User::where('email', 'agency@gmail.com')
+        return User::where('email', 'agency@gmail.com')
             ->where('type', '2')
             ->first()->id;
     }
 
     private function getCollectionAgentsIds(int $mainAgentID): \Illuminate\Support\Collection
     {
-        return collect(
-            User::where('type', '1')
+        return User::where('type', '1')
                 ->where('id', '<>', $mainAgentID)
                 ->limit(40)
                 ->get('id as user_receiver_id')
-                ->toArray()
-        );
+                ->collect();
     }
 
     private function getCollectionAgenciesIds(int $mainAgencyID): \Illuminate\Support\Collection
     {
-        return collect(
-            User::where('type', '2')
+        return User::where('type', '2')
                 ->where('id', '<>', $mainAgencyID)
                 ->limit(40)
                 ->get('id as user_sender_id')
-                ->toArray()
-        );
+                ->collect();
     }
 }
