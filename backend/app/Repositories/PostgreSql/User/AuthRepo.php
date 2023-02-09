@@ -80,6 +80,6 @@ class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
     public function createNewPassword(int $userID, string $password): bool
     {
         return User::where('id', $userID)
-            ->update(['password' => $password]);
+            ->update(['password' => Hash::make($password)]);
     }
 }

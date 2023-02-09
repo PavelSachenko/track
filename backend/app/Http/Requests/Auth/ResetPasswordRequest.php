@@ -2,13 +2,14 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Http\Requests\BaseRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property string $token
  * @property string $password
  */
-class ResetPasswordRequest extends FormRequest
+class ResetPasswordRequest extends BaseRequest
 {
     public function rules(): array
     {

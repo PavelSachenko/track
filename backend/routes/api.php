@@ -38,9 +38,9 @@ Route::prefix('/auth')->group(function (){
     });
 
     Route::prefix('/reset-password')->group(function (){
-        Route::post('email-verification', [ResetPasswordController::class, 'emailVerification'])->name('reset-password.email');
-        Route::get('token-validation', [ResetPasswordController::class, 'emailVerification']);
-        Route::put('set-new-password', [ResetPasswordController::class, 'emailVerification']);
+        Route::post('send-email-verification', [ResetPasswordController::class, 'emailVerification'])->name('reset-password.email');
+        Route::get('token-validation', [ResetPasswordController::class, 'tokenValidation']);
+        Route::put('set-new-password', [ResetPasswordController::class, 'setNewPassword']);
     });
 });
 

@@ -12,7 +12,9 @@ class AuthServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->instance(ContractAuth::class, new Auth(new AuthRepo()));
+        $this->app->bind(ContractAuth::class, function ($app){
+            return new Auth($app->make(AuthRepo::class));
+        });
     }
 
     public function boot()

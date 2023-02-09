@@ -37,7 +37,7 @@ class Auth implements \App\Services\Contracts\User\Auth
         //send to queues
         dispatch(function () use ($email, $user) {
             Mail::to($email)->send(new EmailVerificationMail(
-                $url = env('app.url') . '/auth/register?registerToken=' . $user->createToken('email_verification')->plainTextToken
+                $url = env('APP_URL') . '/auth/register?registerToken=' . $user->createToken('email_verification')->plainTextToken
             ));
         })->afterResponse();
 
@@ -46,19 +46,15 @@ class Auth implements \App\Services\Contracts\User\Auth
 
     public function registrationConcreteUser(RegistrationRequest $registrationRequest): array
     {
-        $personalToken = PersonalAccessToken::findToken($registrationRequest->token);
-        if (is_null($personalToken)) {
-            throw new InvalidTokenException();
-        }
-        \Auth::setUser($personalToken->tokenable);
+        $personalToken = $this->validatePersonalAccessTokenAndSetUser($registrationRequest->token);
 
         $user = $this->authRepo->createSpecialUserAndSetPassword(
-            $personalToken->tokenable_id,
+            \Auth::user()->id,
             $registrationRequest->type,
             array_merge(
                 ['img' => \Img::uploadToS3($registrationRequest->file('img'))],
-                $registrationRequest->except(['password_confirmation', 'token', 'img']
-                ))
+                $registrationRequest->except(['password_confirmation', 'token', 'img'])
+            )
         );
 
         $personalToken->delete();
@@ -121,7 +117,7 @@ class Auth implements \App\Services\Contracts\User\Auth
         //add to queue and send email
         dispatch(function () use ($email, $user) {
             Mail::to($email)->send(new ResetPasswordMail(
-                $url = env('app.url') . '/auth/recovery/?resetToken=' . $user->createToken('reset_password')->plainTextToken
+                $url = env('APP_URL') . '/auth/recovery/?resetToken=' . $user->createToken('reset_password')->plainTextToken
             ));
         })->afterResponse();
 
@@ -130,17 +126,30 @@ class Auth implements \App\Services\Contracts\User\Auth
 
     public function resetPassword(ResetPasswordRequest $request): array
     {
-        $personalToken = PersonalAccessToken::findToken($request->token);
-        if (is_null($personalToken)) {
-            throw new InvalidTokenException();
-        }
-
-        \Auth::setUser($personalToken->tokenable);
+        $personalToken = $this->validatePersonalAccessTokenAndSetUser($request->token);
+        $this->authRepo->createNewPassword(\Auth::user()->id, $request->password);
+        $personalToken->delete();
 
         return [
             'token' => \Auth::user()->createToken('auth_token')->plainTextToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(time())->toDateTimeString(),
         ];
+    }
+
+    /**
+     * @param $token
+     * @return PersonalAccessToken
+     */
+    private function validatePersonalAccessTokenAndSetUser($token): PersonalAccessToken
+    {
+        $personalToken = PersonalAccessToken::findToken($token);
+        if (is_null($personalToken)) {
+            throw new InvalidTokenException();
+        }
+
+        \Auth::setUser($personalToken->tokenable);
+
+        return $personalToken;
     }
 }
