@@ -25,7 +25,8 @@ class AddWorkRecordRequest extends BaseRequest
             'end' => ['required', 'numeric', 'gte:start', $dateValidate],
             'description' => ['string'],
             'type' => ['required', 'string', 'in:work,rest'],
-            'agencyId' => ['numeric']
+            'agencyId' => ['numeric'],
+            'img' => ['nullable', 'image']
         ];
     }
 

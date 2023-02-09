@@ -3,11 +3,13 @@
 namespace App\Http\Requests\Agency\Subscription;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * @property int $limit
  * @property int $offset
  * @property string $search
+ * @property string $status
  */
 class AllFollowsRequest extends FormRequest
 {
@@ -23,6 +25,7 @@ class AllFollowsRequest extends FormRequest
             'limit' => ['gt:0', 'integer'],
             'offset' => ['gt:-1', 'integer'],
             'search' => ['string', 'max:255'],
+            'status' => ['numeric', Rule::in([1, 2])],
         ];
     }
 

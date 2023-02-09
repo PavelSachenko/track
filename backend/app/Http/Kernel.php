@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\Agency\OnlyAgencyMiddleware;
 use App\Http\Middleware\Agent\OnlyAgentMiddleware;
 use App\Http\Middleware\ApiJsonResponseMiddleware;
+use App\Http\Middleware\CompleteRegistrationMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,6 +71,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         'agency' => OnlyAgencyMiddleware::class,
-        'agent' => OnlyAgentMiddleware::class
+        'agent' => OnlyAgentMiddleware::class,
     ];
 }
