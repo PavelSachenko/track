@@ -1,22 +1,22 @@
-import { 
-  IModal, 
+import {
+  IModal,
   IEvent,
-  IAgent, 
-  IAgency, 
-  IInvite, 
-  INotification, 
+  IAgent,
+  IAgency,
+  IInvite,
+  INotification,
 } from "../../interfaces/interfaces";
 
 export interface IAction {
-  type: string,
-  payload?: any,
-};
+  type: string;
+  payload?: any;
+}
 
 export interface IActiveWindowsState {
   activeModals: IModal[];
   activeModalsEntities: {
     [key: string]: boolean;
-  }
+  };
 }
 
 export interface IUserState {
@@ -32,7 +32,7 @@ export interface IAgenciesState {
 }
 export interface IAgentsState {
   ids: number[];
-  auxiliaryIds: number[],
+  auxiliaryIds: number[];
   entities: { [key: string]: IAgent };
   search: string;
   pending: boolean;
@@ -60,7 +60,7 @@ export interface IAgentScheduleState {
   workTime: null | {
     from: number;
     to: number;
-  },
-  events: IEvent[],
-  pending: boolean,
+  };
+  events: IEvent[];
+  pending: boolean;
 }
