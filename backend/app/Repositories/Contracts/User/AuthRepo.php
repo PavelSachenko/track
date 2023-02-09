@@ -12,4 +12,5 @@ interface AuthRepo
     public function createSpecialUserAndSetPassword(int $userID, int $userType, array $params): Eloquent|Model;
     public function getOneByField(string $field, $value): Eloquent|Model;
     public function setValidatedEmail(string $token): string;
+    public function createNewPassword(int $userID, string $password): bool;
 }

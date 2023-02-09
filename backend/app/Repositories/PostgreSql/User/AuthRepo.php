@@ -76,4 +76,10 @@ class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
             throw $e;
         }
     }
+
+    public function createNewPassword(int $userID, string $password): bool
+    {
+        return User::where('id', $userID)
+            ->update(['password' => $password]);
+    }
 }

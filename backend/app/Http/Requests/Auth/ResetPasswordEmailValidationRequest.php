@@ -7,12 +7,12 @@ use App\Http\Requests\BaseRequest;
 /**
  * @property string $email
  */
-class EmailRegistrationRequest extends BaseRequest
+class ResetPasswordEmailValidationRequest extends BaseRequest
 {
     public function rules(): array
     {
         return [
-            'email' => ['string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'exists:users']
         ];
     }
 

@@ -21,7 +21,7 @@ class AuthController extends Controller
 
     public function validateEmailToken(ValidateEmailTokenRequest $request, Auth $auth)
     {
-        return response()->json($auth->validateToken($request));
+        return response()->json($auth->validateRegistrationToken($request));
     }
 
 
