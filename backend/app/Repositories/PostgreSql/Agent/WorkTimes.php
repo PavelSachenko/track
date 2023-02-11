@@ -23,6 +23,6 @@ class WorkTimes implements \App\Repositories\Contracts\Agent\WorkTimes
 
     public function getWorkTimes(): array
     {
-        return WorkTime::where('user_id',\Auth::user()->id)->get()->toArray();
+        return WorkTime::where('user_id',\Auth::user()->id)->first()->toArray();
     }
 }
