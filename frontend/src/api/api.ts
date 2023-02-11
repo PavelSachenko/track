@@ -113,7 +113,7 @@ const getInvites = (offset?: number) => {
     apiConfig.params.offset = offset;
   }
 
-  return axiosInstance.get("subscription/get-invites", apiConfig);
+  return axiosInstance.get("agency/subscription/requests", apiConfig);
 };
 
 const getInvitesCount = () => {
@@ -125,7 +125,7 @@ const sendInvite = (email: string) => {
 
   Invite.set("email", email);
 
-  return axiosInstance.post("subscription/send-request", Invite);
+  return axiosInstance.post("agency/subscription/send-request", Invite);
 };
 
 const unsubscribeAgent = (email: string) => {
@@ -156,7 +156,7 @@ const getNotifications = (offset?: number) => {
     apiConfig.params.offset = offset;
   }
 
-  return axiosInstance.get("subscription/get-requests", apiConfig);
+  return axiosInstance.get("agent/subscription/requests", apiConfig);
 };
 
 const acceptNotification = (token: string) => {
@@ -164,7 +164,7 @@ const acceptNotification = (token: string) => {
 
   Token.set("token", token);
 
-  return axiosInstance.post("subscription/accept", Token);
+  return axiosInstance.post("agent/subscription/accept", Token);
 };
 
 const declineNotification = (token: string) => {
@@ -172,24 +172,35 @@ const declineNotification = (token: string) => {
 
   Token.set("token", token);
 
-  return axiosInstance.post("subscription/decline", Token);
+  return axiosInstance.post("agent/subscription/decline", Token);
 };
 
 const deleteInvite = (id: number) => {
   return axiosInstance.delete(`subscription/delete-invite/${id}`);
 };
 
-const getWokTime = () => {
-  return axiosInstance.get("schedule/get-work-time ");
+const getWorkTime = () => {
+  return axiosInstance.get("agent/settings/schedule/work-time");
 };
 
 const setWorkTime = (config: { mode: string; times: IDay | IDay[] }) => {
-  const WorkTime = new FormData();
+  // const WorkTime = new FormData();
 
-  WorkTime.set("mode", config.mode);
-  WorkTime.set("times", JSON.stringify(config.times));
+  // WorkTime.set("mode", config.mode);
+  // WorkTime.set("times", JSON.stringify(config.times));
 
-  return axiosInstance.post("schedule/set-work-time", WorkTime);
+  const apiConfig: {
+    mode: string;
+    times: string;
+  } = {
+    mode: config.mode,
+    times: JSON.stringify(config.times),
+  };
+
+  return axiosInstance.patch(
+    "agent/settings/schedule/set-work-time",
+    apiConfig
+  );
 };
 
 const getAgentSchedule = (date: number) => {
@@ -230,11 +241,18 @@ const deleteEvent = (eventId: number) => {
 };
 
 const changeWorkingStatus = (status: 0 | 1) => {
-  const WorkingStatus = new FormData();
+  // const WorkingStatus = new FormData();
 
-  WorkingStatus.set("status", JSON.stringify(status));
+  // WorkingStatus.set("is_available", JSON.stringify(status));
 
-  return axiosInstance.post("/schedule/set-working-status", WorkingStatus);
+  const WorkingStatus = {
+    is_available: JSON.stringify(status),
+  };
+
+  return axiosInstance.patch(
+    "agent/settings/schedule/set-working-status",
+    WorkingStatus
+  );
 };
 
 const API = {
@@ -255,7 +273,7 @@ const API = {
   acceptNotification,
   declineNotification,
   deleteInvite,
-  getWokTime,
+  getWorkTime,
   setWorkTime,
   getAgentSchedule,
   addEvent,
