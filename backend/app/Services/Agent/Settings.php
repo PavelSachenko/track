@@ -20,7 +20,8 @@ class Settings implements \App\Services\Contracts\Agent\Settings
 
     public function setWorkingSchedule(UpdateWorkingScheduleRequest $request): bool
     {
-        return $this->workTimes->updateWorkTime($request->mode, json_decode($request->times));
+        //TODO validation json $request
+        return $this->workTimes->updateWorkTime($request->mode, (array)json_decode($request->times));
 
     }
 

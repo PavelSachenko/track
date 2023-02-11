@@ -7,7 +7,7 @@ use App\Models\WorkTime;
 class WorkTimes implements \App\Repositories\Contracts\Agent\WorkTimes
 {
 
-    public function updateWorkTime(string $mode, array $times): bool
+    public function updateWorkTime(string $mode, array|object $times): bool
     {
         return (bool)\DB::table('work_times')
             ->where('user_id', \Auth::user()->id)
