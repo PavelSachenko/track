@@ -9,7 +9,9 @@ services:
             - "80:80"
             - "443:443"
         volumes:
-            - ./:/var/www
+            - ./public:/var/www/public
+            - ./docker/nginx:/var/www/docker/nginx
+            - ../frontend/build:/var/www/build
             - ./docker/nginx:/etc/nginx/conf.d
         networks:
             - "net-track"
