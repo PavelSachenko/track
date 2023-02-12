@@ -10,7 +10,12 @@ class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
     public function getScheduleForOneDay(string $dateFrom, string $dateTo): array
     {
         $workTime = WorkTime::where('user_id', \Auth::user()->id)->first();
-        $workTime = ($workTime->{$workTime->current_mode . '_times'}[(int)date('N', strtotime(date('l')))-1]);
+        if ($workTime->current_mode == WorkTime::CUSTOM_MODE) {
+            $workTime = $workTime->{$workTime->current_mode . '_times'}[(int)date('N', strtotime(date('l'))) - 1];
+        } else {
+            $workTime = $workTime->{$workTime->current_mode . '_times'};
+        }
+
         $workTimeFrom = strtotime(date('Y-m-d ' . $workTime['from']));
         $workTimeTo = strtotime(date('Y-m-d ' . $workTime['to']));
 
@@ -21,9 +26,16 @@ class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
             ->get()->toArray();
 
         $date = [
-          'from' => $workTimeFrom < strtotime($workSchedule[0]['from']) ? $workTimeFrom * 1000 : strtotime($workSchedule[0]['from']) * 1000,
-          'to' => $workTimeTo > strtotime($workSchedule[0]['to']) ? $workTimeFrom * 1000 : strtotime($workSchedule[0]['to']) * 1000
+            'from' => $workTimeFrom * 1000,
+            'to' => $workTimeTo * 1000
         ];
+
+        if (!empty($workSchedule)) {
+            $date = [
+                'from' => $workTimeFrom < strtotime($workSchedule[0]['from']) ? $workTimeFrom * 1000 : strtotime($workSchedule[0]['from']) * 1000,
+                'to' => $workTimeTo > strtotime($workSchedule[0]['to']) ? $workTimeTo * 1000 : strtotime($workSchedule[0]['to']) * 1000
+            ];
+        }
 
         // TODO schedule request
         return [
@@ -35,8 +47,8 @@ class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
 
     public function addWorkRecord(string $dateFrom, string $dateTo, int $type, ?string $description, ?int $agencyID): array
     {
-        $test =  WorkSchedule::create([
-           'user_id' => \Auth::user()->id,
+        $workRecord = WorkSchedule::create([
+            'user_id' => \Auth::user()->id,
             'from' => $dateFrom,
             'to' => $dateTo,
             'type' => $type,
@@ -44,11 +56,31 @@ class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
             'bound_user_id' => $agencyID,
         ]);
 
-        return $test->with('agency')->where('id', $test->id)->first()->toArray();
+        return $workRecord->with('agency')->where('id', $workRecord->id)->first()->toArray();
     }
 
-    public function deleteWorkRecord(int $id)
+    public function deleteWorkRecord(int $id): bool
     {
-        // TODO: Implement deleteWorkRecord() method.
+        return WorkSchedule::where('id', $id)->where('user_id', \Auth::user()->id)->delete();
     }
+
+    public function updateWorkRecord(int $id, string $dateFrom, string $dateTo, int $type, ?string $description, ?int $agencyID): array
+    {
+        $workRecord = WorkSchedule::where('id', $id)
+            ->where('user_id', \Auth::user()->id)
+            ->first();
+        if (empty($workRecord)) {
+            return [];
+        }
+
+        $workRecord->update([
+            'from' => $dateFrom,
+            'to' => $dateTo,
+            'type' => $type,
+            'description' => $description,
+            'bound_user_id' => $agencyID,
+        ]);
+        return $workRecord->with('agency')->where('id', $workRecord->id)->first()->toArray();
+    }
+
 }

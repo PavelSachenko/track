@@ -2,7 +2,8 @@
 
 namespace App\Services\Agent;
 
-use App\Http\Requests\Agent\Schedule\AddWorkRecordRequest;
+use App\Http\Requests\Agent\Schedule\SetWorkRecordRequest;
+use App\Http\Requests\Agent\Schedule\UpdateWorkRecordRequest;
 use App\Http\Requests\Agent\Schedule\DeleteWorkRecordRequest;
 use App\Http\Requests\Agent\Schedule\ScheduleRequest;
 use App\Models\WorkSchedule;
@@ -25,7 +26,7 @@ class Schedule implements \App\Services\Contracts\Agent\Schedule
         return $this->scheduleRepo->getScheduleForOneDay($from, $to);
     }
 
-    public function addWorkRecord(AddWorkRecordRequest $request): array
+    public function addWorkRecord(SetWorkRecordRequest $request): array
     {
         return $this->scheduleRepo->addWorkRecord(
             date("Y-m-d H:i:s", $request->start / 1000),
@@ -36,8 +37,21 @@ class Schedule implements \App\Services\Contracts\Agent\Schedule
         );
     }
 
-    public function deleteWorkRecord(DeleteWorkRecordRequest $request): bool
+    public function updateWorkRecord(int $id, SetWorkRecordRequest $request): array
     {
-        return true;
+
+        return $this->scheduleRepo->updateWorkRecord(
+            $id,
+            date("Y-m-d H:i:s", $request->start / 1000),
+            date("Y-m-d H:i:s", $request->end / 1000),
+            WorkSchedule::TYPE[$request->type],
+            $request?->description,
+            $request?->agencyId,
+        );
+    }
+
+    public function deleteWorkRecord(int $id): bool
+    {
+        return $this->scheduleRepo->deleteWorkRecord($id);
     }
 }

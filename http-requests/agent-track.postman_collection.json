@@ -9,6 +9,98 @@
 			"name": "auth",
 			"item": [
 				{
+					"name": "reset-password",
+					"item": [
+						{
+							"name": "send-to-email",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "{{email}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/auth/reset-password/send-email-verification",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"auth",
+										"reset-password",
+										"send-email-verification"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "validation-token",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/auth/reset-password/token-validation?token={{emailToken}}",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"auth",
+										"reset-password",
+										"token-validation"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{emailToken}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "set-new-password",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/auth/reset-password/set-new-password?token={{emailToken}}&password=qwerty&password_confirmation=qwerty",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"auth",
+										"reset-password",
+										"set-new-password"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{emailToken}}"
+										},
+										{
+											"key": "password",
+											"value": "qwerty"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "qwerty"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "email-registration",
 					"request": {
 						"method": "POST",
@@ -793,6 +885,194 @@
 											"key": "times",
 											"value": "[{\"day\":1,\"from\":\"07:00\",\"to\":\"16:00\"},{\"day\":2,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":3,\"from\":\"08:00\",\"to\":\"19:00\"},{\"day\":4,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":5,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":6,\"from\":\"08:00\",\"to\":\"16:00\"},{\"day\":7,\"from\":\"08:00\",\"to\":\"16:00\"}]"
 										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "schedule",
+					"item": [
+						{
+							"name": "my-schedule",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agent/schedule?date=1675814400000",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"schedule"
+									],
+									"query": [
+										{
+											"key": "date",
+											"value": "1675814400000"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add-work-record",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "start",
+											"value": "1676206800000",
+											"type": "text"
+										},
+										{
+											"key": "end",
+											"value": "1676210400000",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "work",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "hello worl",
+											"type": "text"
+										},
+										{
+											"key": "agencyId",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/agent/schedule/add-work-record",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"schedule",
+										"add-work-record"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "drop-work-record",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agent/schedule/drop-work-record/1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"schedule",
+										"drop-work-record",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update-work-record/90",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "start",
+											"value": "1676203200000",
+											"type": "text"
+										},
+										{
+											"key": "end",
+											"value": "1676206800000",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "work",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "hello worl",
+											"type": "text"
+										},
+										{
+											"key": "agencyId",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/agent/schedule/update-work-record/90",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agent",
+										"schedule",
+										"update-work-record",
+										"90"
 									]
 								}
 							},

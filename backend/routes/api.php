@@ -78,7 +78,8 @@ Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], 
     Route::prefix('/schedule')->group(function (){
         Route::get('/', [ScheduleController::class, 'index']);
         Route::post('/add-work-record', [ScheduleController::class, 'add']);
-        Route::delete('/drop-work-record', [ScheduleController::class, 'drop']);
+        Route::delete('/drop-work-record/{id}', [ScheduleController::class, 'drop'])->where(['id' => '[0-9]+']);
+        Route::put('/update-work-record/{id}', [ScheduleController::class, 'update'])->where(['id' => '[0-9]+']);
     });
 
 

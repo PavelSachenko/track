@@ -14,11 +14,11 @@ use Illuminate\Validation\Rule;
  * @property string $type
  * @property ?string $description
  */
-class AddWorkRecordRequest extends BaseRequest
+class SetWorkRecordRequest extends BaseRequest
 {
     public function rules(): array
     {
-        $dateValidate = new DateInWorkScheduleRule($this->request->get('start'), $this->request->get('end'));
+        $dateValidate = new DateInWorkScheduleRule($this->request->get('start', null), $this->request->get('end', null), $this?->id);
 
         return [
             'start' => ['required', 'numeric', 'min:' . strtotime(date('Y-m-d 00:00:00')) * 1000, $dateValidate],
@@ -26,7 +26,6 @@ class AddWorkRecordRequest extends BaseRequest
             'description' => ['string'],
             'type' => ['required', 'string', 'in:work,rest'],
             'agencyId' => ['numeric'],
-            'img' => ['nullable', 'image']
         ];
     }
 

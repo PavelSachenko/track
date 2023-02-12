@@ -94,11 +94,15 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
     {
         $query = DB::table('subscription_requests', 'sr')
             ->leftJoin('agencies as a', 'a.user_id', '=', 'sr.user_sender_id')
+            ->leftJoin('users as u', 'u.id', '=', 'sr.user_sender_id')
             ->select([
                 'sr.id',
                 'sr.created_at',
                 'a.email',
                 'a.name',
+                'a.img',
+                'sr.message',
+                'u.type'
             ])
             ->where('sr.user_receiver_id', \Auth::user()->id);
 

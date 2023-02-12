@@ -8,6 +8,6 @@ interface ScheduleRepo
 {
     public function getScheduleForOneDay(string $dateFrom, string $dateTo): array;
     public function addWorkRecord(string $dateFrom, string $dateTo, int $type, ?string $description, ?int $agencyID);
-    public function deleteWorkRecord(int $id);
-//    public function updateWorkRecord();
+    public function deleteWorkRecord(int $id): bool;
+    public function updateWorkRecord(int $id, string $dateFrom, string $dateTo, int $type, ?string $description, ?int $agencyID): array;
 }
