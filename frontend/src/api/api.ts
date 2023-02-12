@@ -159,20 +159,18 @@ const getNotifications = (offset?: number) => {
   return axiosInstance.get("agent/subscription/requests", apiConfig);
 };
 
-const acceptNotification = (token: string) => {
-  const Token = new FormData();
+const acceptNotification = (id: number) => {
+  const Id = new FormData();
 
-  Token.set("token", token);
+  Id.set("id", JSON.stringify(id));
 
-  return axiosInstance.post("agent/subscription/accept", Token);
+  return axiosInstance.post("agent/subscription/accept", Id);
 };
 
-const declineNotification = (token: string) => {
-  const Token = new FormData();
+const declineNotification = (id: number) => {
+  const Id = { id };
 
-  Token.set("token", token);
-
-  return axiosInstance.post("agent/subscription/decline", Token);
+  return axiosInstance.patch("agent/subscription/decline", Id);
 };
 
 const deleteInvite = (id: number) => {
@@ -184,11 +182,6 @@ const getWorkTime = () => {
 };
 
 const setWorkTime = (config: { mode: string; times: IDay | IDay[] }) => {
-  // const WorkTime = new FormData();
-
-  // WorkTime.set("mode", config.mode);
-  // WorkTime.set("times", JSON.stringify(config.times));
-
   const apiConfig: {
     mode: string;
     times: string;

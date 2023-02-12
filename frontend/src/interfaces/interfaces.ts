@@ -64,12 +64,11 @@ export interface INotificationItem {
 export interface INotification {
   id: number;
   email: string;
-  token: string;
-  status: number;
-  sender: IAgency | IAgency;
   created_at: string;
-  updated_at: string;
-  observer_id: string;
+  name: string;
+  message: null | string;
+  type: number;
+  img: null | string;
 }
 
 export interface IInvite {
