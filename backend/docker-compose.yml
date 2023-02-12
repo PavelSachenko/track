@@ -13,10 +13,18 @@ services:
             - ./docker/nginx:/var/www/docker/nginx
             - ../frontend/build:/var/www/build
             - ./docker/nginx:/etc/nginx/conf.d
+            - /etc/letsencrypt:/etc/letsencrypt:ro
         networks:
             - "net-track"
         depends_on:
             - "track-php"
+
+    cerbot:
+        image: certbot/certbot
+        container_name: cerbot
+        command: certonly --standalone --email pavel31.pavel31@gmail.com -d 46.173.134.109
+        volumes:
+            - /etc/letsencrypt:/etc/letsencrypt
 
     track-php:
         build:

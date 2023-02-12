@@ -22,6 +22,34 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
+| api/bot ...
+|--------------------------------------------------------------------------
+*/
+Route::prefix('/bot')->group(function (){
+    Route::post('/send-message', function (){
+        \Illuminate\Support\Facades\Http::post("https://api.telegram.org/bot5631362332:AAG0_57neY5VbcMl6MWY67_jm9ouRlLouFc/sendMessage", [
+            'chat_id' => 451244946,
+            'text' => 'Hello',
+        ]);
+    });
+
+    Route::post('/check-webhook', function (){
+        $http = \Illuminate\Support\Facades\Http::get("https://api.telegram.org/bot5631362332:AAG0_57neY5VbcMl6MWY67_jm9ouRlLouFc/getWebhookInfo");
+        dd(json_decode($http->body()));
+    });
+
+    Route::post('/set-webhook', function (){
+        $http = \Illuminate\Support\Facades\Http::get("https://api.telegram.org/bot5631362332:AAG0_57neY5VbcMl6MWY67_jm9ouRlLouFc/setWebhook?url=https://46.173.134.109/api/bot/webhook");
+        dd(json_decode($http->body()));
+    });
+
+    Route::post('/webhook', function (){
+        return response()->json(true, 200);
+    });
+});
+
+/*
+|--------------------------------------------------------------------------
 | api/auth ...
 | api/auth/email ...
 | api/auth/reset-password ...
