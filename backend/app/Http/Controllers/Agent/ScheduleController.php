@@ -36,7 +36,6 @@ class ScheduleController extends Controller
 
     public function update(int $id, SetWorkRecordRequest $request)
     {
-
         return response()->json($this->schedule->updateWorkRecord($id,$request));
     }
 }
