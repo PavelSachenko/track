@@ -81,9 +81,10 @@ export interface IEvent {
   id: number;
   type: number;
   agency: null | IAgency;
-  agent_id: number;
-  work_end: string;
-  work_start: string;
+  bound_user_id: number;
+  user_id: number;
+  to: string;
+  from: string;
   created_at: string;
   updated_at: string;
   description: null | string;

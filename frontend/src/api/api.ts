@@ -197,7 +197,7 @@ const setWorkTime = (config: { mode: string; times: IDay | IDay[] }) => {
 };
 
 const getAgentSchedule = (date: number) => {
-  return axiosInstance.get("schedule/get-agent-schedule", { params: { date } });
+  return axiosInstance.get("agent/schedule", { params: { date } });
 };
 
 const addEvent = (
@@ -216,21 +216,42 @@ const addEvent = (
   WorkRecord.set("end", JSON.stringify(config.end));
   WorkRecord.set("type", config.type);
   WorkRecord.set("start", JSON.stringify(config.start));
-  WorkRecord.set("description", config.description);
+  config.description && WorkRecord.set("description", config.description);
   config.agencyId &&
     WorkRecord.set("agencyId", JSON.stringify(config.agencyId));
 
-  if (action === "update") {
-    WorkRecord.set("id", JSON.stringify(config.id));
+  let configApi: {
+    id: number | null;
+    start: number;
+    end: number;
+    agencyId?: number;
+    type: string;
+    description?: string;
+  } = {
+    id: config.id,
+    start: config.start,
+    end: config.end,
+    type: config.type,
+  };
+
+  if (config.description) {
+    configApi.description = config.description;
+  }
+
+  if (config.agencyId != 0) {
+    configApi.agencyId = config.agencyId;
   }
 
   return action === "update"
-    ? axiosInstance.post("/schedule/change-work-record", WorkRecord)
-    : axiosInstance.post("/schedule/add-work-record", WorkRecord);
+    ? axiosInstance.put(
+        `agent/schedule/update-work-record/${config.id}`,
+        configApi
+      )
+    : axiosInstance.post("agent/schedule/add-work-record", WorkRecord);
 };
 
 const deleteEvent = (eventId: number) => {
-  return axiosInstance.delete(`/schedule/delete-work-record/${eventId}`);
+  return axiosInstance.delete(`agent/schedule/drop-work-record/${eventId}`);
 };
 
 const changeWorkingStatus = (status: 0 | 1) => {
