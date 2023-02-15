@@ -69,7 +69,7 @@ const Schedule = (props: IScheduleProps) => {
       }
 
       if (event) {
-        const cellsCount = (+new Date(event.from) - +new Date(event.to)) / step;
+        const cellsCount = (+new Date(event.to) - +new Date(event.from)) / step;
 
         count = cellsCount - 1;
         scheduleData.push({
