@@ -1,4 +1,4 @@
-export type ModeType = "everyday" | "weekdays" | "custom";
+export type ModeType = "every_day" | "weekdays" | "custom";
 
 export interface IDay {
   day: string;
@@ -25,7 +25,7 @@ export const DAYS_OF_WEEK = [
 ];
 
 export const modeOptions = {
-  everyday: { value: "every_day", label: "Every day" },
+  every_day: { value: "every_day", label: "Every day" },
   weekdays: { value: "weekdays", label: "Weekdays" },
   custom: { value: "custom", label: "Custom" },
 };
