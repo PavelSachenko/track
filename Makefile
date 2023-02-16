@@ -18,3 +18,6 @@ stop:
 
 migrate:
 	cd backend && sudo docker-compose exec track-php bash -c  "cd /var/www && php artisan migrate --seed" && cd ..
+	
+clear:
+	cd backend && sudo docker-compose exec track-php bash -c  "cd /var/www && php artisan cache:clear && php artisan config:clear && php artisan route:clear" && cd ..
