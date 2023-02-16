@@ -18,6 +18,20 @@ services:
         depends_on:
             - "track-php"
 
+    track-centrifugo:
+        container_name: track-centrifugo
+        image: centrifugo/centrifugo:v4
+        volumes:
+            - ./docker/centrifugo/config.json:/centrifugo/config.json
+        command: centrifugo -c config.json
+        ports:
+            - 8000:8000
+        ulimits:
+            nofile:
+                soft: 65535
+                hard: 65535
+
+
     track-php:
         build:
             context: docker/php
