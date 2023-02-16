@@ -54,6 +54,7 @@ Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function (){
     Route::get('', [UserController::class, 'index']);
     Route::patch('update', [SettingsController::class, 'update']);
     Route::post('update-avatar', [SettingsController::class, 'updateAvatar']);
+    Route::put('update-password', [SettingsController::class, 'updatePassword']);
 });
 
 /*

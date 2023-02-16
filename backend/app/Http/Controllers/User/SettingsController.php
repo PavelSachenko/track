@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\SettingsRequest;
 use App\Http\Requests\User\UpdateAvatarRequest;
+use App\Http\Requests\User\UpdatePasswordRequest;
 use App\Services\Contracts\User\Settings;
 
 class SettingsController extends Controller
@@ -23,5 +24,10 @@ class SettingsController extends Controller
     public function updateAvatar(UpdateAvatarRequest $request)
     {
         return response()->json($this->settings->updateAvatar($request));
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        return response()->json($this->settings->updatePassword($request));
     }
 }
