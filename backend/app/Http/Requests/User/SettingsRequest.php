@@ -15,10 +15,10 @@ class SettingsRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:255'],
-            'description' => ['string', 'max:500'],
-            'phone' => ['string', 'regex:/^[?+]?\d{7,14}$/', 'min:7', 'max:14'],
-            'url' => ['url'],
+            'name' => ['string', 'max:255', 'nullable'],
+            'description' => ['string', 'max:500', 'nullable'],
+            'phone' => ['string', 'regex:/^[?+]?\d{7,14}$/', 'min:7', 'max:14', 'nullable'],
+            'url' => ['url', 'nullable'],
         ];
     }
 
