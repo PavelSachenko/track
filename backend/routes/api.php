@@ -6,6 +6,7 @@ use App\Http\Controllers\Agent\SubscriptionController as AgentSubscriptionContro
 use App\Http\Controllers\Agency\SubscriptionController as AgencySubscriptionController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ResetPasswordController;
+use App\Http\Controllers\User\SettingsController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,8 @@ Route::prefix('/auth')->group(function (){
 */
 Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function (){
     Route::get('', [UserController::class, 'index']);
+    Route::patch('update', [SettingsController::class, 'update']);
+    Route::post('update-avatar', [SettingsController::class, 'updateAvatar']);
 });
 
 /*

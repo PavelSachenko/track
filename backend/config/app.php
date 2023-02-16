@@ -202,6 +202,7 @@ return [
         App\Providers\Agent\FollowerServiceProvider::class,
         App\Providers\Agent\SettingsServiceProvider::class,
         App\Providers\Agent\ScheduleServiceProvider::class,
+        App\Providers\User\SettingsServiceProvider::class,
     ],
 
     /*
