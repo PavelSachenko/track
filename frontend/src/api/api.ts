@@ -13,20 +13,42 @@ const getUser = () => {
 const updateUser = (user: {
   img?: any;
   url?: string;
-  name?: string;
+  name: string;
   type?: number;
   phone?: string;
   description?: string;
 }) => {
-  const User = new FormData();
+  // const User = new FormData();
 
-  User.set("name", user.name || "");
-  User.set("phone", user.phone || "");
-  User.set("description", user.description || "");
-  typeof user.img !== "string" && User.set("img", user.img || "");
-  user.type === 2 && User.set("url", user.url || "");
+  // User.set("name", user.name || "");
+  // User.set("phone", user.phone || "");
+  // User.set("description", user.description || "");
+  // typeof user.img !== "string" && User.set("img", user.img || "");
+  // user.type === 2 && User.set("url", user.url || "");
 
-  return axiosInstance.post("user/update", User);
+  const UserInfo: {
+    name: string;
+    description: string;
+    phone: string;
+    url: string;
+  } = {
+    name: user.name ? user.name : "",
+    description: user.description ? user.description : "",
+    phone: user.phone ? user.phone : "",
+    url: user.url ? user.url : "",
+  };
+
+  console.log(user);
+
+  return axiosInstance.patch("user/update", UserInfo);
+};
+
+const updateUserAvatar = (img: any) => {
+  const UserAvatar = new FormData();
+
+  typeof img !== "string" && UserAvatar.set("img", img || "");
+
+  return axiosInstance.post("user/update-avatar", UserAvatar);
 };
 
 const deleteUser = () => {
@@ -294,6 +316,7 @@ const API = {
   deleteEvent,
   changeWorkingStatus,
   getNotificationsCountAgency,
+  updateUserAvatar,
 };
 
 export default API;
