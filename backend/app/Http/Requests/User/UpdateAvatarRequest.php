@@ -10,7 +10,8 @@ use App\Http\Requests\BaseRequest;
 class UpdateAvatarRequest extends BaseRequest
 {
     public function rules(): array
-    {
+    {   
+        dd($request);
         return [
             'img' => ['required', 'image'],
         ];
