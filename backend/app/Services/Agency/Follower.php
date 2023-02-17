@@ -52,6 +52,6 @@ class Follower implements \App\Services\Contracts\Agency\Follower
 
     public function deleteInvite(int $inviteID): bool
     {
-        return $this->followerRepo->deleteFollow($inviteID);
+        return $this->followerRepo->deleteInviteFollow($inviteID);
     }
 }

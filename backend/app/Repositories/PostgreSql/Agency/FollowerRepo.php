@@ -132,7 +132,7 @@ class FollowerRepo implements SubscriptionRepo
     public function deleteFollow(int $followID): bool
     {
         return DB::table('subscriptions')
-            ->where('id', $followID)
+            ->where('user_id', $followID)
             ->where('user_subscriber_id', \Auth::user()->id)
             ->delete();
     }

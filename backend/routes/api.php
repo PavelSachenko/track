@@ -112,7 +112,7 @@ Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']]
         Route::get('follows', [AgencySubscriptionController::class, 'follows']);
         Route::get('requests', [AgencySubscriptionController::class, 'requests']);
 
-        Route::delete('follow/{id}', [AgencySubscriptionController::class, 'followDelete'])->where(['id' => '[0-9]+']);
+        Route::delete('unsubscribe/{id}', [AgencySubscriptionController::class, 'unsubscribe'])->where(['id' => '[0-9]+']);
         Route::delete('invite/{id}', [AgencySubscriptionController::class, 'inviteDelete'])->where(['id' => '[0-9]+']);
     });
 
