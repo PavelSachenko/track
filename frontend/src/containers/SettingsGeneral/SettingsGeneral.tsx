@@ -87,15 +87,8 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
   const onCrop = (file: Blob) => {
     setIsAvaCropPage(false);
     setCroppedPhoto({ file: file, url: URL.createObjectURL(file) });
-  };
 
-  const updateUser = (values: IUpdateUserForm) => {
-    setPending(true);
-
-    API.updateUser({
-      ...values,
-      img: croppedPhoto.file || userPhotoUrl,
-    })
+    API.updateUserAvatar(croppedPhoto.file || userPhotoUrl)
       .then(() => {
         setPending(false);
       })
@@ -104,8 +97,16 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
         setServerErrors(err.response.data.errors);
         console.error(err);
       });
+  };
 
-    API.updateUserAvatar(croppedPhoto.file || userPhotoUrl)
+  const updateUser = (values: IUpdateUserForm) => {
+    setPending(true);
+    setServerErrors({});
+
+    API.updateUser({
+      ...values,
+      img: croppedPhoto.file || userPhotoUrl,
+    })
       .then(() => {
         setPending(false);
       })

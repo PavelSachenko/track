@@ -56,12 +56,17 @@ const deleteUser = () => {
 };
 
 const changePassword = (values: IResetPasswordFormValues) => {
-  const Password = new FormData();
+  const Password: {
+    old_password: string;
+    new_password: string;
+    new_password_confirmation: string;
+  } = {
+    old_password: values.oldPassword,
+    new_password: values.newPassword,
+    new_password_confirmation: values.passwordConfirmation,
+  };
 
-  Password.set("oldPassword", values.oldPassword);
-  Password.set("newPassword", values.newPassword);
-
-  return axiosInstance.post("user/change-password", Password);
+  return axiosInstance.put("user/update-password", Password);
 };
 
 const getAgencies = (limit: number = 10, offset?: number, search?: string) => {
