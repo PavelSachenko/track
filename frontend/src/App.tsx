@@ -47,8 +47,10 @@ const PrivateRoutes = (props: IPrivateRoutes) => {
     return <GlobalPreloader />
   }
 
+  // @ts-ignore
   return (
     <Loadable.MainPage>
+      {/*// @ts-ignore*/}
       <Socket />
 
       <Routes>

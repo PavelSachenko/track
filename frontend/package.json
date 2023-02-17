@@ -24,6 +24,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/react-select": "^4.0.13",
     "axios": "^0.21.1",
+    "centrifuge": "^2.8.5",
     "final-form": "^4.20.1",
     "history": "^5.0.0",
     "react": "^17.0.1",

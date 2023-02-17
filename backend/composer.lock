@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0068aaa5bf44ee0403226d7d6835340",
+    "content-hash": "0562ad07858a608048f021db34fff4d0",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2461,6 +2461,72 @@
                 }
             ],
             "time": "2022-12-20T19:00:15+00:00"
+        },
+        {
+            "name": "opekunov/laravel-centrifugo-broadcaster",
+            "version": "v1.2.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Opekunov/laravel-centrifugo-broadcaster.git",
+                "reference": "820b402098c227466fb67c4f167981ed17da5417"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Opekunov/laravel-centrifugo-broadcaster/zipball/820b402098c227466fb67c4f167981ed17da5417",
+                "reference": "820b402098c227466fb67c4f167981ed17da5417",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0|^7.0",
+                "laravel/framework": "^8.75|^9.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^v7.4.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Opekunov\\Centrifugo\\CentrifugoServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Opekunov\\Centrifugo\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aleksandr Opekunov",
+                    "email": "iam@opekunov.com",
+                    "role": "Creator"
+                }
+            ],
+            "description": "Centrifugo broadcaster for laravel 5.6-9.x and Centrifugo >= 2.8.1",
+            "homepage": "https://github.com/opekunov/laravel-centrifugo-broadcaster",
+            "keywords": [
+                "Socket",
+                "broadcaster",
+                "centrifugo",
+                "laravel",
+                "laravel-broadcaster",
+                "real time",
+                "web socket",
+                "web-socket"
+            ],
+            "support": {
+                "email": "iam@opekunov.com",
+                "issues": "https://github.com/opekunov/laravel-centrifugo-broadcaster/issues",
+                "source": "https://github.com/opekunov/laravel-centrifugo-broadcaster"
+            },
+            "time": "2022-04-20T10:01:28+00:00"
         },
         {
             "name": "phpoption/phpoption",

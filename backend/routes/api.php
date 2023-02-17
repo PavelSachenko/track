@@ -21,6 +21,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/test', function (\Opekunov\Centrifugo\Centrifugo $centrifugo){
+    auth()->loginUsingId(1);
+    return $centrifugo->generateConnectionToken(1, 0, ['name' => 'pasha']);
+});
+
+Route::post('/test/send-event', function (\Opekunov\Centrifugo\Centrifugo $centrifugo){
+    auth()->loginUsingId(1);
+    return $centrifugo->broadcast(['test'], [
+        "text" => "HELLO FROM BACKEND",
+        "createdAt" => time(),
+        "roomId" => 1,
+        "senderId" => Auth::user()->id,
+        "senderName" => 'pasha',
+    ]);
+});
+
 /*
 |--------------------------------------------------------------------------
 | api/auth ...
