@@ -4,6 +4,7 @@ namespace App\Repositories\PostgreSql\Agency;
 
 
 use App\Exceptions\BadRequestException;
+use App\Models\Subscription;
 use App\Models\SubscriptionRequest;
 use App\Repositories\Contracts\Agency\SubscriptionRepo;
 use App\Repositories\Contracts\User\AuthRepo;
@@ -126,5 +127,21 @@ class FollowerRepo implements SubscriptionRepo
             ->offset($offset)
             ->orderByDesc('sr.created_at')
             ->get()->toArray();
+    }
+
+    public function deleteFollow(int $followID): bool
+    {
+        return DB::table('subscriptions')
+            ->where('id', $followID)
+            ->where('user_subscriber_id', \Auth::user()->id)
+            ->delete();
+    }
+
+    public function deleteInviteFollow(int $inviteID): bool
+    {
+        return DB::table('subscription_requests')
+            ->where('id', $inviteID)
+            ->where('user_sender_id', \Auth::user()->id)
+            ->delete();
     }
 }

@@ -41,4 +41,14 @@ class SubscriptionController extends Controller
     {
         return response()->json($this->follower->getAllRequests($request));
     }
+
+    public function followDelete(int $id)
+    {
+        return response()->json($this->follower->deleteFollow($id));
+    }
+
+    public function inviteDelete(int $id)
+    {
+        return response()->json($this->follower->deleteInvite($id));
+    }
 }

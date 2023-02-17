@@ -45,4 +45,13 @@ class Follower implements \App\Services\Contracts\Agency\Follower
         return $this->followerRepo->getAllRequests($request->limit, $request->offset, $request->search? : '');
     }
 
+    public function deleteFollow(int $followID): bool
+    {
+        return $this->followerRepo->deleteFollow($followID);
+    }
+
+    public function deleteInvite(int $inviteID): bool
+    {
+        return $this->followerRepo->deleteFollow($inviteID);
+    }
 }

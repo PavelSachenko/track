@@ -29,7 +29,7 @@ class ScheduleController extends Controller
         return response()->json($this->schedule->addWorkRecord($request));
     }
 
-    public function drop($id)
+    public function drop(int $id)
     {
         return response()->json($this->schedule->deleteWorkRecord($id));
     }
