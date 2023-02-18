@@ -8,6 +8,7 @@ use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ResetPasswordController;
 use App\Http\Controllers\User\SettingsController;
 use App\Http\Controllers\User\UserController;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,19 +23,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/test', function (\Opekunov\Centrifugo\Centrifugo $centrifugo){
+
+    dd($centrifugo->presence('schedule:*'));
     auth()->loginUsingId(1);
+    dump($centrifugo->generatePrivateChannelToken(1, 'schedule', 0, ['name' => 'pasha']));
     return $centrifugo->generateConnectionToken(1, 0, ['name' => 'pasha']);
 });
 
 Route::post('/test/send-event', function (\Opekunov\Centrifugo\Centrifugo $centrifugo){
     auth()->loginUsingId(1);
-    return $centrifugo->broadcast(['test'], [
-        "text" => "HELLO FROM BACKEND",
-        "createdAt" => time(),
-        "roomId" => 1,
-        "senderId" => Auth::user()->id,
-        "senderName" => 'pasha',
-    ]);
+//    $centrifugo->publish("user:1", ["test" => "hello"]);
+    broadcast(new \App\Events\SentTestEvent("test"));
+//    $centrifugo->publish('test', ['heello' => 'asd']);
+//
+//    return $centrifugo->broadcast(['test'], [
+//        "text" => "HELLO FROM BACKEND",
+//        "createdAt" => time(),
+//        "roomId" => 1,
+//        "senderId" => Auth::user()->id,
+//        "senderName" => 'pasha',
+//    ]);
 });
 
 /*

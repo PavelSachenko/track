@@ -5,5 +5,16 @@
     "admin_secret": "secret",
     "admin": true,
     "allowed_origins": ["*"],
-    "allow_subscribe_for_client": true
+    "allow_subscribe_for_client": true,
+    "namespaces": [
+        {
+            "name": "schedule",
+            "publish": true,
+            "subscribe_to_publish": true,
+            "anonymous": false,
+            "presence": false,
+            "join_leave": false,
+            "history_recover": false
+        }
+    ]
 }
