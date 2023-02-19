@@ -82,14 +82,23 @@ class Socket extends Component<ISocketProps> {
             }
         })
         pusher.signin()
+        pusher.connect()
 
         // @ts-ignore
         pusher.user.bind('test-event', (data: any) => {
             console.log(data)
         })
 
+
         // @ts-ignore
-        pusher.subscribe("private-channel").bind('test-event', function (data: any) {
+        pusher.bind("add_work_event", (data: any) => {
+            console.log("----------------------RECEIVED------------------------------------");
+            console.log(data);
+            console.log("----------------------RECEIVED------------------------------------");
+        })
+
+        // @ts-ignore
+        pusher.subscribe("private-channel." + 1).bind('new-message', function (data: any) {
             console.log(data)
         })
 
@@ -98,7 +107,6 @@ class Socket extends Component<ISocketProps> {
         channel.bind('test-event', (data: any) => {
             console.log(data)
         });
-        pusher.connect()
 
 
         //--------------------------------------------------------------------------------------------------------

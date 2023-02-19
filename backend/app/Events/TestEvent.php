@@ -24,4 +24,10 @@ class TestEvent implements ShouldBroadcast
     {
         return new PrivateChannel('channel.' . 1);
     }
+
+
+    public function broadcastAs()
+    {
+        return 'new-message';
+    }
 }

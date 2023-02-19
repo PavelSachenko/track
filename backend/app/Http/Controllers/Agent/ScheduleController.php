@@ -10,6 +10,7 @@ use App\Http\Requests\Agent\Schedule\ScheduleRequest;
 use App\Models\WorkSchedule;
 use App\Rules\DateInWorkScheduleRule;
 use App\Services\Contracts\Agent\Schedule;
+use App\Services\Contracts\Socket\Socket;
 
 class ScheduleController extends Controller
 {

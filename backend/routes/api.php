@@ -30,6 +30,11 @@ Route::post('test/trigger', function (\App\Services\Contracts\Socket\Socket $soc
     $socket->trigger(['private-channel'], 'test-event', ['private_mazafaka' => 'hello']);
 });
 
+Route::get('test/channel', function (\App\Services\Contracts\Socket\Socket $socket){
+    broadcast(new TestEvent("Hello mafaka"));
+    dd($socket->getPresenceUsers('presence-channel'));
+});
+
 
 /*
 |--------------------------------------------------------------------------
