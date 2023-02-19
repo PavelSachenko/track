@@ -18,6 +18,26 @@ services:
         depends_on:
             - "track-php"
 
+    soketi:
+        container_name: 'soketi_server'
+        restart: unless-stopped
+        image: 'quay.io/soketi/soketi:latest-16-alpine'
+        ports:
+            - '${SOKETI_PORT:-6001}:6001'
+            - '${SOKETI_METRICS_SERVER_PORT:-9601}:9601'
+        environment:
+            SOKETI_DEBUG: '1'
+            SOKETI_METRICS_SERVER_PORT: '9601'
+            SOKETI_DEFAULT_APP_ID: 'app-id'
+            SOKETI_DEFAULT_APP_KEY: 'app-key'
+            SOKETI_DEFAULT_APP_SECRET: 'app-secret'
+            SOKETI_DEFAULT_APP_USER_AUTHENTICATION: 'true'
+            SOKETI_DEFAULT_APP_ENABLE_CLIENT_MESSAGES: 'true'
+        networks:
+            - "net-track"
+
+
+
     track-php:
         build:
             context: docker/php

@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\TestEvent;
 use App\Http\Controllers\Agent\ScheduleController;
 use App\Http\Controllers\Agent\Settings\ScheduleController as SettingScheduleController;
 use App\Http\Controllers\Agent\SubscriptionController as AgentSubscriptionController;
@@ -7,8 +8,10 @@ use App\Http\Controllers\Agency\SubscriptionController as AgencySubscriptionCont
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ResetPasswordController;
 use App\Http\Controllers\User\SettingsController;
+use App\Http\Controllers\User\SocketController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
+use Pusher\Pusher;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,11 +24,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('test/trigger', function (\App\Services\Contracts\Socket\Socket $socket){
+    $socket->trigger(['presence-channel'], 'test-event', ['mazafaka' => 'hello']);
+    $socket->sendToUser(1, 'test-event', ['user_mazafaka' => 'hello']);
+    $socket->trigger(['private-channel'], 'test-event', ['private_mazafaka' => 'hello']);
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | api/auth ...
 | api/auth/email ...
 | api/auth/reset-password ...
+| api/auth/socket ...
 |--------------------------------------------------------------------------
 */
 Route::prefix('/auth')->group(function (){
@@ -42,6 +53,11 @@ Route::prefix('/auth')->group(function (){
         Route::post('send-email-verification', [ResetPasswordController::class, 'emailVerification'])->name('reset-password.email');
         Route::get('token-validation', [ResetPasswordController::class, 'tokenValidation']);
         Route::put('set-new-password', [ResetPasswordController::class, 'setNewPassword']);
+    });
+
+    Route::group(['prefix' => 'socket', 'middleware' => 'auth:sanctum'], function (){
+        Route::post('registration-channel', [SocketController::class, 'registrationChannel']);
+        Route::post('set-user-connection', [SocketController::class, 'setUserConnection']);
     });
 });
 

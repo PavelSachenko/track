@@ -63,7 +63,9 @@
   },
   "devDependencies": {
     "@types/redux-logger": "^3.0.8",
+    "laravel-echo": "^1.15.0",
     "node-sass": "^4.14.1",
+    "pusher-js": "^8.0.1",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6"
   }

@@ -45,6 +45,11 @@ class User extends Authenticatable
     const TYPE_AGENT = 1;
     const TYPE_AGENCY = 2;
 
+    const USER_TYPES = [
+        self::TYPE_AGENT => 'agent',
+        self::TYPE_AGENCY => 'agency',
+    ];
+
     const TYPE_TABLES = [
         self::TYPE_AGENT => 'agents',
         self::TYPE_AGENCY => 'agencies',
