@@ -23,7 +23,7 @@ class FollowerRepo implements SubscriptionRepo
     /**
      * @throws \Throwable
      */
-    public function createInviteRequest(string $userReceiverEmail, string $inviteMessage, string $token): bool
+    public function createInviteRequest(string $userReceiverEmail, string $inviteMessage, string $token): int
     {
         $id = \DB::table('users')
             ->select('id')
@@ -39,7 +39,7 @@ class FollowerRepo implements SubscriptionRepo
             if (\DB::table('subscriptions')->where([['user_id', $id], ['user_subscriber_id', \Auth::user()->id]])->exists())
                 throw new BadRequestException("You already have subscribed");
 
-            $isCreated = DB::table('subscription_requests')->insertOrIgnore([
+            $id = DB::table('subscription_requests')->insertGetId([
                 'user_sender_id' => \Auth::user()->id,
                 'user_receiver_id' => $id,
                 'message' => $inviteMessage,
@@ -48,7 +48,7 @@ class FollowerRepo implements SubscriptionRepo
             ]);
 
             DB::commit();
-            return $isCreated;
+            return $id;
 
 
         } catch (\Throwable $e) {
@@ -127,6 +127,25 @@ class FollowerRepo implements SubscriptionRepo
             ->offset($offset)
             ->orderByDesc('sr.created_at')
             ->get()->toArray();
+    }
+
+    public function getOneRequest(int $id): array
+    {
+        return (array)DB::table('subscription_requests', 'sr')
+            ->leftJoin('agents as a', 'a.user_id', '=', 'sr.user_receiver_id')
+            ->leftJoin('users as u', 'u.id', '=', 'sr.user_sender_id')
+            ->select([
+                'sr.id',
+                'sr.user_receiver_id',
+                'sr.created_at',
+                'a.email',
+                'a.name',
+                'a.img',
+                'sr.message',
+                'u.type'
+            ])
+            ->where('sr.id', $id)
+            ->first();
     }
 
     public function deleteFollow(int $followID): bool

@@ -21,3 +21,12 @@ migrate:
 	
 clear:
 	cd backend && sudo docker-compose exec track-php bash -c  "cd /var/www && php artisan cache:clear && php artisan config:clear && php artisan route:clear" && cd ..
+	
+new-invite:
+	cd backend && docker-compose exec track-php bash -c  "cd /var/www && php artisan socket:invite new" && cd ..
+	
+decline-invite:
+	cd backend && docker-compose exec track-php bash -c  "cd /var/www && php artisan socket:invite accept" && cd ..
+
+accept-invite:
+	cd backend && docker-compose exec track-php bash -c  "cd /var/www && php artisan socket:invite decline" && cd ..

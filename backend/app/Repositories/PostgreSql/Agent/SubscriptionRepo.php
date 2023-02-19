@@ -14,7 +14,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
     /**
      * @throws \Throwable
      */
-    public function createSubscriptionFromRequest(int $subscriptionRequestID): bool
+    public function createSubscriptionFromRequest(int $subscriptionRequestID): array
     {
         DB::beginTransaction();
         try {
@@ -25,25 +25,31 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             if (is_null($subscriptionRequest))
                 throw new BadRequestException("Subscription request not found");
 
-            $wasRecentlyCreated = Subscription::create([
+            $subscription = Subscription::create([
                 'user_id' => $subscriptionRequest->user_receiver_id,
                 'user_subscriber_id' => $subscriptionRequest->user_sender_id,
-            ])->wasRecentlyCreated;
+            ])->toArray();
 
+            $test = $subscriptionRequest->toArray();
             $subscriptionRequest->delete();
             DB::commit();
-            return $wasRecentlyCreated;
+            return $test;
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
         }
     }
 
-    public function setRejectStatusForRequest(int $subscriptionRequestID): bool
+    public function setRejectStatusForRequest(int $subscriptionRequestID): array
     {
-        return (bool)DB::table('subscription_requests')
-            ->where('id', $subscriptionRequestID)
-            ->update(['status' => SubscriptionRequest::STATUS_TYPE_REJECT]);
+        //TODO need more clear
+        $subscriptionRequest =  SubscriptionRequest::where('id', $subscriptionRequestID)->first();
+
+         $test['updated'] = $subscriptionRequest->update(['status' => SubscriptionRequest::STATUS_TYPE_REJECT]);
+         $test['user_sender_id'] = $subscriptionRequest->user_sender_id;
+         $test['id'] = $subscriptionRequest->id;
+
+        return $test;
     }
 
 

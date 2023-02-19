@@ -2,18 +2,22 @@
 
 namespace App\Services\Agency;
 
+use App\Enums\Socket\Agent\Invite;
 use App\Http\Requests\Agency\Subscription\AllFollowsRequest;
 use App\Http\Requests\Agency\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agency\Subscription\SendInviteRequest;
 use App\Repositories\PostgreSql\Agency\FollowerRepo;
+use App\Services\Contracts\Socket\Socket;
 
 class Follower implements \App\Services\Contracts\Agency\Follower
 {
     private FollowerRepo $followerRepo;
+    private Socket $socket;
 
-    public function __construct(FollowerRepo $repo)
+    public function __construct(FollowerRepo $repo, Socket $socket)
     {
         $this->followerRepo = $repo;
+        $this->socket = $socket;
     }
 
     /**
@@ -22,7 +26,11 @@ class Follower implements \App\Services\Contracts\Agency\Follower
     public function sendInvite(SendInviteRequest $request): bool
     {
         //TODO why we need token?
-        return $this->followerRepo->createInviteRequest($request->email, $request->message? : "hello", "token");
+        $inviteId = $this->followerRepo->createInviteRequest($request->email, $request->message? : "hello", "token");
+        $invite = $this->followerRepo->getOneRequest($inviteId);
+        $this->socket->sendToUser($invite['user_receiver_id'],  Invite::NEW, $invite);
+
+        return $inviteId;
     }
 
     public function totalFollows(): int

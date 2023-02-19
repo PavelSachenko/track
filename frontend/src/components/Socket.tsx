@@ -48,16 +48,13 @@ class Socket extends Component<ISocketProps> {
 
     setupSocket = () => {
         // const webSocket = this.state.ws;
-
-
         //--------------------------------------------------------------------------------------------------------
-        // window.Pusher = Pusher;
-        // @ts-ignore
-        // @ts-ignore
         const pusher = new Pusher("app-key", {
             cluster: "",
             forceTLS: false,
+            //TODO get from config file
             wsHost: "127.0.0.1",
+            //TODO get from config file
             wsPort: 6001,
             enabledTransports: ["ws"],
             // authEndpoint: "http://track.local/api/auth/socket/registration-channel",
@@ -68,6 +65,7 @@ class Socket extends Component<ISocketProps> {
             },
             userAuthentication: {
                 transport: "ajax",
+                //TODO get from config file uri like http://track.local/ and concat
                 endpoint: "http://track.local/api/auth/socket/set-user-connection",
                 headers: {
                     'Authorization': "Bearer " + localStorage.getItem("token"),
@@ -75,6 +73,7 @@ class Socket extends Component<ISocketProps> {
             },
             channelAuthorization: {
                 transport: "ajax",
+                //TODO get from config file uri like http://track.local/ and concat
                 endpoint: "http://track.local/api/auth/socket/registration-channel",
                 headers: {
                     'Authorization': "Bearer " + localStorage.getItem("token"),
@@ -90,11 +89,29 @@ class Socket extends Component<ISocketProps> {
         })
 
 
+        // for agent
         // @ts-ignore
-        pusher.bind("add_work_event", (data: any) => {
-            console.log("----------------------RECEIVED------------------------------------");
+        pusher.bind("new_invite", (data: any) => {
+            console.log("----------------------RECEIVED-NEW-INVITE------------------------------------");
             console.log(data);
-            console.log("----------------------RECEIVED------------------------------------");
+            console.log("----------------------RECEIVED-NEW-INVITE------------------------------------");
+        })
+
+        //hello
+        // for agency
+        // @ts-ignore
+        pusher.bind("accept_invite", (data: any) => {
+            console.log("----------------------RECEIVED-ACCEPT-INVITE------------------------------------");
+            console.log(data);
+            console.log("----------------------RECEIVED-ACCEPT-INVITE------------------------------------");
+        })
+
+        // for agency
+        // @ts-ignore
+        pusher.bind("decline_invite", (data: any) => {
+            console.log("----------------------RECEIVED-DECLINE-INVITE------------------------------------");
+            console.log(data);
+            console.log("----------------------RECEIVED-DECLINE-INVITE------------------------------------");
         })
 
         // @ts-ignore
