@@ -43,6 +43,14 @@ class SocketNewInviteCommand extends Command
                     Invite::ACCEPT,
                     [
                         'id' => 9999,
+                        "name" => "Pasha",
+                        "email" => "pasha@gmail.com",
+                        "phone" => "+328230923230",
+                        "description" => "Hello mafaker I'm here",
+                        "img" => "https://s3.eu-west-2.amazonaws.com/gency.track.local/base64:GJNC5Y5MYTI3qiXaLsW629B59X0PEjLXjvlevt6ZERQ=/images/user/2/ee26908bf9629eeb4b37dac350f4754a.",
+                        "is_available" => false,
+                        "created_at" => "2023-02-16 16:19:22",
+                        "updated_at" => "2023-02-16 16:19:22"
                     ]
                 );
                 echo "Socket was sent\n";

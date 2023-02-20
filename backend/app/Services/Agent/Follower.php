@@ -6,6 +6,7 @@ use App\Enums\Socket\Agent\Invite;
 use App\Http\Requests\Agent\Subscription\AllFollowersRequest;
 use App\Http\Requests\Agent\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agent\Subscription\DecisionInviteRequest;
+use App\Models\Agent;
 use App\Repositories\Contracts\Agent\SubscriptionRepo;
 use App\Services\Contracts\Socket\Socket;
 
@@ -24,7 +25,7 @@ class Follower implements \App\Services\Contracts\Agent\Follower
     {
         $subscription = $this->subscriptionRepo->createSubscriptionFromRequest($request->id);
         if (!empty($subscription)){
-            $this->socket->sendToUser($subscription['user_sender_id'], Invite::ACCEPT, ['id' => $subscription['id']]);
+            $this->socket->sendToUser($subscription['user_sender_id'], Invite::ACCEPT, Agent::where('user_id',\Auth::user()->id)->first()->toArray());
         }
 
         return !empty($subscription);
