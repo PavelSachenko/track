@@ -2,7 +2,7 @@ import axios from "axios";
 
 import handleNetError from "../utils/handleNetError";
 
-const protocol = "https://";
+const protocol = "http://";
 const currentHostname = window && window.location && window.location.hostname;
 
 let backendHostname;
