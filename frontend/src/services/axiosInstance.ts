@@ -2,23 +2,22 @@ import axios from "axios";
 
 import handleNetError from "../utils/handleNetError";
 
-// const protocol = "http://";
-// const currentHostname = window && window.location && window.location.hostname;
+const protocol = "http://";
+const currentHostname = window && window.location && window.location.hostname;
 
-// let backendHostname;
+let backendHostname;
 
-// if (currentHostname === "localhost") {
-//   backendHostname = "track.local";
-// } else if (currentHostname === "track.local") {
-//   backendHostname = "track.local";
-// } else if (currentHostname && currentHostname !== "chromewebdata") {
-//   backendHostname = currentHostname;
-// } else {
-//   backendHostname = process.env.REACT_APP_BACKEND_HOST || "unknownhosterror";
-// }
+if (currentHostname === "localhost") {
+  backendHostname = "track.local";
+} else if (currentHostname === "track.local") {
+  backendHostname = "track.local";
+} else if (currentHostname && currentHostname !== "chromewebdata") {
+  backendHostname = currentHostname;
+} else {
+  backendHostname = process.env.REACT_APP_BACKEND_HOST || "unknownhosterror";
+}
 
-// export const API_ROOT = protocol + backendHostname + "/api/";
-export const API_ROOT =  "http://52.59.134.131/api/";
+export const API_ROOT = protocol + backendHostname + "/api/";
 
 const axiosInstance = axios.create({ baseURL: API_ROOT });
 
