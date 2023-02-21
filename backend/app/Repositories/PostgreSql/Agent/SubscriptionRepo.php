@@ -4,6 +4,7 @@ namespace App\Repositories\PostgreSql\Agent;
 
 
 use App\Exceptions\BadRequestException;
+use App\Models\Agent;
 use App\Models\Subscription;
 use App\Models\SubscriptionRequest;
 use Illuminate\Support\Arr;
@@ -25,15 +26,18 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             if (is_null($subscriptionRequest))
                 throw new BadRequestException("Subscription request not found");
 
-            $subscription = Subscription::create([
+            $createdSubscriptionId = Subscription::create([
                 'user_id' => $subscriptionRequest->user_receiver_id,
                 'user_subscriber_id' => $subscriptionRequest->user_sender_id,
-            ])->toArray();
+            ])->id;
 
-            $test = $subscriptionRequest->toArray();
             $subscriptionRequest->delete();
             DB::commit();
-            return $test;
+
+            return [
+                'subscription_id' => $createdSubscriptionId,
+                'user_subscriber_id' => $subscriptionRequest->user_sender_id
+            ];
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
@@ -42,14 +46,12 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
 
     public function setRejectStatusForRequest(int $subscriptionRequestID): array
     {
-        //TODO need more clear
-        $subscriptionRequest =  SubscriptionRequest::where('id', $subscriptionRequestID)->first();
+        $subscriptionRequest = SubscriptionRequest::where('id', $subscriptionRequestID)->first();
+        $response['updated'] = $subscriptionRequest->update(['status' => SubscriptionRequest::STATUS_TYPE_REJECT]);
+        $response['user_sender_id'] = $subscriptionRequest->user_sender_id;
+        $response['subscription_request_id'] = $subscriptionRequest->id;
 
-         $test['updated'] = $subscriptionRequest->update(['status' => SubscriptionRequest::STATUS_TYPE_REJECT]);
-         $test['user_sender_id'] = $subscriptionRequest->user_sender_id;
-         $test['id'] = $subscriptionRequest->id;
-
-        return $test;
+        return $response;
     }
 
 

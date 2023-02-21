@@ -95,7 +95,7 @@ class User extends Authenticatable
         return $this->hasOne(Agent::class, 'user_id', 'id');
     }
 
-    public function agency()
+    public function agency(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Agency::class, 'user_id');
     }

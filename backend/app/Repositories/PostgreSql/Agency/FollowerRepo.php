@@ -49,8 +49,6 @@ class FollowerRepo implements SubscriptionRepo
 
             DB::commit();
             return $id;
-
-
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;

@@ -2,6 +2,7 @@
 
 namespace App\Services\Agent;
 
+use App\Enums\Socket\Agency\Subscription;
 use App\Enums\Socket\Agent\Invite;
 use App\Http\Requests\Agent\Subscription\AllFollowersRequest;
 use App\Http\Requests\Agent\Subscription\AllRequestsRequest;
@@ -25,7 +26,8 @@ class Follower implements \App\Services\Contracts\Agent\Follower
     {
         $subscription = $this->subscriptionRepo->createSubscriptionFromRequest($request->id);
         if (!empty($subscription)){
-            $this->socket->sendToUser($subscription['user_sender_id'], Invite::ACCEPT, Agent::where('user_id',\Auth::user()->id)->first()->toArray());
+            $this->socket->sendToUser($subscription['user_subscriber_id'], Invite::ACCEPT, ['id' => $subscription['subscription_id']]);
+            $this->socket->sendToUser($subscription['user_subscriber_id'], Subscription::NEW_FOLLOW, \Auth::user()->toArray());
         }
 
         return !empty($subscription);
@@ -35,7 +37,7 @@ class Follower implements \App\Services\Contracts\Agent\Follower
     {
         $subscriptionRequest = $this->subscriptionRepo->setRejectStatusForRequest($request->id);
         if ($subscriptionRequest['updated']){
-            $this->socket->sendToUser($subscriptionRequest['user_sender_id'], Invite::DECLINE, ['id' => $subscriptionRequest['id']]);
+            $this->socket->sendToUser($subscriptionRequest['user_sender_id'], Invite::DECLINE, ['id' => $request->id]);
         }
 
         return $subscriptionRequest['updated'];
