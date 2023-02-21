@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\Socket\Agency\Subscription;
 use App\Enums\Socket\Agent\Invite;
 use App\Models\Agency;
 use App\Models\Agent;
@@ -43,6 +44,13 @@ class SocketNewInviteCommand extends Command
                     Invite::ACCEPT,
                     [
                         'id' => 9999,
+                    ]
+                );
+                $socket->sendToUser(
+                  $user->id,
+                    Subscription::NEW_FOLLOW,
+                    [
+                        "id" => 9999,
                         "name" => "Pasha",
                         "email" => "pasha@gmail.com",
                         "phone" => "+328230923230",
@@ -52,6 +60,7 @@ class SocketNewInviteCommand extends Command
                         "created_at" => "2023-02-16 16:19:22",
                         "updated_at" => "2023-02-16 16:19:22"
                     ]
+
                 );
                 echo "Socket was sent\n";
                 break;
