@@ -1,11 +1,11 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
-import API from '../../../../api/api';
-import { deleteAgent } from '../../../../redux/ducks/agents';
+import API from "../../../../api/api";
+import { deleteAgent } from "../../../../redux/ducks/agents";
 
-import './DeleteAgentModal.scss'
-import { ReactComponent as CloseIcon } from '../../../../icons/close.svg';
-import AsyncBtn from '../../../../components/AsyncBtn/AsyncBtn';
+import "./DeleteAgentModal.scss";
+import { ReactComponent as CloseIcon } from "../../../../icons/close.svg";
+import AsyncBtn from "../../../../components/AsyncBtn/AsyncBtn";
 
 // interface DeleteAgentModal  {
 //   itemId: number;
@@ -15,12 +15,11 @@ import AsyncBtn from '../../../../components/AsyncBtn/AsyncBtn';
 
 const DeleteAgentModal = (props: any) => {
   const {
-    email,
-    itemId,
+    /*email,*/ itemId,
     pending,
     setPending,
     closeModal,
-    closeAgentModal
+    closeAgentModal,
   } = props;
 
   const dispatch = useDispatch();
@@ -28,15 +27,15 @@ const DeleteAgentModal = (props: any) => {
   const removeAgent = () => {
     setPending(true);
 
-    return API.unsubscribeAgent(email)
+    return API.unsubscribeAgent(itemId)
       .then(() => {
         setPending(false);
-        dispatch(deleteAgent(itemId))
+        dispatch(deleteAgent(itemId));
         closeModal();
         closeAgentModal();
       })
-      .catch(console.error)
-  }
+      .catch(console.error);
+  };
 
   return (
     <div className="delete-agent-modal modal-wrap">
@@ -48,7 +47,9 @@ const DeleteAgentModal = (props: any) => {
 
       <h2 className="delete-agent-modal__header">Delete Agent</h2>
 
-      <div className="delete-agent-modal__text">Do you really want to delete your agent?'</div>
+      <div className="delete-agent-modal__text">
+        Do you really want to delete your agent?'
+      </div>
 
       <div className="delete-agent-modal__btns">
         <button
@@ -69,7 +70,7 @@ const DeleteAgentModal = (props: any) => {
         </AsyncBtn>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default DeleteAgentModal;

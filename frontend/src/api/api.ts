@@ -155,8 +155,8 @@ const sendInvite = (email: string) => {
   return axiosInstance.post("agency/subscription/send-request", Invite);
 };
 
-const unsubscribeAgent = (email: string) => {
-  return axiosInstance.delete(`subscription/unsubscribe-agent/${email}`);
+const unsubscribeAgent = (id: string) => {
+  return axiosInstance.delete(`agency/subscription/unsubscribe/${id}`);
 };
 
 const getNotificationsCount = () => {
@@ -201,7 +201,7 @@ const declineNotification = (id: number) => {
 };
 
 const deleteInvite = (id: number) => {
-  return axiosInstance.delete(`subscription/delete-invite/${id}`);
+  return axiosInstance.delete(`agency/subscription/invite/${id}`);
 };
 
 const getWorkTime = () => {
