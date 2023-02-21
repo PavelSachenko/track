@@ -57,12 +57,15 @@ class Socket extends Component<ISocketProps> {
     // const webSocket = this.state.ws;
     //--------------------------------------------------------------------------------------------------------
     const pusher = new Pusher("app-key", {
+      //TODO get from config file
       cluster: "",
+      //TODO get from config file
       forceTLS: false,
       //TODO get from config file
       wsHost: "127.0.0.1",
       //TODO get from config file
       wsPort: 6001,
+      //TODO get from config file
       enabledTransports: ["ws"],
       // authEndpoint: "http://track.local/api/auth/socket/registration-channel",
       auth: {
