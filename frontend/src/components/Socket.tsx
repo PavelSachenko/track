@@ -115,7 +115,7 @@ class Socket extends Component<ISocketProps> {
       console.log(
         "----------------------RECEIVED-ACCEPT-INVITE------------------------------------"
       );
-      this.props.addAgent(data);
+      this.props.deleteInvite(data);
       console.log(data);
       console.log(
         "----------------------RECEIVED-ACCEPT-INVITE------------------------------------"
@@ -132,6 +132,17 @@ class Socket extends Component<ISocketProps> {
       this.props.deleteInvite(data);
       console.log(
         "----------------------RECEIVED-DECLINE-INVITE------------------------------------"
+      );
+    });
+
+    pusher.bind("new_agent", (data: any) => {
+      console.log(
+        "----------------------RECEIVED-NEW_AGENT-START------------------------------------"
+      );
+      console.log(data);
+      this.props.addAgent(data);
+      console.log(
+        "----------------------RECEIVED-NEW_AGENT-END------------------------------------"
       );
     });
 
