@@ -3,6 +3,7 @@
 namespace App\Repositories\PostgreSql\Agency;
 
 
+use App\Enums\SubscriptionRequestStatus;
 use App\Exceptions\BadRequestException;
 use App\Models\Subscription;
 use App\Models\SubscriptionRequest;
@@ -72,6 +73,7 @@ class FollowerRepo implements SubscriptionRepo
     {
         return DB::table('subscription_requests')
             ->where('user_sender_id', \Auth::user()->id)
+            ->where('status', '<>', SubscriptionRequestStatus::REJECT)
             ->count();
     }
 
@@ -114,7 +116,8 @@ class FollowerRepo implements SubscriptionRepo
                 'a.email',
                 'a.name',
             ])
-            ->where('sr.user_sender_id', \Auth::user()->id);
+            ->where('sr.user_sender_id', \Auth::user()->id)
+            ->where('sr.status', '<>', SubscriptionRequestStatus::REJECT);
 
         if ($search != '') {
             $query->where('a.name', 'ilike', $search . '%')
