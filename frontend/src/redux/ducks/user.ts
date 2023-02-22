@@ -3,11 +3,8 @@ import { Dispatch } from "redux";
 import { IAction, IAgent, IAgency } from "../../interfaces/interfaces";
 import { IUserState } from "./ducks.types";
 import { getAgencies, getAgenciesCount } from "./agencies";
-import { getAgents, getInvitesCount } from "./agents";
-import {
-  getNotificationsCount,
-  getNotificationsCountAgency,
-} from "./notifications";
+import { getAgents, getInvitesCount, getAgentsCount } from "./agents";
+import { getNotificationsCount } from "./notifications";
 
 export const SET_TOKEN = "SET_TOKEN";
 
@@ -35,8 +32,9 @@ export const initApp =
 
     if (user.type === 2) {
       dispatch(getInvitesCount());
+      dispatch(getAgentsCount());
       dispatch(getAgents());
-      dispatch(getNotificationsCountAgency());
+      // dispatch(getNotificationsCountAgency());
     }
   };
 

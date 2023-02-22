@@ -98,52 +98,32 @@ class Socket extends Component<ISocketProps> {
     // for agent
     // @ts-ignore
     pusher.bind("new_invite", (data: any) => {
-      console.log(
-        "----------------------RECEIVED-NEW-INVITE------------------------------------"
-      );
+      console.log("Socket_data_new_invite");
       console.log(data);
       this.props.addNotification(data);
-      console.log(
-        "----------------------RECEIVED-NEW-INVITE------------------------------------"
-      );
     });
 
     //hello
     // for agency
     // @ts-ignore
     pusher.bind("accept_invite", (data: any) => {
-      console.log(
-        "----------------------RECEIVED-ACCEPT-INVITE------------------------------------"
-      );
-      this.props.deleteInvite(data);
+      console.log("Socket_data_accept_invite");
       console.log(data);
-      console.log(
-        "----------------------RECEIVED-ACCEPT-INVITE------------------------------------"
-      );
+      this.props.deleteInvite(data);
     });
 
     // for agency
     // @ts-ignore
     pusher.bind("decline_invite", (data: any) => {
-      console.log(
-        "----------------------RECEIVED-DECLINE-INVITE------------------------------------"
-      );
+      console.log("Socket_data_decline_invite");
       console.log(data);
       this.props.deleteInvite(data);
-      console.log(
-        "----------------------RECEIVED-DECLINE-INVITE------------------------------------"
-      );
     });
 
     pusher.bind("new_agent", (data: any) => {
-      console.log(
-        "----------------------RECEIVED-NEW_AGENT-START------------------------------------"
-      );
+      console.log("Socket_data_new_agent");
       console.log(data);
       this.props.addAgent(data);
-      console.log(
-        "----------------------RECEIVED-NEW_AGENT-END------------------------------------"
-      );
     });
 
     // @ts-ignore

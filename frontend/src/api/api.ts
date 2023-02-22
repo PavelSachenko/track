@@ -144,6 +144,10 @@ const getInvites = (offset?: number) => {
 };
 
 const getInvitesCount = () => {
+  return axiosInstance.get("agency/subscription/count-requests");
+};
+
+const getAgentsCount = () => {
   return axiosInstance.get("agency/subscription/count-follows");
 };
 
@@ -322,6 +326,7 @@ const API = {
   changeWorkingStatus,
   getNotificationsCountAgency,
   updateUserAvatar,
+  getAgentsCount,
 };
 
 export default API;

@@ -1,39 +1,51 @@
-import { Dispatch } from 'redux';
+import { Dispatch } from "redux";
 
-import API from '../../api/api'
-import { normalize, addToEntitiesIfMissing } from '../../utils';
-import { IAction, IInvite, IAgent } from '../../interfaces/interfaces';
+import API from "../../api/api";
+import { normalize, addToEntitiesIfMissing } from "../../utils";
+import { IAction, IInvite, IAgent } from "../../interfaces/interfaces";
 import { IAgentsState, IAgentsConfig } from "./ducks.types";
 
-export const GET_AGENTS = 'GET_AGENTS';
-export const UPDATE_AGENTS = 'UPDATE_AGENTS';
-export const ADD_AGENT = 'ADD_AGENT';
-export const DELETE_AGENT = 'DELETE_AGENT'
+export const GET_AGENTS = "GET_AGENTS";
+export const UPDATE_AGENTS = "UPDATE_AGENTS";
+export const ADD_AGENT = "ADD_AGENT";
+export const DELETE_AGENT = "DELETE_AGENT";
 
-export const FILTER_AGENTS = 'FILTER_AGENTS';
-export const UPDATE_FILTERED_AGENTS = 'UPDATE_FILTERED_AGENTS';
+export const FILTER_AGENTS = "FILTER_AGENTS";
+export const UPDATE_FILTERED_AGENTS = "UPDATE_FILTERED_AGENTS";
 
-export const UPDATE_SEARCH = 'UPDATE_SEARCH';
-export const UPDATE_STATUS_FILTER = 'UPDATE_STATUS_FILTER';
+export const UPDATE_SEARCH = "UPDATE_SEARCH";
+export const UPDATE_STATUS_FILTER = "UPDATE_STATUS_FILTER";
 
-export const GET_INVITES = 'GET_INVITES';
-export const UPDATE_INVITES = 'UPDATE_INVITES';
-export const ADD_INVITE = 'ADD_INVITE';
-export const DELETE_INVITE = 'DELETE_INVITE';
-export const GET_INVITES_COUNT = 'GET_INVITES_COUNT';
+export const GET_INVITES = "GET_INVITES";
+export const UPDATE_INVITES = "UPDATE_INVITES";
+export const ADD_INVITE = "ADD_INVITE";
+export const DELETE_INVITE = "DELETE_INVITE";
+export const GET_INVITES_COUNT = "GET_INVITES_COUNT";
+export const GET_AGENTS_COUNT = "GET_AGENTS_COUNT";
 
 export const AGENTS_LIMIT = 20;
 
 export const getAgents = (offset?: number) => (dispatch: Dispatch) => {
   return API.getAgents({ offset })
-    .then(({ data }) => { 
+    .then(({ data }) => {
       dispatch({
         type: offset ? UPDATE_AGENTS : GET_AGENTS,
         payload: normalize(data),
       });
     })
     .catch(console.error);
-}
+};
+
+export const getAgentsCount = () => (dispatch: Dispatch) => {
+  API.getAgentsCount()
+    .then(({ data }) => {
+      dispatch({
+        type: GET_AGENTS_COUNT,
+        payload: data,
+      });
+    })
+    .catch(console.error);
+};
 
 export const filterAgents = (config: IAgentsConfig) => (dispatch: Dispatch) => {
   return API.getAgents(config)
@@ -41,38 +53,39 @@ export const filterAgents = (config: IAgentsConfig) => (dispatch: Dispatch) => {
       dispatch({
         type: config.offset ? UPDATE_FILTERED_AGENTS : FILTER_AGENTS,
         payload: normalize(data),
-      })
+      });
     })
-    .catch(console.error)
-}
+    .catch(console.error);
+};
 
 export const updateSearch = (query: string) => (dispatch: Dispatch) => {
   dispatch({
     type: UPDATE_SEARCH,
-    payload: query
+    payload: query,
   });
-}
+};
 
-export const updateStatusFilter = (statusFilter: number) => (dispatch: Dispatch) => {
-  dispatch({
-    type: UPDATE_STATUS_FILTER,
-    payload: statusFilter
-  })
-}
+export const updateStatusFilter =
+  (statusFilter: number) => (dispatch: Dispatch) => {
+    dispatch({
+      type: UPDATE_STATUS_FILTER,
+      payload: statusFilter,
+    });
+  };
 
 export const addAgent = (agent: IAgent) => (dispatch: Dispatch) => {
   dispatch({
     type: ADD_AGENT,
-    payload: agent
-  })
-}
+    payload: agent,
+  });
+};
 
 export const deleteAgent = (id: number) => (dispatch: Dispatch) => {
   dispatch({
     type: DELETE_AGENT,
-    payload: id
-  })
-}
+    payload: id,
+  });
+};
 
 export const getInvites = (offset?: number) => (dispatch: Dispatch) => {
   return API.getInvites(offset)
@@ -83,44 +96,45 @@ export const getInvites = (offset?: number) => (dispatch: Dispatch) => {
       });
     })
     .catch(console.error);
-}
+};
 
 export const getInvitesCount = () => (dispatch: Dispatch) => {
   API.getInvitesCount()
     .then(({ data }) => {
       dispatch({
         type: GET_INVITES_COUNT,
-        payload: data
+        payload: data,
       });
     })
     .catch(console.error);
-}
+};
 
 export const addInvite = (invite: IInvite) => (dispatch: Dispatch) => {
   dispatch({
     type: ADD_INVITE,
-    payload: invite
-  })
-}
+    payload: invite,
+  });
+};
 
 export const deleteInvite = (id: number) => (dispatch: Dispatch) => {
   dispatch({
     type: DELETE_INVITE,
-    payload: id
-  })
-}
+    payload: id,
+  });
+};
 
 const initialState: IAgentsState = {
   pending: true,
   ids: [],
   auxiliaryIds: [],
   entities: {},
-  search: '',
+  agentsCount: 0,
+  search: "",
   filterStatus: 0,
   inviteIds: [],
   inviteEntities: {},
   invitesCount: 0,
-}
+};
 
 const agenciesReducer = (state = initialState, action: IAction) => {
   const { type, payload } = action;
@@ -131,34 +145,57 @@ const agenciesReducer = (state = initialState, action: IAction) => {
         ...state,
         pending: false,
         ids: payload.ids,
-        entities: addToEntitiesIfMissing(state.entities, payload.entities, 'id'),
+        entities: addToEntitiesIfMissing(
+          state.entities,
+          payload.entities,
+          "id"
+        ),
         auxiliaryIds: [],
-      }
+      };
+    }
+
+    case GET_AGENTS_COUNT: {
+      return {
+        ...state,
+        agentsCount: payload,
+      };
     }
 
     case UPDATE_AGENTS: {
       return {
         ...state,
         ids: [...state.ids, ...payload.ids],
-        entities: addToEntitiesIfMissing(state.entities, payload.entities, 'id'),
-      }
+        entities: addToEntitiesIfMissing(
+          state.entities,
+          payload.entities,
+          "id"
+        ),
+      };
     }
 
     case FILTER_AGENTS: {
       return {
         ...state,
         pending: false,
-        entities: addToEntitiesIfMissing(state.entities, payload.entities, 'id'),
-        auxiliaryIds: payload.ids
-      }
+        entities: addToEntitiesIfMissing(
+          state.entities,
+          payload.entities,
+          "id"
+        ),
+        auxiliaryIds: payload.ids,
+      };
     }
 
     case UPDATE_FILTERED_AGENTS: {
       return {
         ...state,
-        entities: addToEntitiesIfMissing(state.entities, payload.entities, 'id'),
-        auxiliaryIds: [...state.auxiliaryIds, ...payload.ids]
-      }
+        entities: addToEntitiesIfMissing(
+          state.entities,
+          payload.entities,
+          "id"
+        ),
+        auxiliaryIds: [...state.auxiliaryIds, ...payload.ids],
+      };
     }
 
     case UPDATE_SEARCH: {
@@ -167,45 +204,48 @@ const agenciesReducer = (state = initialState, action: IAction) => {
       return {
         ...state,
         search: payload,
-        pending: true
-      }
+        pending: true,
+      };
     }
 
     case UPDATE_STATUS_FILTER: {
       if (state.filterStatus === payload) return state;
-      
+
       return {
         ...state,
         filterStatus: payload,
-        pending: true
-      }
+        pending: true,
+      };
     }
 
     case ADD_AGENT: {
-      const deletedInviteId = Object.values(state.inviteEntities).find(invite => invite.email === payload.email)?.id;
+      // const deletedInviteId = Object.values(state.inviteEntities).find(
+      //   (invite) => invite.email === payload.email
+      // )?.id;
 
-      const updatedEntities = { ...state.inviteEntities };
-      (deletedInviteId !== undefined) && delete updatedEntities[deletedInviteId];
+      // const updatedEntities = { ...state.inviteEntities };
+      // deletedInviteId !== undefined && delete updatedEntities[deletedInviteId];
 
       return {
         ...state,
         entities: {
           [payload.id]: payload,
-          ...state.entities
+          ...state.entities,
         },
         ids: [payload.id, ...state.ids],
-        inviteIds: state.inviteIds.filter(id => id !== deletedInviteId),
-        inviteEntities: updatedEntities,
-        invitesCount: (state.invitesCount - 1 < 0) ? 0 : state.invitesCount - 1
-      }
+        // inviteIds: state.inviteIds.filter((id) => id !== deletedInviteId),
+        // inviteEntities: updatedEntities,
+        // invitesCount: state.invitesCount - 1 < 0 ? 0 : state.invitesCount - 1,
+        agentsCount: state.agentsCount + 1,
+      };
     }
 
     case DELETE_AGENT: {
       const isFilter = state.filterStatus || state.search;
 
       const updatedIds = isFilter
-        ? state.auxiliaryIds.filter(id => id !== payload)
-        : state.ids.filter(id => id !== payload);
+        ? state.auxiliaryIds.filter((id) => id !== payload)
+        : state.ids.filter((id) => id !== payload);
 
       const updatedEntities = { ...state.entities };
       delete updatedEntities[payload];
@@ -214,7 +254,7 @@ const agenciesReducer = (state = initialState, action: IAction) => {
         ...state,
         ids: isFilter ? state.ids : updatedIds,
         auxiliaryIds: isFilter ? updatedIds : state.auxiliaryIds,
-      }
+      };
     }
 
     case GET_INVITES: {
@@ -222,21 +262,18 @@ const agenciesReducer = (state = initialState, action: IAction) => {
         ...state,
         inviteIds: payload.ids,
         inviteEntities: payload.entities,
-      }
+      };
     }
 
     case UPDATE_INVITES: {
       return {
         ...state,
-        inviteIds: [
-          ...state.inviteIds, 
-          ...payload.ids
-        ],
+        inviteIds: [...state.inviteIds, ...payload.ids],
         inviteEntities: {
           ...state.inviteEntities,
-          ...payload.entities
-        }
-      }
+          ...payload.entities,
+        },
+      };
     }
 
     case ADD_INVITE: {
@@ -244,11 +281,11 @@ const agenciesReducer = (state = initialState, action: IAction) => {
         ...state,
         inviteEntities: {
           [payload.id]: payload,
-          ...state.inviteEntities
+          ...state.inviteEntities,
         },
         inviteIds: [payload.id, ...state.inviteIds],
         invitesCount: state.invitesCount + 1,
-      }
+      };
     }
 
     case DELETE_INVITE: {
@@ -257,22 +294,22 @@ const agenciesReducer = (state = initialState, action: IAction) => {
 
       return {
         ...state,
-        inviteIds: state.inviteIds.filter(id => id !== payload),
+        inviteIds: state.inviteIds.filter((id) => id !== payload),
         inviteEntities: updatedEntities,
-        invitesCount: (state.invitesCount - 1 < 0) ? 0 : state.invitesCount - 1
-      }
+        invitesCount: state.invitesCount - 1 < 0 ? 0 : state.invitesCount - 1,
+      };
     }
 
     case GET_INVITES_COUNT: {
       return {
         ...state,
-        invitesCount: payload
-      }
+        invitesCount: payload,
+      };
     }
 
     default:
       return state;
   }
-}
+};
 
 export default agenciesReducer;

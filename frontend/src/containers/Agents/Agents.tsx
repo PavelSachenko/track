@@ -1,23 +1,28 @@
-import { useCallback, useContext, useRef } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useCallback, useContext, useRef } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-import { AppState } from '../../redux/store';
-import { getAgents, filterAgents, updateSearch, updateStatusFilter } from '../../redux/ducks/agents';
-import { classModifier } from '../../utils';
-import { selectAgents } from '../../redux/selectors/selectors';
-import { IAgentsConfig } from '../../redux/ducks/ducks.types';
-import { SetIsVisibleContext } from '../../pages/MainPage/MainPage';
-import { useDidUpdate } from '../../hooks';
-import { LIST_SPINNER_SIZE, ROUTES } from '../../config/constants'; 
-import { MODAL_TYPES, openModal } from '../../redux/ducks/activeWindows';
- 
-import './Agents.scss';
-import { ReactComponent as MailInviteIcon } from '../../icons/mail-invite.svg'
-import SearchableList from '../../components/SearchableList/SearchableList';
-import AgentItem from './components/AgentItem';
-import Spinner from '../../components/Spinner/Spinner';
-import AgenciesPreview from '../../components/AgenciesPreview/AgenciesPreview';
+import { AppState } from "../../redux/store";
+import {
+  getAgents,
+  filterAgents,
+  updateSearch,
+  updateStatusFilter,
+} from "../../redux/ducks/agents";
+import { classModifier } from "../../utils";
+import { selectAgents } from "../../redux/selectors/selectors";
+import { IAgentsConfig } from "../../redux/ducks/ducks.types";
+import { SetIsVisibleContext } from "../../pages/MainPage/MainPage";
+import { useDidUpdate } from "../../hooks";
+import { LIST_SPINNER_SIZE, ROUTES } from "../../config/constants";
+import { MODAL_TYPES, openModal } from "../../redux/ducks/activeWindows";
+
+import "./Agents.scss";
+import { ReactComponent as MailInviteIcon } from "../../icons/mail-invite.svg";
+import SearchableList from "../../components/SearchableList/SearchableList";
+import AgentItem from "./components/AgentItem";
+import Spinner from "../../components/Spinner/Spinner";
+import AgenciesPreview from "../../components/AgenciesPreview/AgenciesPreview";
 
 interface IAgentsProps {
   ids: number[];
@@ -26,6 +31,7 @@ interface IAgentsProps {
   search: string;
   userAgentsLength: number;
   invitesCount: number;
+  agentsCount: number;
   openModal: (type: string) => void;
   getAgents: (offset?: number) => Promise<any>;
   filterAgents: (config: IAgentsConfig) => Promise<any>;
@@ -41,6 +47,7 @@ const Agents = (props: IAgentsProps) => {
     search,
     userAgentsLength,
     invitesCount,
+    agentsCount,
     openModal,
     getAgents,
     filterAgents,
@@ -56,58 +63,60 @@ const Agents = (props: IAgentsProps) => {
 
     if (!isAnyFilter) {
       getAgents();
-    }
-    else {
+    } else {
       const config = {
         search,
         filterStatus,
-      }
+      };
 
       filterAgents(config);
     }
   }, [search, filterStatus]);
 
-  const updateList = useCallback((offset: number) => {
-    const isAnyFilter = search || filterStatus;
+  const updateList = useCallback(
+    (offset: number) => {
+      const isAnyFilter = search || filterStatus;
 
-    if (!isAnyFilter) {
-      getAgents(offset);
-    }
-    else {
-      const config = {
-        search,
-        filterStatus,
-        offset,
+      if (!isAnyFilter) {
+        getAgents(offset);
+      } else {
+        const config = {
+          search,
+          filterStatus,
+          offset,
+        };
+
+        filterAgents(config);
       }
-
-      filterAgents(config);
-    }
-  }, [search, filterStatus]);
+    },
+    [search, filterStatus]
+  );
 
   const handleScroll = (e: React.SyntheticEvent<HTMLDivElement>) => {
-    const target = e.currentTarget ;
+    const target = e.currentTarget;
 
-    if (startScrollPosition && startScrollPosition.current && setIsVisibleNavbar) {
+    if (
+      startScrollPosition &&
+      startScrollPosition.current &&
+      setIsVisibleNavbar
+    ) {
       if (
-        (target.scrollTop < 20) ||
-        (target.scrollHeight - (target.scrollTop + target.clientHeight) < 40) ||
-        (target.scrollHeight - target.clientHeight < 150)
-      ) { 
+        target.scrollTop < 20 ||
+        target.scrollHeight - (target.scrollTop + target.clientHeight) < 40 ||
+        target.scrollHeight - target.clientHeight < 150
+      ) {
         setIsVisibleNavbar(true);
         startScrollPosition.current = 0;
-      }
-      else if (target.scrollTop < startScrollPosition.current) {
+      } else if (target.scrollTop < startScrollPosition.current) {
         if (startScrollPosition.current - target.scrollTop > 40) {
           setIsVisibleNavbar(true);
           startScrollPosition.current = 0;
         }
-      }
-      else {
+      } else {
         setIsVisibleNavbar(false);
         startScrollPosition.current = 0;
       }
-    }
-    else {
+    } else {
       startScrollPosition.current = target.scrollTop;
     }
   };
@@ -115,28 +124,24 @@ const Agents = (props: IAgentsProps) => {
   if (!userAgentsLength && pending) {
     return (
       <div className="agents__spinner">
-        <Spinner size='150px' />
+        <Spinner size="150px" />
       </div>
-    )
-  }
-  else if (!userAgentsLength && !pending) {
-    return <AgenciesPreview userType={2} />
+    );
+  } else if (!userAgentsLength && !pending) {
+    return <AgenciesPreview userType={2} />;
   }
 
   return (
     <div className="agents">
       <h2 className="agents__title">
-        Your Agents <span className="agents__count">({userAgentsLength})</span>
+        Your Agents <span className="agents__count">({agentsCount})</span>
       </h2>
 
       <div className="agents__invites">
         <div className="agents__invites-count">
-          <MailInviteIcon className="agents__invites-count-icon"/>
+          <MailInviteIcon className="agents__invites-count-icon" />
 
-          <Link
-            to={ROUTES.invites}
-            className="agents__invites-count-text"
-          >
+          <Link to={ROUTES.invites} className="agents__invites-count-text">
             My Invites <span>({invitesCount})</span>
           </Link>
         </div>
@@ -152,21 +157,27 @@ const Agents = (props: IAgentsProps) => {
       <div className="agents__filters">
         <button
           onClick={() => updateStatusFilter(0)}
-          className={classModifier('agents__filter-btn', [filterStatus === 0 && 'active'])}
+          className={classModifier("agents__filter-btn", [
+            filterStatus === 0 && "active",
+          ])}
         >
           All
         </button>
 
         <button
           onClick={() => updateStatusFilter(1)}
-          className={classModifier('agents__filter-btn', [filterStatus === 1 && 'active'])}
+          className={classModifier("agents__filter-btn", [
+            filterStatus === 1 && "active",
+          ])}
         >
           Online
         </button>
 
         <button
           onClick={() => updateStatusFilter(2)}
-          className={classModifier('agents__filter-btn', [filterStatus === 2 && 'active'])}
+          className={classModifier("agents__filter-btn", [
+            filterStatus === 2 && "active",
+          ])}
         >
           Offline
         </button>
@@ -185,7 +196,6 @@ const Agents = (props: IAgentsProps) => {
         listMode={`${filterStatus}__${search}`}
         onScroll={handleScroll}
         noItemsText="No agents found"
-
         HeaderComponent={
           <header className="agents-list__header">
             <div className="agents-list__header-block">Name</div>
@@ -194,8 +204,8 @@ const Agents = (props: IAgentsProps) => {
         }
       />
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: AppState) => ({
   pending: state.agents.pending,
@@ -204,14 +214,15 @@ const mapStateToProps = (state: AppState) => ({
   ids: selectAgents(state),
   userAgentsLength: state.agents.ids.length,
   invitesCount: state.agents.invitesCount,
-})
+  agentsCount: state.agents.agentsCount,
+});
 
-const mapDispatchToProps = ({ 
+const mapDispatchToProps = {
   openModal,
   getAgents,
   filterAgents,
   updateSearch,
   updateStatusFilter,
-})
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Agents);
