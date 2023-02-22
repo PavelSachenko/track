@@ -30,3 +30,6 @@ decline-invite:
 
 accept-invite:
 	cd backend && docker-compose exec track-php bash -c  "cd /var/www && php artisan socket:invite accept" && cd ..
+	
+delete-invite:
+	cd backend && docker-compose exec track-php bash -c  "cd /var/www && php artisan socket:invite delete" && cd ..
