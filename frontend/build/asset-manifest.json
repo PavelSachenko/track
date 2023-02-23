@@ -3,101 +3,51 @@
     "static/js/0.e2cdadec.chunk.js": "/static/js/0.e2cdadec.chunk.js",
     "static/js/0.e2cdadec.chunk.js.map": "/static/js/0.e2cdadec.chunk.js.map",
     "AgenciesChunk.css": "/static/css/AgenciesChunk.ef53653f.chunk.css",
-<<<<<<< HEAD
-    "AgenciesChunk.js": "/static/js/AgenciesChunk.4da31ce5.chunk.js",
-    "AgenciesChunk.js.map": "/static/js/AgenciesChunk.4da31ce5.chunk.js.map",
-=======
-    "AgenciesChunk.js": "/static/js/AgenciesChunk.0406825d.chunk.js",
-    "AgenciesChunk.js.map": "/static/js/AgenciesChunk.0406825d.chunk.js.map",
->>>>>>> d3d4c85249166fef5462e61b424cbf272a74f7ae
+    "AgenciesChunk.js": "/static/js/AgenciesChunk.5394fdc5.chunk.js",
+    "AgenciesChunk.js.map": "/static/js/AgenciesChunk.5394fdc5.chunk.js.map",
     "AgentModalChunk.css": "/static/css/AgentModalChunk.15b926e0.chunk.css",
     "AgentModalChunk.js": "/static/js/AgentModalChunk.6d03c1d1.chunk.js",
     "AgentModalChunk.js.map": "/static/js/AgentModalChunk.6d03c1d1.chunk.js.map",
     "AgentScheduleChunk.css": "/static/css/AgentScheduleChunk.001fa979.chunk.css",
-<<<<<<< HEAD
-    "AgentScheduleChunk.js": "/static/js/AgentScheduleChunk.9f2af4d9.chunk.js",
-    "AgentScheduleChunk.js.map": "/static/js/AgentScheduleChunk.9f2af4d9.chunk.js.map",
-    "DeclineInviteModalChunk.css": "/static/css/DeclineInviteModalChunk.ad2638b0.chunk.css",
-    "DeclineInviteModalChunk.js": "/static/js/DeclineInviteModalChunk.4524f077.chunk.js",
-    "DeclineInviteModalChunk.js.map": "/static/js/DeclineInviteModalChunk.4524f077.chunk.js.map",
-=======
     "AgentScheduleChunk.js": "/static/js/AgentScheduleChunk.1543159c.chunk.js",
     "AgentScheduleChunk.js.map": "/static/js/AgentScheduleChunk.1543159c.chunk.js.map",
     "DeclineInviteModalChunk.css": "/static/css/DeclineInviteModalChunk.ad2638b0.chunk.css",
-    "DeclineInviteModalChunk.js": "/static/js/DeclineInviteModalChunk.ad3b9548.chunk.js",
-    "DeclineInviteModalChunk.js.map": "/static/js/DeclineInviteModalChunk.ad3b9548.chunk.js.map",
->>>>>>> d3d4c85249166fef5462e61b424cbf272a74f7ae
+    "DeclineInviteModalChunk.js": "/static/js/DeclineInviteModalChunk.4524f077.chunk.js",
+    "DeclineInviteModalChunk.js.map": "/static/js/DeclineInviteModalChunk.4524f077.chunk.js.map",
     "DeleteAccountModalChunk.css": "/static/css/DeleteAccountModalChunk.e5e101ea.chunk.css",
     "DeleteAccountModalChunk.js": "/static/js/DeleteAccountModalChunk.9a30288c.chunk.js",
     "DeleteAccountModalChunk.js.map": "/static/js/DeleteAccountModalChunk.9a30288c.chunk.js.map",
     "DeleteAgentModalChunk.css": "/static/css/DeleteAgentModalChunk.d4bcfcce.chunk.css",
-<<<<<<< HEAD
     "DeleteAgentModalChunk.js": "/static/js/DeleteAgentModalChunk.80ff151f.chunk.js",
     "DeleteAgentModalChunk.js.map": "/static/js/DeleteAgentModalChunk.80ff151f.chunk.js.map",
-=======
-    "DeleteAgentModalChunk.js": "/static/js/DeleteAgentModalChunk.ac6dbd5f.chunk.js",
-    "DeleteAgentModalChunk.js.map": "/static/js/DeleteAgentModalChunk.ac6dbd5f.chunk.js.map",
->>>>>>> d3d4c85249166fef5462e61b424cbf272a74f7ae
     "DeleteEventModalChunk.css": "/static/css/DeleteEventModalChunk.73db58f3.chunk.css",
     "DeleteEventModalChunk.js": "/static/js/DeleteEventModalChunk.9dc30625.chunk.js",
     "DeleteEventModalChunk.js.map": "/static/js/DeleteEventModalChunk.9dc30625.chunk.js.map",
     "DeleteInviteModalChunk.css": "/static/css/DeleteInviteModalChunk.6a91dee0.chunk.css",
-<<<<<<< HEAD
     "DeleteInviteModalChunk.js": "/static/js/DeleteInviteModalChunk.2dc4dd4c.chunk.js",
     "DeleteInviteModalChunk.js.map": "/static/js/DeleteInviteModalChunk.2dc4dd4c.chunk.js.map",
     "EventModalChunk.css": "/static/css/EventModalChunk.4c6359cb.chunk.css",
-    "EventModalChunk.js": "/static/js/EventModalChunk.f407cd3c.chunk.js",
-    "EventModalChunk.js.map": "/static/js/EventModalChunk.f407cd3c.chunk.js.map",
-=======
-    "DeleteInviteModalChunk.js": "/static/js/DeleteInviteModalChunk.c5feaf9f.chunk.js",
-    "DeleteInviteModalChunk.js.map": "/static/js/DeleteInviteModalChunk.c5feaf9f.chunk.js.map",
-    "EventModalChunk.css": "/static/css/EventModalChunk.4c6359cb.chunk.css",
     "EventModalChunk.js": "/static/js/EventModalChunk.10999f23.chunk.js",
     "EventModalChunk.js.map": "/static/js/EventModalChunk.10999f23.chunk.js.map",
->>>>>>> d3d4c85249166fef5462e61b424cbf272a74f7ae
     "InvitationInstructionsModalChunk.css": "/static/css/InvitationInstructionsModalChunk.0e92ea25.chunk.css",
     "InvitationInstructionsModalChunk.js": "/static/js/InvitationInstructionsModalChunk.f73c440a.chunk.js",
     "InvitationInstructionsModalChunk.js.map": "/static/js/InvitationInstructionsModalChunk.f73c440a.chunk.js.map",
     "InviteMemberModalChunk.css": "/static/css/InviteMemberModalChunk.1783e757.chunk.css",
-<<<<<<< HEAD
-    "InviteMemberModalChunk.js": "/static/js/InviteMemberModalChunk.7e8da873.chunk.js",
-    "InviteMemberModalChunk.js.map": "/static/js/InviteMemberModalChunk.7e8da873.chunk.js.map",
-    "InvitesChunk.css": "/static/css/InvitesChunk.5c44890c.chunk.css",
-    "InvitesChunk.js": "/static/js/InvitesChunk.74ec4c59.chunk.js",
-    "InvitesChunk.js.map": "/static/js/InvitesChunk.74ec4c59.chunk.js.map",
-    "MainPageChunk.css": "/static/css/MainPageChunk.4b72e2a2.chunk.css",
-    "MainPageChunk.js": "/static/js/MainPageChunk.d0b3b442.chunk.js",
-    "MainPageChunk.js.map": "/static/js/MainPageChunk.d0b3b442.chunk.js.map",
-    "NotificationsChunk.css": "/static/css/NotificationsChunk.8e48f77a.chunk.css",
-    "NotificationsChunk.js": "/static/js/NotificationsChunk.f9e2966a.chunk.js",
-    "NotificationsChunk.js.map": "/static/js/NotificationsChunk.f9e2966a.chunk.js.map",
-=======
     "InviteMemberModalChunk.js": "/static/js/InviteMemberModalChunk.4f7956b3.chunk.js",
     "InviteMemberModalChunk.js.map": "/static/js/InviteMemberModalChunk.4f7956b3.chunk.js.map",
     "InvitesChunk.css": "/static/css/InvitesChunk.5c44890c.chunk.css",
-    "InvitesChunk.js": "/static/js/InvitesChunk.181fb8bd.chunk.js",
-    "InvitesChunk.js.map": "/static/js/InvitesChunk.181fb8bd.chunk.js.map",
+    "InvitesChunk.js": "/static/js/InvitesChunk.824a6c64.chunk.js",
+    "InvitesChunk.js.map": "/static/js/InvitesChunk.824a6c64.chunk.js.map",
     "MainPageChunk.css": "/static/css/MainPageChunk.4b72e2a2.chunk.css",
     "MainPageChunk.js": "/static/js/MainPageChunk.7cc5cb56.chunk.js",
     "MainPageChunk.js.map": "/static/js/MainPageChunk.7cc5cb56.chunk.js.map",
     "NotificationsChunk.css": "/static/css/NotificationsChunk.8e48f77a.chunk.css",
-    "NotificationsChunk.js": "/static/js/NotificationsChunk.5173a657.chunk.js",
-    "NotificationsChunk.js.map": "/static/js/NotificationsChunk.5173a657.chunk.js.map",
->>>>>>> d3d4c85249166fef5462e61b424cbf272a74f7ae
+    "NotificationsChunk.js": "/static/js/NotificationsChunk.5ed6012e.chunk.js",
+    "NotificationsChunk.js.map": "/static/js/NotificationsChunk.5ed6012e.chunk.js.map",
     "SettingsChunk.css": "/static/css/SettingsChunk.3d5e44c8.chunk.css",
     "SettingsChunk.js": "/static/js/SettingsChunk.c9ea6055.chunk.js",
     "SettingsChunk.js.map": "/static/js/SettingsChunk.c9ea6055.chunk.js.map",
     "SettingsGeneralChunk.css": "/static/css/SettingsGeneralChunk.34b94d43.chunk.css",
-<<<<<<< HEAD
-    "SettingsGeneralChunk.js": "/static/js/SettingsGeneralChunk.ef96103e.chunk.js",
-    "SettingsGeneralChunk.js.map": "/static/js/SettingsGeneralChunk.ef96103e.chunk.js.map",
-    "SettingsScheduleChunk.css": "/static/css/SettingsScheduleChunk.c71a8403.chunk.css",
-    "SettingsScheduleChunk.js": "/static/js/SettingsScheduleChunk.a2d36a51.chunk.js",
-    "SettingsScheduleChunk.js.map": "/static/js/SettingsScheduleChunk.a2d36a51.chunk.js.map",
-    "SettingsSecurityChunk.css": "/static/css/SettingsSecurityChunk.855ac8ad.chunk.css",
-    "SettingsSecurityChunk.js": "/static/js/SettingsSecurityChunk.cd1ef6f5.chunk.js",
-    "SettingsSecurityChunk.js.map": "/static/js/SettingsSecurityChunk.cd1ef6f5.chunk.js.map",
-=======
     "SettingsGeneralChunk.js": "/static/js/SettingsGeneralChunk.62afd666.chunk.js",
     "SettingsGeneralChunk.js.map": "/static/js/SettingsGeneralChunk.62afd666.chunk.js.map",
     "SettingsScheduleChunk.css": "/static/css/SettingsScheduleChunk.c71a8403.chunk.css",
@@ -106,7 +56,6 @@
     "SettingsSecurityChunk.css": "/static/css/SettingsSecurityChunk.855ac8ad.chunk.css",
     "SettingsSecurityChunk.js": "/static/js/SettingsSecurityChunk.ffe8aa31.chunk.js",
     "SettingsSecurityChunk.js.map": "/static/js/SettingsSecurityChunk.ffe8aa31.chunk.js.map",
->>>>>>> d3d4c85249166fef5462e61b424cbf272a74f7ae
     "SuccessPasswordChangeModalChunk.css": "/static/css/SuccessPasswordChangeModalChunk.7e5e099b.chunk.css",
     "SuccessPasswordChangeModalChunk.js": "/static/js/SuccessPasswordChangeModalChunk.57e7f78d.chunk.js",
     "SuccessPasswordChangeModalChunk.js.map": "/static/js/SuccessPasswordChangeModalChunk.57e7f78d.chunk.js.map",
@@ -117,21 +66,12 @@
     "SuccessRegisterModalChunk.js": "/static/js/SuccessRegisterModalChunk.6ed01c79.chunk.js",
     "SuccessRegisterModalChunk.js.map": "/static/js/SuccessRegisterModalChunk.6ed01c79.chunk.js.map",
     "main.css": "/static/css/main.1cb1b335.chunk.css",
-<<<<<<< HEAD
-    "main.js": "/static/js/main.a0c942b6.chunk.js",
-    "main.js.map": "/static/js/main.a0c942b6.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.95d39759.js",
-    "runtime-main.js.map": "/static/js/runtime-main.95d39759.js.map",
+    "main.js": "/static/js/main.4d62c5c8.chunk.js",
+    "main.js.map": "/static/js/main.4d62c5c8.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.35e8e7ea.js",
+    "runtime-main.js.map": "/static/js/runtime-main.35e8e7ea.js.map",
     "static/js/24.624a71cd.chunk.js": "/static/js/24.624a71cd.chunk.js",
     "static/js/24.624a71cd.chunk.js.map": "/static/js/24.624a71cd.chunk.js.map",
-=======
-    "main.js": "/static/js/main.30099819.chunk.js",
-    "main.js.map": "/static/js/main.30099819.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.0fe0b2aa.js",
-    "runtime-main.js.map": "/static/js/runtime-main.0fe0b2aa.js.map",
-    "static/js/24.ba0f89a5.chunk.js": "/static/js/24.ba0f89a5.chunk.js",
-    "static/js/24.ba0f89a5.chunk.js.map": "/static/js/24.ba0f89a5.chunk.js.map",
->>>>>>> d3d4c85249166fef5462e61b424cbf272a74f7ae
     "static/js/25.6d247da8.chunk.js": "/static/js/25.6d247da8.chunk.js",
     "static/js/25.6d247da8.chunk.js.map": "/static/js/25.6d247da8.chunk.js.map",
     "index.html": "/index.html",
@@ -157,11 +97,7 @@
     "static/css/SuccessPasswordRecoveryModalChunk.c7e7c600.chunk.css.map": "/static/css/SuccessPasswordRecoveryModalChunk.c7e7c600.chunk.css.map",
     "static/css/SuccessRegisterModalChunk.b20da5d7.chunk.css.map": "/static/css/SuccessRegisterModalChunk.b20da5d7.chunk.css.map",
     "static/css/main.1cb1b335.chunk.css.map": "/static/css/main.1cb1b335.chunk.css.map",
-<<<<<<< HEAD
     "static/js/24.624a71cd.chunk.js.LICENSE.txt": "/static/js/24.624a71cd.chunk.js.LICENSE.txt",
-=======
-    "static/js/24.ba0f89a5.chunk.js.LICENSE.txt": "/static/js/24.ba0f89a5.chunk.js.LICENSE.txt",
->>>>>>> d3d4c85249166fef5462e61b424cbf272a74f7ae
     "static/media/index.scss": "/static/media/Inter-Regular.9cd7588f.ttf",
     "static/media/agencies-preview.be98d55a.svg": "/static/media/agencies-preview.be98d55a.svg",
     "static/media/agency-avatar.c4f4ccf4.svg": "/static/media/agency-avatar.c4f4ccf4.svg",
@@ -196,16 +132,9 @@
     "static/media/trash.svg": "/static/media/trash.b18834c2.svg"
   },
   "entrypoints": [
-<<<<<<< HEAD
-    "static/js/runtime-main.95d39759.js",
+    "static/js/runtime-main.35e8e7ea.js",
     "static/js/24.624a71cd.chunk.js",
     "static/css/main.1cb1b335.chunk.css",
-    "static/js/main.a0c942b6.chunk.js"
-=======
-    "static/js/runtime-main.0fe0b2aa.js",
-    "static/js/24.ba0f89a5.chunk.js",
-    "static/css/main.1cb1b335.chunk.css",
-    "static/js/main.30099819.chunk.js"
->>>>>>> d3d4c85249166fef5462e61b424cbf272a74f7ae
+    "static/js/main.4d62c5c8.chunk.js"
   ]
 }
