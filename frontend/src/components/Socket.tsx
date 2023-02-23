@@ -2,6 +2,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 
 // import { SOCKET_ROOT } from '../config/socket-config';
+import { API_ROOT } from "../services/axiosInstance";
 import {
   addNotification,
   removeNotifications,
@@ -73,7 +74,7 @@ class Socket extends Component<ISocketProps> {
       userAuthentication: {
         transport: "ajax",
         //TODO get from config file uri like http://track.local/ and concat
-        endpoint: "http://track.local/api/auth/socket/set-user-connection",
+        endpoint: `${API_ROOT}auth/socket/set-user-connection`,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -81,7 +82,7 @@ class Socket extends Component<ISocketProps> {
       channelAuthorization: {
         transport: "ajax",
         //TODO get from config file uri like http://track.local/ and concat
-        endpoint: "http://track.local/api/auth/socket/registration-channel",
+        endpoint: `${API_ROOT}auth/socket/registration-channel`,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
