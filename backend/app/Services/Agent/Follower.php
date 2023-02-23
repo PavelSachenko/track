@@ -7,7 +7,6 @@ use App\Enums\Socket\Agent\Invite;
 use App\Http\Requests\Agent\Subscription\AllFollowersRequest;
 use App\Http\Requests\Agent\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agent\Subscription\DecisionInviteRequest;
-use App\Models\Agent;
 use App\Repositories\Contracts\Agent\SubscriptionRepo;
 use App\Services\Contracts\Socket\Socket;
 

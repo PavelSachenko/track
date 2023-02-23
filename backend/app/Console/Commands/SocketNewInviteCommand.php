@@ -75,6 +75,12 @@ class SocketNewInviteCommand extends Command
                 );
                 echo "Socket was sent\n";
                 break;
+            case "delete":
+                $agent = Agent::where('email', 'agent@gmail.com')->first();
+                $agency = Agency::where('email', 'agency@gmail.com')->first();
+                \App\Models\Subscription::where('user_id', $agent->user_id)->where('user_subscriber_id', $agency->user_id)->delete();
+                \App\Models\SubscriptionRequest::where('user_receiver_id', $agent->user_id)->where('user_sender_id', $agency->user_id)->delete();
+                break;
             default:
                 echo "Event Not Found!\n";
         }

@@ -3,6 +3,7 @@
 namespace App\Repositories\PostgreSql\Agent;
 
 
+use App\Enums\SubscriptionRequestStatus;
 use App\Exceptions\BadRequestException;
 use App\Models\Agent;
 use App\Models\Subscription;
@@ -47,7 +48,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
     public function setRejectStatusForRequest(int $subscriptionRequestID): array
     {
         $subscriptionRequest = SubscriptionRequest::where('id', $subscriptionRequestID)->first();
-        $response['updated'] = $subscriptionRequest->update(['status' => SubscriptionRequest::STATUS_TYPE_REJECT]);
+        $response['updated'] = $subscriptionRequest->update(['status' => SubscriptionRequestStatus::REJECT]);
         $response['user_sender_id'] = $subscriptionRequest->user_sender_id;
         $response['subscription_request_id'] = $subscriptionRequest->id;
 
@@ -66,7 +67,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
     {
         return DB::table('subscription_requests')
             ->where('user_receiver_id', \Auth::user()->id)
-            ->where('status', '<>', SubscriptionRequest::STATUS_TYPE_REJECT)
+            ->where('status', '<>', SubscriptionRequestStatus::REJECT)
             ->count();
     }
 
@@ -112,7 +113,8 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
                 'sr.message',
                 'u.type'
             ])
-            ->where('sr.user_receiver_id', \Auth::user()->id);
+            ->where('sr.user_receiver_id', \Auth::user()->id)
+            ->where('st.status', '<>', SubscriptionRequestStatus::REJECT);
 
         if ($search != '') {
             $query->where('a.name', 'ilike', $search . '%')
