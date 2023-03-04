@@ -32,8 +32,13 @@ class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
 
         if (!empty($workSchedule)) {
             $date = [
-                'from' => $workTimeFrom < strtotime($workSchedule[0]['from']) ? $workTimeFrom * 1000 : strtotime($workSchedule[0]['from']) * 1000,
-                'to' => $workTimeTo > strtotime($workSchedule[0]['to']) ? $workTimeTo * 1000 : strtotime($workSchedule[0]['to']) * 1000
+                'from' => $workTimeFrom < strtotime($workSchedule[0]['from'])
+                    ? $workTimeFrom * 1000
+                    : strtotime($workSchedule[0]['from']) * 1000,
+
+                'to' => $workTimeTo > strtotime($workSchedule[0]['to'])
+                    ? $workTimeTo * 1000
+                    : strtotime($workSchedule[0]['to']) * 1000
             ];
         }
 
@@ -64,8 +69,14 @@ class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
         return WorkSchedule::where('id', $id)->where('user_id', \Auth::user()->id)->delete();
     }
 
-    public function updateWorkRecord(int $id, string $dateFrom, string $dateTo, int $type, ?string $description, ?int $agencyID): array
-    {
+    public function updateWorkRecord(
+        int $id,
+        string $dateFrom,
+        string $dateTo,
+        int $type,
+        ?string $description,
+        ?int $agencyID
+    ): array {
         $workRecord = WorkSchedule::where('id', $id)
             ->where('user_id', \Auth::user()->id)
             ->first();
@@ -82,5 +93,4 @@ class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
         ]);
         return $workRecord->with('agency')->where('id', $workRecord->id)->first()->toArray();
     }
-
 }

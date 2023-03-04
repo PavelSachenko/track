@@ -24,9 +24,19 @@ class Follower implements \App\Services\Contracts\Agent\Follower
     public function accept(DecisionInviteRequest $request): bool
     {
         $subscription = $this->subscriptionRepo->createSubscriptionFromRequest($request->id);
-        if (!empty($subscription)){
-            $this->socket->sendToUser($subscription['user_subscriber_id'], Invite::ACCEPT, ['id' => $subscription['subscription_id']]);
-            $this->socket->sendToUser($subscription['user_subscriber_id'], Subscription::NEW_FOLLOW, \Auth::user()->toArray());
+
+        if (!empty($subscription)) {
+            $this->socket->sendToUser(
+                $subscription['user_subscriber_id'],
+                Invite::ACCEPT,
+                ['id' => $subscription['subscription_id']]
+            );
+
+            $this->socket->sendToUser(
+                $subscription['user_subscriber_id'],
+                Subscription::NEW_FOLLOW,
+                \Auth::user()->toArray()
+            );
         }
 
         return !empty($subscription);
@@ -35,7 +45,7 @@ class Follower implements \App\Services\Contracts\Agent\Follower
     public function decline(DecisionInviteRequest $request): bool
     {
         $subscriptionRequest = $this->subscriptionRepo->setRejectStatusForRequest($request->id);
-        if ($subscriptionRequest['updated']){
+        if ($subscriptionRequest['updated']) {
             $this->socket->sendToUser($subscriptionRequest['user_sender_id'], Invite::DECLINE, ['id' => $request->id]);
         }
 
@@ -54,11 +64,11 @@ class Follower implements \App\Services\Contracts\Agent\Follower
 
     public function getAllFollowers(AllFollowersRequest $request): array
     {
-        return $this->subscriptionRepo->getAllSubscriber($request->limit, $request->offset, $request->search? : '');
+        return $this->subscriptionRepo->getAllSubscriber($request->limit, $request->offset, $request->search ?: '');
     }
 
     public function getAllRequests(AllRequestsRequest $request): array
     {
-        return $this->subscriptionRepo->getAllRequests($request->limit, $request->offset, $request->search? : '');
+        return $this->subscriptionRepo->getAllRequests($request->limit, $request->offset, $request->search ?: '');
     }
 }

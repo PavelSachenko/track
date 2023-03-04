@@ -21,6 +21,7 @@ class SettingsController extends Controller
     {
         return response()->json($this->settings->updateCommonSettings($request));
     }
+
     public function updateAvatar(UpdateAvatarRequest $request)
     {
         return response()->json($this->settings->updateAvatar($request));

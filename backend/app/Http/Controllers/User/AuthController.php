@@ -24,8 +24,6 @@ class AuthController extends Controller
         return response()->json($auth->validateRegistrationToken($request));
     }
 
-
-
     public function registration(RegistrationRequest $request, Auth $auth)
     {
         return response()->json($auth->registrationConcreteUser($request), Response::HTTP_CREATED);

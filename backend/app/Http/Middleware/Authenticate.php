@@ -13,12 +13,12 @@ class Authenticate extends Middleware
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return string|null
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
+        if (!$request->expectsJson()) {
             throw new AuthException("not authorized user");
         }
     }
@@ -36,7 +36,7 @@ class Authenticate extends Middleware
                 $user = \Auth::user()->agency;
                 break;
         }
-        if (is_null($user)){
+        if (is_null($user)) {
             throw new ForbiddenException("Registration for user not completed");
         }
 
@@ -44,8 +44,4 @@ class Authenticate extends Middleware
 
         return $next($request);
     }
-
-
-
-
 }

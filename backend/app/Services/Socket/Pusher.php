@@ -24,7 +24,8 @@ class Pusher implements Socket
                 'port' => config('broadcasting.connections.pusher.options.port'),
                 'scheme' => config('broadcasting.connections.pusher.options.scheme'),
                 'cluster' => config('broadcasting.connections.pusher.options.cluster')
-            ]);
+            ]
+        );
     }
 
     /**

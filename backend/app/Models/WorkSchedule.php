@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
 class WorkSchedule extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
     const TYPE_WORK = 1;

@@ -18,7 +18,11 @@ class SetWorkRecordRequest extends BaseRequest
 {
     public function rules(): array
     {
-        $dateValidate = new DateInWorkScheduleRule($this->request->get('start', null), $this->request->get('end', null), $this?->id);
+        $dateValidate = new DateInWorkScheduleRule(
+            $this->request->get('start', null),
+            $this->request->get('end', null),
+            $this?->id
+        );
 
         return [
             'start' => ['required', 'numeric', 'min:' . strtotime(date('Y-m-d 00:00:00')) * 1000, $dateValidate],

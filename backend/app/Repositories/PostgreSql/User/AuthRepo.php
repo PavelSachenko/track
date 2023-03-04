@@ -34,7 +34,7 @@ class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
     public function setValidatedEmail(string $token): string
     {
         $personalToken = PersonalAccessToken::findToken($token);
-        if (is_null($personalToken)){
+        if (is_null($personalToken)) {
             throw new InvalidTokenException();
         }
 
@@ -71,7 +71,7 @@ class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
             DB::commit();
 
             return $user;
-        }catch (\Throwable $e){
+        } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
         }

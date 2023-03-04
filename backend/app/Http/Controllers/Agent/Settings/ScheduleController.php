@@ -24,7 +24,6 @@ class ScheduleController extends Controller
     public function setWorkStatus(UpdateWorkStatusRequest $request)
     {
         return response()->json($this->settings->setIsAvailableForToday($request->is_available));
-
     }
 
     public function setWorkTime(UpdateWorkingScheduleRequest $request)

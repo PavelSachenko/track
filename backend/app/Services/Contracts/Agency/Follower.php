@@ -13,5 +13,4 @@ interface Follower extends Invite
     public function getAllFollows(AllFollowsRequest $request): array;
 
     public function deleteFollow(int $followID): bool;
-
 }

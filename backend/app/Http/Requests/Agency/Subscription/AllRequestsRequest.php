@@ -10,11 +10,11 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property int $offset
  * @property string $search
  */
-class AllRequestsRequest  extends BaseRequest
+class AllRequestsRequest extends BaseRequest
 {
     protected function prepareForValidation()
     {
-        $this->merge(['limit' => $this->limit? : 20, 'offset' => $this->offset? : 0]);
+        $this->merge(['limit' => $this->limit ?: 20, 'offset' => $this->offset ?: 0]);
     }
 
     public function rules(): array
@@ -25,6 +25,7 @@ class AllRequestsRequest  extends BaseRequest
             'search' => ['string', 'max:255'],
         ];
     }
+
     public function authorize(): bool
     {
         return true;

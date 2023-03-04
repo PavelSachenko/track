@@ -11,7 +11,7 @@ class WorkTimes implements \App\Repositories\Contracts\Agent\WorkTimes
     {
         return (bool)\DB::table('work_times')
             ->where('user_id', \Auth::user()->id)
-            ->update(['current_mode' => $mode, $mode .'_times' => $times]);
+            ->update(['current_mode' => $mode, $mode . '_times' => $times]);
     }
 
     public function updateIsAvailable(bool $isAvailable): bool
@@ -23,6 +23,6 @@ class WorkTimes implements \App\Repositories\Contracts\Agent\WorkTimes
 
     public function getWorkTimes(): array
     {
-        return WorkTime::where('user_id',\Auth::user()->id)->first()->toArray();
+        return WorkTime::where('user_id', \Auth::user()->id)->first()->toArray();
     }
 }

@@ -12,7 +12,7 @@ class FollowerServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(FollowerContract::class, function ($app){
+        $this->app->bind(FollowerContract::class, function ($app) {
             return new Follower($app->make(SubscriptionRepo::class), $app->make(Pusher::class));
         });
     }

@@ -39,10 +39,6 @@ services:
             SOKETI_DEFAULT_APP_SECRET: 'app-secret'
             SOKETI_DEFAULT_APP_USER_AUTHENTICATION: 'true'
             SOKETI_DEFAULT_APP_ENABLE_CLIENT_MESSAGES: 'true'
-#            SOKETI_SSL_CERT: '/etc/ssl/track.crt'
-#            SOKETI_SSL_KEY: '/etc/ssl/track.key'
-#            SOKETI_SSL_PASS: 'qwerty'
-#            SOKETI_SSL_CA: '/etc/ssl/track.csr'
         networks:
             - "net-track"
         volumes:
@@ -67,7 +63,7 @@ services:
             - "track-postgres"
 
     track-postgres:
-        image: postgres:latest
+        image: postgres:15-alpine
         container_name: track-postgres
         restart: 'no'
         environment:

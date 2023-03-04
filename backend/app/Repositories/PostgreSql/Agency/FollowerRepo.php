@@ -2,7 +2,6 @@
 
 namespace App\Repositories\PostgreSql\Agency;
 
-
 use App\Enums\SubscriptionRequestStatus;
 use App\Exceptions\BadRequestException;
 use App\Models\Subscription;
@@ -37,8 +36,9 @@ class FollowerRepo implements SubscriptionRepo
                 $id = $this->createEmptyUser($userReceiverEmail);
             }
 
-            if (\DB::table('subscriptions')->where([['user_id', $id], ['user_subscriber_id', \Auth::user()->id]])->exists())
+            if (\DB::table('subscriptions')->where([['user_id', $id], ['user_subscriber_id', \Auth::user()->id]])->exists()) {
                 throw new BadRequestException("You already have subscribed");
+            }
 
             $id = DB::table('subscription_requests')->insertGetId([
                 'user_sender_id' => \Auth::user()->id,

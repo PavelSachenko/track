@@ -8,6 +8,7 @@ use App\Repositories\Contracts\Agent\WorkTimes;
 class Settings implements \App\Services\Contracts\Agent\Settings
 {
     private $workTimes;
+
     public function __construct(WorkTimes $workTimes)
     {
         $this->workTimes = $workTimes;
@@ -22,7 +23,6 @@ class Settings implements \App\Services\Contracts\Agent\Settings
     {
         //TODO validation json $request
         return $this->workTimes->updateWorkTime($request->mode, (array)json_decode($request->times));
-
     }
 
     public function getWorkingSchedule(): array

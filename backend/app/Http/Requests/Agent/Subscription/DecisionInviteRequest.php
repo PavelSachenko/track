@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Agent\Subscription;
 
 use App\Http\Requests\BaseRequest;
+
 /**
  * @property int $id
  */

@@ -19,6 +19,4 @@ class LoginRequest extends BaseRequest
     {
         return true;
     }
-
-
 }

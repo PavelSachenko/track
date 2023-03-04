@@ -14,12 +14,18 @@ use Illuminate\Http\Request;
 interface Auth
 {
     public function registerWithEmail(EmailRegistrationRequest $request): bool;
-    public function registrationConcreteUser(RegistrationRequest $request): array;
-    public function login(LoginRequest $request): array;
-    public function logout(Request $request): bool;
-    public function validateRegistrationToken(ValidateEmailTokenRequest $request): string;
-    public function validateResetPasswordToken(ValidateEmailTokenRequest $request): bool;
-    public function sendResetPasswordToEmail(ResetPasswordEmailValidationRequest $request): bool;
-    public function resetPassword(ResetPasswordRequest $request): array;
 
+    public function registrationConcreteUser(RegistrationRequest $request): array;
+
+    public function login(LoginRequest $request): array;
+
+    public function logout(Request $request): bool;
+
+    public function validateRegistrationToken(ValidateEmailTokenRequest $request): string;
+
+    public function validateResetPasswordToken(ValidateEmailTokenRequest $request): bool;
+
+    public function sendResetPasswordToEmail(ResetPasswordEmailValidationRequest $request): bool;
+
+    public function resetPassword(ResetPasswordRequest $request): array;
 }

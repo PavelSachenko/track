@@ -24,8 +24,8 @@ class SocketController extends Controller
     public function registrationChannel(Request $request)
     {
         preg_match('/^(private|presence)/', $request->get('channel_name'), $matches);
-        if ($matches){
-            return match ($matches[0]){
+        if ($matches) {
+            return match ($matches[0]) {
                 'private' => $this->socket->authorizeChannel($request->get('channel_name'), $request->get('socket_id')),
                 'presence' => $this->socket->authorizePresenceChannel(
                     $request->get('channel_name'),
@@ -46,6 +46,9 @@ class SocketController extends Controller
     public function setUserConnection(Request $request)
     {
         $user = \Auth::user();
-        return $this->socket->authenticateUser($request->get('socket_id'), ['id' => $user->id, User::USER_TYPES[$user->type] => $user]);
+        return $this->socket->authenticateUser(
+            $request->get('socket_id'),
+            ['id' => $user->id, User::USER_TYPES[$user->type] => $user]
+        );
     }
 }

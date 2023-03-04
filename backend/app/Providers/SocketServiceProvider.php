@@ -10,7 +10,7 @@ class SocketServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(Socket::class, function (){
+        $this->app->bind(Socket::class, function () {
             return new Pusher();
         });
     }

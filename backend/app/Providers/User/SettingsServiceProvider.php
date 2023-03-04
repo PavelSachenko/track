@@ -12,7 +12,7 @@ class SettingsServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(SettingsContract::class, function ($app){
+        $this->app->bind(SettingsContract::class, function ($app) {
             return new Settings($app->make(SettingsRepo::class), $app->make(AuthRepo::class));
         });
     }
