@@ -13,7 +13,8 @@ services:
             - ./public:/var/www/public
             - ./docker/nginx:/var/www/docker/nginx
             - ../frontend/build:/var/www/build
-            - ./docker/nginx:/etc/nginx/conf.d
+            - ./docker/nginx/track.conf:/etc/nginx/conf.d/track.conf
+            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
         networks:
             - "net-track"
         depends_on:

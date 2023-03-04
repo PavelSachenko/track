@@ -114,7 +114,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
                 'u.type'
             ])
             ->where('sr.user_receiver_id', \Auth::user()->id)
-            ->where('st.status', '<>', SubscriptionRequestStatus::REJECT);
+            ->where('sr.status', '<>', SubscriptionRequestStatus::REJECT);
 
         if ($search != '') {
             $query->where('a.name', 'ilike', $search . '%')

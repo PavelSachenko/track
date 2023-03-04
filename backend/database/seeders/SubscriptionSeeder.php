@@ -11,7 +11,6 @@ class SubscriptionSeeder extends Seeder
 {
     public function run()
     {
-
         $mainAgentID = $this->getMainAgentID();
         $mainAgencyID = $this->getMainAgencyID();
 
