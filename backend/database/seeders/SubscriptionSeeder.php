@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\AgencyEnum;
+use App\Enums\AgentEnum;
 use App\Models\Subscription;
 use App\Models\SubscriptionRequest;
 use App\Models\User;
@@ -11,8 +13,8 @@ class SubscriptionSeeder extends Seeder
 {
     public function run()
     {
-        $mainAgentID = $this->getMainAgentID();
-        $mainAgencyID = $this->getMainAgencyID();
+        $mainAgentID = AgentEnum::localMainAgentID();
+        $mainAgencyID = AgencyEnum::localMainAgencyID();
 
         //получаем айдишки юзеров, которые агенства и не имеют реквестов для основного агента
         $arrayForCreateAgentSubscription = User::where('type', '2')
@@ -55,19 +57,4 @@ class SubscriptionSeeder extends Seeder
         Subscription::insert($arrayForCreateAgencySubscription);
 
     }
-
-    private function getMainAgentID(): int
-    {
-        return User::where('email', 'agent@gmail.com')
-            ->where('type', '1')
-            ->first()->id;
-    }
-
-    private function getMainAgencyID(): int
-    {
-        return User::where('email', 'agency@gmail.com')
-            ->where('type', '2')
-            ->first()->id;
-    }
-
 }

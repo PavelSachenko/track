@@ -11,13 +11,12 @@ class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
     {
         $workTime = WorkTime::where('user_id', \Auth::user()->id)->first();
         if ($workTime->current_mode == WorkTime::CUSTOM_MODE) {
-            $workTime = $workTime->{$workTime->current_mode . '_times'}[(int)date('N', strtotime(date('l'))) - 1];
+            $workTime = $workTime->{$workTime->current_mode . '_times'}[(int)date('N', strtotime($dateFrom)) - 1];
         } else {
             $workTime = $workTime->{$workTime->current_mode . '_times'};
         }
-
-        $workTimeFrom = strtotime(date('Y-m-d ' . $workTime['from']));
-        $workTimeTo = strtotime(date('Y-m-d ' . $workTime['to']));
+        $workTimeFrom = strtotime(date('Y-m-d ', strtotime($dateFrom)) . $workTime['from']);
+        $workTimeTo = strtotime(date('Y-m-d ' , strtotime($dateFrom)). $workTime['to']);
 
         $workSchedule = WorkSchedule::whereBetween('from', [$dateFrom, $dateTo])
             ->whereBetween('to', [$dateFrom, $dateTo])
@@ -36,9 +35,9 @@ class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
                     ? $workTimeFrom * 1000
                     : strtotime($workSchedule[0]['from']) * 1000,
 
-                'to' => $workTimeTo > strtotime($workSchedule[0]['to'])
+                'to' => $workTimeTo > strtotime($workSchedule[array_key_last($workSchedule)]['to'])
                     ? $workTimeTo * 1000
-                    : strtotime($workSchedule[0]['to']) * 1000
+                    : strtotime($workSchedule[array_key_last($workSchedule)]['to']) * 1000
             ];
         }
 
