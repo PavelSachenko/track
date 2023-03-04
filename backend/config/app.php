@@ -204,6 +204,7 @@ return [
         App\Providers\Agent\ScheduleServiceProvider::class,
         App\Providers\User\SettingsServiceProvider::class,
         App\Providers\SocketServiceProvider::class,
+        App\Providers\Agency\ScheduleServiceProvider::class,
     ],
 
     /*

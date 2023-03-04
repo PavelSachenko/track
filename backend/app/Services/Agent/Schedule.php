@@ -28,7 +28,7 @@ class Schedule implements \App\Services\Contracts\Agent\Schedule
         $from = $date . ' 00:00:00';
         $to = date('Y-m-d', strtotime("+1 day", strtotime($date))) . ' 00:00:00';
 
-        return $this->scheduleRepo->getScheduleForOneDay($from, $to);
+        return $this->scheduleRepo->getScheduleForOneDay(\Auth::user()->id, $from, $to);
     }
 
     public function addWorkRecord(SetWorkRecordRequest $request): array

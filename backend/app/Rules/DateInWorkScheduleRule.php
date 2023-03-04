@@ -21,8 +21,7 @@ class DateInWorkScheduleRule implements Rule
         return !\DB::table('work_schedules')
             ->where('user_id', \Auth::user()->id)
             ->where('id', '<>', $this->workRecordID)
-            ->where('to', '>=', $this->to)
-            ->where('from', '<=', $this->from)
+            ->whereRaw('("from", "to") OVERLAPS (?, ?)', [$this->from, $this->to])
             ->exists();
     }
 

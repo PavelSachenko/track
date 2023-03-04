@@ -7,9 +7,9 @@ use App\Models\WorkTime;
 
 class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
 {
-    public function getScheduleForOneDay(string $dateFrom, string $dateTo): array
+    public function getScheduleForOneDay(int $agentID, string $dateFrom, string $dateTo): array
     {
-        $workTime = WorkTime::where('user_id', \Auth::user()->id)->first();
+        $workTime = WorkTime::where('user_id', $agentID)->first();
         if ($workTime->current_mode == WorkTime::CUSTOM_MODE) {
             $workTime = $workTime->{$workTime->current_mode . '_times'}[(int)date('N', strtotime($dateFrom)) - 1];
         } else {
@@ -20,7 +20,7 @@ class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
 
         $workSchedule = WorkSchedule::whereBetween('from', [$dateFrom, $dateTo])
             ->whereBetween('to', [$dateFrom, $dateTo])
-            ->where('user_id', \Auth::user()->id)
+            ->where('user_id', $agentID)
             ->orderBy('from', 'asc')
             ->get()->toArray();
 

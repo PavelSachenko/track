@@ -17,10 +17,16 @@ stop:
 	cd backend && docker-compose down && cd ..
 
 migrate:
-	cd backend && sudo docker-compose exec track-php bash -c  "cd /var/www && php artisan migrate --seed" && cd ..
-	
+	cd backend docker-compose exec track-php bash -c  "cd /var/www && php artisan migrate --seed" && cd ..
+
+fresh-migrate:
+	cd backend docker-compose exec track-php bash -c  "cd /var/www && php artisan migrate:fresh --seed" && cd ..
+
+add-work-record:
+	cd backend docker-compose exec track-php bash -c  "cd /var/www && php artisan db:seed --class=SubscriptionRequestSeeder" && cd ..
+
 clear:
-	cd backend && sudo docker-compose exec track-php bash -c  "cd /var/www && php artisan cache:clear && php artisan config:clear && php artisan route:clear" && cd ..
+	cd backend docker-compose exec track-php bash -c  "cd /var/www && php artisan cache:clear && php artisan config:clear && php artisan route:clear" && cd ..
 	
 new-invite:
 	cd backend && docker-compose exec track-php bash -c  "cd /var/www && php artisan socket:invite new" && cd ..
