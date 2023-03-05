@@ -1,0 +1,105 @@
+@import "../../scss/variables.scss";
+
+.agency-schedule {
+  &__schedule {
+    border: 1px solid red;
+  }
+
+  &__calendar {
+    position: sticky;
+    top: 58px;
+    width: 100%;
+    top: 58px;
+    z-index: 20;
+    background-color: #fff;
+    padding: 20px 0 8px;
+  }
+
+  &__title {
+    margin: 0;
+    color: $black;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  &__date {
+    margin-top: 12px;
+  }
+
+  .date-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__icon {
+      margin-right: 8px;
+    }
+
+    &__date {
+      position: relative;
+
+      &-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 20px;
+        padding: 6px 10px;
+        min-width: 210px;
+        color: $primary;
+        font-size: 14px;
+        border-radius: 6px;
+        background-color: rgba($primary, 0.1);
+      }
+
+      .calendar {
+        top: 35px;
+      }
+    }
+
+    &__nav-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 28px;
+      height: 28px;
+      padding: 8px;
+      border: 1px solid darken($color: $border-color, $amount: 5);
+      border-radius: 50%;
+
+      svg {
+        height: 100%;
+        fill: $text-light-color;
+      }
+
+      &--prev {
+        svg {
+          position: relative;
+          right: 1px;
+          transform: rotate(180deg);
+        }
+      }
+
+      &--next {
+        svg {
+          position: relative;
+          left: 1px;
+        }
+      }
+    }
+  }
+
+  &__time {
+    margin-top: 8px;
+    color: $text-light-color;
+    font-size: 12px;
+    text-align: center;
+
+    svg {
+      position: relative;
+      top: 1px;
+      margin-right: 5px;
+      height: 11px;
+      fill: $text-light-color;
+    }
+  }
+}

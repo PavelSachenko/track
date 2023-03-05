@@ -58,7 +58,9 @@ const PrivateRoutes = (props: IPrivateRoutes) => {
         />
         <Route
           path="/schedule"
-          element={isAgent ? <Loadable.AgentSchedule /> : <div>Schedule</div>}
+          element={
+            isAgent ? <Loadable.AgentSchedule /> : <Loadable.AgencySchedule />
+          }
         />
         <Route
           path="/notifications"
