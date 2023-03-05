@@ -7,43 +7,69 @@ use App\Http\Requests\Agent\Subscription\AllFollowersRequest;
 use App\Http\Requests\Agent\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agent\Subscription\DecisionInviteRequest;
 use App\Services\Contracts\Agent\Follower;
+use Illuminate\Http\JsonResponse;
 
 class SubscriptionController extends Controller
 {
     private Follower $follower;
 
+    /**
+     * @param Follower $follower
+     */
     public function __construct(Follower $follower)
     {
         $this->follower = $follower;
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function countFollowers()
     {
         return response()->json($this->follower->countFollowers());
     }
 
+    /**
+     * @param AllFollowersRequest $request
+     * @return JsonResponse
+     */
     public function followers(AllFollowersRequest $request)
     {
         return response()->json($this->follower->getAllFollowers($request));
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function countRequests()
     {
         return response()->json($this->follower->countRequests());
     }
 
+    /**
+     * @param DecisionInviteRequest $request
+     * @return JsonResponse
+     */
     public function accept(DecisionInviteRequest $request)
     {
         return response()
             ->json($this->follower->accept($request));
     }
 
+    /**
+     * @param DecisionInviteRequest $request
+     * @return JsonResponse
+     */
     public function decline(DecisionInviteRequest $request)
     {
         return response()
             ->json($this->follower->decline($request));
     }
 
+    /**
+     * @param AllRequestsRequest $request
+     * @return JsonResponse
+     */
     public function requests(AllRequestsRequest $request)
     {
         return response()

@@ -14,6 +14,7 @@ class Settings implements \App\Services\Contracts\User\Settings
 {
     private SettingsRepo $settingsRepo;
     private AuthRepo $authRepo;
+
     public function __construct(SettingsRepo $repo, AuthRepo $authRepo)
     {
         $this->settingsRepo = $repo;
@@ -23,7 +24,7 @@ class Settings implements \App\Services\Contracts\User\Settings
     public function updateCommonSettings(SettingsRequest $request): bool
     {
         $params = $request->validated();
-        if (\Auth::user()->type == User::TYPE_AGENT){
+        if (\Auth::user()->type == User::TYPE_AGENT) {
             unset($params['url']);
         }
 
@@ -43,7 +44,7 @@ class Settings implements \App\Services\Contracts\User\Settings
      */
     public function updatePassword(UpdatePasswordRequest $request): bool
     {
-        if(!\Hash::check($request->old_password, \Auth::user()->user->password)){
+        if (!\Hash::check($request->old_password, \Auth::user()->user->password)) {
             throw new ForbiddenException("Wrong old password");
         }
 

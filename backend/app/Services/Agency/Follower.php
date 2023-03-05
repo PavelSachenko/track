@@ -26,9 +26,9 @@ class Follower implements \App\Services\Contracts\Agency\Follower
     public function sendInvite(SendInviteRequest $request): bool
     {
         //TODO why we need token?
-        $inviteId = $this->followerRepo->createInviteRequest($request->email, $request->message? : "hello", "token");
+        $inviteId = $this->followerRepo->createInviteRequest($request->email, $request->message ?: "hello", "token");
         $invite = $this->followerRepo->getOneRequest($inviteId);
-        $this->socket->sendToUser($invite['user_receiver_id'],  Invite::NEW, $invite);
+        $this->socket->sendToUser($invite['user_receiver_id'], Invite::NEW, $invite);
 
         return $inviteId;
     }
@@ -45,12 +45,12 @@ class Follower implements \App\Services\Contracts\Agency\Follower
 
     public function getAllFollows(AllFollowsRequest $request): array
     {
-        return $this->followerRepo->getAllFollows($request->limit, $request->offset, $request->search? : '');
+        return $this->followerRepo->getAllFollows($request->limit, $request->offset, $request->search ?: '');
     }
 
     public function getAllRequests(AllRequestsRequest $request): array
     {
-        return $this->followerRepo->getAllRequests($request->limit, $request->offset, $request->search? : '');
+        return $this->followerRepo->getAllRequests($request->limit, $request->offset, $request->search ?: '');
     }
 
     public function deleteFollow(int $followID): bool

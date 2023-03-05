@@ -19,5 +19,4 @@ interface Socket
     public function getChannels(array $params = []): object;
 
     public function getChannelInfo(string $channel, array $params = []): object;
-
 }

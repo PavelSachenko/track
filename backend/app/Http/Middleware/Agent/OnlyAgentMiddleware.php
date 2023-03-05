@@ -11,8 +11,9 @@ class OnlyAgentMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (\Auth::user()::class != Agent::class)
+        if (\Auth::user()::class != Agent::class) {
             throw new ForbiddenException("Access is denied: only agent has access");
+        }
         return $next($request);
     }
 }

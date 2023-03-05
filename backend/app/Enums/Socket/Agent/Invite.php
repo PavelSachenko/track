@@ -4,7 +4,7 @@ namespace App\Enums\Socket\Agent;
 
 enum Invite
 {
-    const NEW = 'new_invite';
-    const DECLINE = 'decline_invite';
-    const ACCEPT = 'accept_invite';
+    public const NEW = 'new_invite';
+    public const DECLINE = 'decline_invite';
+    public const ACCEPT = 'accept_invite';
 }

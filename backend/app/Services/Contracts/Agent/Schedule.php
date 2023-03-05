@@ -10,7 +10,10 @@ use App\Http\Requests\Agent\Schedule\ScheduleRequest;
 interface Schedule
 {
     public function getOneDay(ScheduleRequest $request): array;
+
     public function addWorkRecord(SetWorkRecordRequest $request): array;
+
     public function deleteWorkRecord(int $id): bool;
+
     public function updateWorkRecord(int $id, SetWorkRecordRequest $request): array;
 }

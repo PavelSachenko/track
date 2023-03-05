@@ -8,18 +8,24 @@ services:
         ports:
             - "80:80"
             - "443:443"
+            - "6002:6001"
         volumes:
             - ./public:/var/www/public
             - ./docker/nginx:/var/www/docker/nginx
             - ../frontend/build:/var/www/build
-            - ./docker/nginx:/etc/nginx/conf.d
+            - ./docker/nginx/track.conf:/etc/nginx/conf.d/track.conf
+#            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
         networks:
             - "net-track"
         depends_on:
             - "track-php"
+            - "soketi"
+        expose:
+            - 6002
+            - 6001
 
     soketi:
-        container_name: 'soketi_server'
+        container_name: 'soketi'
         restart: unless-stopped
         image: 'quay.io/soketi/soketi:latest-16-alpine'
         ports:
@@ -35,6 +41,8 @@ services:
             SOKETI_DEFAULT_APP_ENABLE_CLIENT_MESSAGES: 'true'
         networks:
             - "net-track"
+        volumes:
+            - ./docker/nginx/ssl:/etc/ssl
 
 
 
@@ -53,9 +61,13 @@ services:
             - "net-track"
         depends_on:
             - "track-postgres"
+        ports:
+            - "8000:8000"
+        expose:
+            - 8000
 
     track-postgres:
-        image: postgres:latest
+        image: postgres:15-alpine
         container_name: track-postgres
         restart: 'no'
         environment:

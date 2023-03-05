@@ -2,7 +2,6 @@
 
 namespace App\Repositories\PostgreSql\Agent;
 
-
 use App\Enums\SubscriptionRequestStatus;
 use App\Exceptions\BadRequestException;
 use App\Models\Agent;
@@ -24,8 +23,9 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
                 ->where('id', $subscriptionRequestID)
                 ->first();
 
-            if (is_null($subscriptionRequest))
+            if (is_null($subscriptionRequest)) {
                 throw new BadRequestException("Subscription request not found");
+            }
 
             $createdSubscriptionId = Subscription::create([
                 'user_id' => $subscriptionRequest->user_receiver_id,
@@ -114,7 +114,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
                 'u.type'
             ])
             ->where('sr.user_receiver_id', \Auth::user()->id)
-            ->where('st.status', '<>', SubscriptionRequestStatus::REJECT);
+            ->where('sr.status', '<>', SubscriptionRequestStatus::REJECT);
 
         if ($search != '') {
             $query->where('a.name', 'ilike', $search . '%')
@@ -126,6 +126,4 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             ->orderByDesc('sr.created_at')
             ->get()->toArray();
     }
-
-
 }

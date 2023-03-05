@@ -11,7 +11,7 @@ use App\Http\Controllers\User\SettingsController;
 use App\Http\Controllers\User\SocketController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
-use Pusher\Pusher;
+use App\Http\Controllers\Agency\ScheduleController as AgencyScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,18 +23,6 @@ use Pusher\Pusher;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::post('test/trigger', function (\App\Services\Contracts\Socket\Socket $socket){
-    $socket->trigger(['presence-channel'], 'test-event', ['mazafaka' => 'hello']);
-    $socket->sendToUser(1, 'test-event', ['user_mazafaka' => 'hello']);
-    $socket->trigger(['private-channel'], 'test-event', ['private_mazafaka' => 'hello']);
-});
-
-Route::get('test/channel', function (\App\Services\Contracts\Socket\Socket $socket){
-    broadcast(new TestEvent("Hello mafaka"));
-    dd($socket->getPresenceUsers('presence-channel'));
-});
-
 
 /*
 |--------------------------------------------------------------------------
@@ -135,6 +123,10 @@ Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']]
 
         Route::delete('unsubscribe/{id}', [AgencySubscriptionController::class, 'unsubscribe'])->where(['id' => '[0-9]+']);
         Route::delete('invite/{id}', [AgencySubscriptionController::class, 'inviteDelete'])->where(['id' => '[0-9]+']);
+    });
+
+    Route::prefix('/schedule')->group(function (){
+        Route::get('/', [AgencyScheduleController::class, 'index']);
     });
 
 });

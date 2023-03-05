@@ -16,7 +16,7 @@ class AllFollowsRequest extends FormRequest
     protected function prepareForValidation()
     {
         // set default value
-        $this->merge(['limit' => $this->limit? : 20, 'offset' => $this->offset? : 0]);
+        $this->merge(['limit' => $this->limit ?: 20, 'offset' => $this->offset ?: 0]);
     }
 
     public function rules(): array

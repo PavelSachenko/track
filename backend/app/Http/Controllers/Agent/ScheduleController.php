@@ -15,6 +15,7 @@ use App\Services\Contracts\Socket\Socket;
 class ScheduleController extends Controller
 {
     private Schedule $schedule;
+
     public function __construct(Schedule $schedule)
     {
         $this->schedule = $schedule;
@@ -37,6 +38,6 @@ class ScheduleController extends Controller
 
     public function update(int $id, SetWorkRecordRequest $request)
     {
-        return response()->json($this->schedule->updateWorkRecord($id,$request));
+        return response()->json($this->schedule->updateWorkRecord($id, $request));
     }
 }

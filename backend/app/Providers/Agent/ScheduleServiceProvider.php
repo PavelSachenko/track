@@ -12,7 +12,7 @@ class ScheduleServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(ScheduleContract::class, function ($app){
+        $this->app->bind(ScheduleContract::class, function ($app) {
             return new Schedule($app->make(ScheduleRepo::class), $app->make(Pusher::class));
         });
     }

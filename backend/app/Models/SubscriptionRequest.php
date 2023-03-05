@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $user_sender_id
  * @property int $user_receiver_id
+//@codingStandardsIgnoreLine
  * @property string|null $message Message for invite subscribe, has default message `Greetings, we discussed this with you trough the phone. Hope you are accept our invite`
  * @property string $token
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -31,8 +32,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubscriptionRequest extends Model
 {
     use HasFactory;
-    const STATUS_TYPE_WAITING = 1;
-    const STATUS_TYPE_REJECT = 2;
+
     protected $guarded = ['created_at'];
 
     protected static function newFactory(): SubscriptionRequestFactory

@@ -89,7 +89,6 @@ class Auth implements \App\Services\Contracts\User\Auth
         $token = PersonalAccessToken::findToken($request->bearerToken());
         if (is_null($token)) {
             throw new AuthException();
-
         }
         return $token->delete();
     }
