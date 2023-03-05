@@ -55,6 +55,7 @@ services:
         volumes:
             - ./:/var/www
             - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+            - ./docker/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
             - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
             - ./docker/system/supervisor-listener.conf:/etc/supervisor/conf.d/supervisor-listener.conf
         networks:
