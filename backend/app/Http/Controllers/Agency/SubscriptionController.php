@@ -16,6 +16,7 @@ class SubscriptionController extends Controller
     {
         $this->follower = $follower;
     }
+
     public function sendRequest(SendInviteRequest $request)
     {
         return response()->json($this->follower->sendInvite($request));
@@ -24,7 +25,6 @@ class SubscriptionController extends Controller
     public function countFollows()
     {
         return response()->json($this->follower->totalFollows());
-
     }
 
     public function countRequests()
@@ -40,5 +40,15 @@ class SubscriptionController extends Controller
     public function requests(AllRequestsRequest $request)
     {
         return response()->json($this->follower->getAllRequests($request));
+    }
+
+    public function unsubscribe(int $id)
+    {
+        return response()->json($this->follower->deleteFollow($id));
+    }
+
+    public function inviteDelete(int $id)
+    {
+        return response()->json($this->follower->deleteInvite($id));
     }
 }

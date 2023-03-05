@@ -2,8 +2,9 @@
 
 namespace App\Repositories\PostgreSql\Agent;
 
-
+use App\Enums\SubscriptionRequestStatus;
 use App\Exceptions\BadRequestException;
+use App\Models\Agent;
 use App\Models\Subscription;
 use App\Models\SubscriptionRequest;
 use Illuminate\Support\Arr;
@@ -14,7 +15,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
     /**
      * @throws \Throwable
      */
-    public function createSubscriptionFromRequest(int $subscriptionRequestID): bool
+    public function createSubscriptionFromRequest(int $subscriptionRequestID): array
     {
         DB::beginTransaction();
         try {
@@ -22,28 +23,36 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
                 ->where('id', $subscriptionRequestID)
                 ->first();
 
-            if (is_null($subscriptionRequest))
+            if (is_null($subscriptionRequest)) {
                 throw new BadRequestException("Subscription request not found");
+            }
 
-            $wasRecentlyCreated = Subscription::create([
+            $createdSubscriptionId = Subscription::create([
                 'user_id' => $subscriptionRequest->user_receiver_id,
                 'user_subscriber_id' => $subscriptionRequest->user_sender_id,
-            ])->wasRecentlyCreated;
+            ])->id;
 
             $subscriptionRequest->delete();
             DB::commit();
-            return $wasRecentlyCreated;
+
+            return [
+                'subscription_id' => $createdSubscriptionId,
+                'user_subscriber_id' => $subscriptionRequest->user_sender_id
+            ];
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
         }
     }
 
-    public function setRejectStatusForRequest(int $subscriptionRequestID): bool
+    public function setRejectStatusForRequest(int $subscriptionRequestID): array
     {
-        return (bool)DB::table('subscription_requests')
-            ->where('id', $subscriptionRequestID)
-            ->update(['status' => SubscriptionRequest::STATUS_TYPE_REJECT]);
+        $subscriptionRequest = SubscriptionRequest::where('id', $subscriptionRequestID)->first();
+        $response['updated'] = $subscriptionRequest->update(['status' => SubscriptionRequestStatus::REJECT]);
+        $response['user_sender_id'] = $subscriptionRequest->user_sender_id;
+        $response['subscription_request_id'] = $subscriptionRequest->id;
+
+        return $response;
     }
 
 
@@ -58,7 +67,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
     {
         return DB::table('subscription_requests')
             ->where('user_receiver_id', \Auth::user()->id)
-            ->where('status', '<>', SubscriptionRequest::STATUS_TYPE_REJECT)
+            ->where('status', '<>', SubscriptionRequestStatus::REJECT)
             ->count();
     }
 
@@ -104,7 +113,8 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
                 'sr.message',
                 'u.type'
             ])
-            ->where('sr.user_receiver_id', \Auth::user()->id);
+            ->where('sr.user_receiver_id', \Auth::user()->id)
+            ->where('sr.status', '<>', SubscriptionRequestStatus::REJECT);
 
         if ($search != '') {
             $query->where('a.name', 'ilike', $search . '%')
@@ -116,6 +126,4 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             ->orderByDesc('sr.created_at')
             ->get()->toArray();
     }
-
-
 }

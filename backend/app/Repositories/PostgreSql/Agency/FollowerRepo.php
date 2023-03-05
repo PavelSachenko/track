@@ -2,8 +2,9 @@
 
 namespace App\Repositories\PostgreSql\Agency;
 
-
+use App\Enums\SubscriptionRequestStatus;
 use App\Exceptions\BadRequestException;
+use App\Models\Subscription;
 use App\Models\SubscriptionRequest;
 use App\Repositories\Contracts\Agency\SubscriptionRepo;
 use App\Repositories\Contracts\User\AuthRepo;
@@ -22,7 +23,7 @@ class FollowerRepo implements SubscriptionRepo
     /**
      * @throws \Throwable
      */
-    public function createInviteRequest(string $userReceiverEmail, string $inviteMessage, string $token): bool
+    public function createInviteRequest(string $userReceiverEmail, string $inviteMessage, string $token): int
     {
         $id = \DB::table('users')
             ->select('id')
@@ -35,10 +36,11 @@ class FollowerRepo implements SubscriptionRepo
                 $id = $this->createEmptyUser($userReceiverEmail);
             }
 
-            if (\DB::table('subscriptions')->where([['user_id', $id], ['user_subscriber_id', \Auth::user()->id]])->exists())
+            if (\DB::table('subscriptions')->where([['user_id', $id], ['user_subscriber_id', \Auth::user()->id]])->exists()) {
                 throw new BadRequestException("You already have subscribed");
+            }
 
-            $isCreated = DB::table('subscription_requests')->insertOrIgnore([
+            $id = DB::table('subscription_requests')->insertGetId([
                 'user_sender_id' => \Auth::user()->id,
                 'user_receiver_id' => $id,
                 'message' => $inviteMessage,
@@ -47,9 +49,7 @@ class FollowerRepo implements SubscriptionRepo
             ]);
 
             DB::commit();
-            return $isCreated;
-
-
+            return $id;
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
@@ -73,6 +73,7 @@ class FollowerRepo implements SubscriptionRepo
     {
         return DB::table('subscription_requests')
             ->where('user_sender_id', \Auth::user()->id)
+            ->where('status', '<>', SubscriptionRequestStatus::REJECT)
             ->count();
     }
 
@@ -115,7 +116,8 @@ class FollowerRepo implements SubscriptionRepo
                 'a.email',
                 'a.name',
             ])
-            ->where('sr.user_sender_id', \Auth::user()->id);
+            ->where('sr.user_sender_id', \Auth::user()->id)
+            ->where('sr.status', '<>', SubscriptionRequestStatus::REJECT);
 
         if ($search != '') {
             $query->where('a.name', 'ilike', $search . '%')
@@ -126,5 +128,40 @@ class FollowerRepo implements SubscriptionRepo
             ->offset($offset)
             ->orderByDesc('sr.created_at')
             ->get()->toArray();
+    }
+
+    public function getOneRequest(int $id): array
+    {
+        return (array)DB::table('subscription_requests', 'sr')
+            ->leftJoin('agents as a', 'a.user_id', '=', 'sr.user_receiver_id')
+            ->leftJoin('users as u', 'u.id', '=', 'sr.user_sender_id')
+            ->select([
+                'sr.id',
+                'sr.user_receiver_id',
+                'sr.created_at',
+                'a.email',
+                'a.name',
+                'a.img',
+                'sr.message',
+                'u.type'
+            ])
+            ->where('sr.id', $id)
+            ->first();
+    }
+
+    public function deleteFollow(int $followID): bool
+    {
+        return DB::table('subscriptions')
+            ->where('user_id', $followID)
+            ->where('user_subscriber_id', \Auth::user()->id)
+            ->delete();
+    }
+
+    public function deleteInviteFollow(int $inviteID): bool
+    {
+        return DB::table('subscription_requests')
+            ->where('id', $inviteID)
+            ->where('user_sender_id', \Auth::user()->id)
+            ->delete();
     }
 }

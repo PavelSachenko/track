@@ -55,25 +55,44 @@ const sendEmailToResetPassword = (email: string) => {
 
   Credentials.set("email", email);
 
-  return axiosInstance.post("password/email", Credentials);
+  return axiosInstance.post(
+    "auth/reset-password/send-email-verification",
+    Credentials
+  );
 };
 
 const isResetTokenValid = (token: string) => {
-  const Credentials = new FormData();
+  const config: {
+    params: {
+      token: string;
+    };
+  } = {
+    params: {
+      token,
+    },
+  };
 
-  Credentials.set("token", token);
-
-  return axiosInstance.post("password/validate-token", Credentials);
+  return axiosInstance.get("auth/reset-password/token-validation", config);
 };
 
 const resetPassword = (values: IRecoveryPasswordFormValues) => {
-  const Credentials = new FormData();
+  // const Credentials = new FormData();
 
-  Credentials.set("token", values.token);
-  Credentials.set("password", values.password);
-  Credentials.set("password_confirmation", values.password_confirmation);
+  // Credentials.set("token", values.token);
+  // Credentials.set("password", values.password);
+  // Credentials.set("password_confirmation", values.password_confirmation);
 
-  return axiosInstance.post("password/reset", Credentials);
+  const Credentials: {
+    token: string;
+    password: string;
+    password_confirmation: string;
+  } = {
+    token: values.token,
+    password: values.password,
+    password_confirmation: values.password_confirmation,
+  };
+
+  return axiosInstance.put("auth/reset-password/set-new-password", Credentials);
 };
 
 const isInvitationTokenValid = (token: string) => {

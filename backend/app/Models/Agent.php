@@ -37,6 +37,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Agent extends Authenticatable
 {
     use HasFactory;
+
     protected $appends = ['type'];
     protected $guarded = ['created_at'];
 
@@ -59,4 +60,13 @@ class Agent extends Authenticatable
         return AgentFactory::new();
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relationship
+    |--------------------------------------------------------------------------
+    */
+    public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

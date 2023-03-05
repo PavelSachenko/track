@@ -10,10 +10,12 @@ use App\Http\Requests\Agent\Schedule\ScheduleRequest;
 use App\Models\WorkSchedule;
 use App\Rules\DateInWorkScheduleRule;
 use App\Services\Contracts\Agent\Schedule;
+use App\Services\Contracts\Socket\Socket;
 
 class ScheduleController extends Controller
 {
     private Schedule $schedule;
+
     public function __construct(Schedule $schedule)
     {
         $this->schedule = $schedule;
@@ -29,14 +31,13 @@ class ScheduleController extends Controller
         return response()->json($this->schedule->addWorkRecord($request));
     }
 
-    public function drop($id)
+    public function drop(int $id)
     {
         return response()->json($this->schedule->deleteWorkRecord($id));
     }
 
     public function update(int $id, SetWorkRecordRequest $request)
     {
-
-        return response()->json($this->schedule->updateWorkRecord($id,$request));
+        return response()->json($this->schedule->updateWorkRecord($id, $request));
     }
 }

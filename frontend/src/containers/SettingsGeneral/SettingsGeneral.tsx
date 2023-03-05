@@ -1,16 +1,16 @@
-import { useState, useRef } from 'react';
-import { connect } from 'react-redux';
+import { useState, useRef } from "react";
+import { connect } from "react-redux";
 import { Form, Field } from "react-final-form";
 
-import API from '../../api/api';
-import { useToggle } from '../../hooks';
-import { classModifier, getContactAvatar } from '../../utils';
-import { AppState } from '../../redux/store';
-import { IAgent, IAgency } from '../../interfaces/interfaces';
+import API from "../../api/api";
+import { useToggle } from "../../hooks";
+import { classModifier, getContactAvatar } from "../../utils";
+import { AppState } from "../../redux/store";
+import { IAgent, IAgency } from "../../interfaces/interfaces";
 import validateFormValues from "../../utils/validateFormValues";
 
-import './SettingsGeneral.scss';
-import { ReactComponent as TrashIcon } from '../../icons/trash.svg';
+import "./SettingsGeneral.scss";
+import { ReactComponent as TrashIcon } from "../../icons/trash.svg";
 import FormTextInput from "../../components/FormTextInput";
 import FormTextTextarea from "../../components/FormTextarea";
 import LazyLoadImage from "../../components/LazyLoadImage/LazyLoadImage";
@@ -19,9 +19,8 @@ import ImgCropper from "../../components/ImgCropper/ImgCropper";
 import AsyncBtn from "../../components/AsyncBtn/AsyncBtn";
 import ReturnBtn from "../../components/ReturnBtn/ReturnBtn";
 
-
 interface IUpdateUserForm {
-  name: string
+  name: string;
   img?: Blob;
   url?: string;
   phone?: string;
@@ -40,20 +39,23 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
   const [serverErrors, setServerErrors] = useState({});
   const [userPhotoUrl, setUserPhotoUrl] = useState<null | string>(user.img);
   const [cropperPhotoUrl, setCropperPhotoUrl] = useState<null | string>(null);
-  const [croppedPhoto, setCroppedPhoto] = useState<{ url: null | string; file: null | File | Blob }>({
+  const [croppedPhoto, setCroppedPhoto] = useState<{
+    url: null | string;
+    file: null | File | Blob;
+  }>({
     url: null,
-    file: null
-  })
+    file: null,
+  });
 
   const [isAvaCropPage, setIsAvaCropPage] = useToggle(false);
 
   const deletePhoto = () => {
-    if (window.confirm('Delete photo?')) {
+    if (window.confirm("Delete photo?")) {
       croppedPhoto.url
         ? setCroppedPhoto({ url: null, file: null })
         : setUserPhotoUrl(null);
     }
-  }
+  };
 
   const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -61,7 +63,7 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        if (file.type.startsWith('image')) {
+        if (file.type.startsWith("image")) {
           setPhotoHandler(file);
           setIsAvaCropPage(true);
         }
@@ -69,40 +71,51 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
 
       reader.readAsDataURL(file);
     }
-  }
+  };
 
   const setPhotoHandler = (file: File) => {
-    const url = URL.createObjectURL(file)
+    const url = URL.createObjectURL(file);
 
     setCropperPhotoUrl(url);
 
-    //Delay for that the image not appear while the animation is in progress 
+    //Delay for that the image not appear while the animation is in progress
     setTimeout(() => {
       setCroppedPhoto({ file: file, url });
-    }, 500)
-  }
+    }, 500);
+  };
 
   const onCrop = (file: Blob) => {
     setIsAvaCropPage(false);
     setCroppedPhoto({ file: file, url: URL.createObjectURL(file) });
-  }
+
+    API.updateUserAvatar(croppedPhoto.file || userPhotoUrl)
+      .then(() => {
+        setPending(false);
+      })
+      .catch((err) => {
+        setPending(false);
+        setServerErrors(err.response.data.errors);
+        console.error(err);
+      });
+  };
 
   const updateUser = (values: IUpdateUserForm) => {
     setPending(true);
+    setServerErrors({});
 
-    API.updateUser({ 
-      ...values, 
-      img: croppedPhoto.file || userPhotoUrl
+    API.updateUser({
+      ...values,
+      img: croppedPhoto.file || userPhotoUrl,
     })
       .then(() => {
         setPending(false);
       })
       .catch((err) => {
         setPending(false);
-        setServerErrors(err.response.data.errors)
+        setServerErrors(err.response.data.errors);
         console.error(err);
-      })
-  }
+      });
+  };
 
   return (
     <div className="settings-general">
@@ -119,18 +132,19 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
       >
         {({ handleSubmit, submitting }) => (
           <form onSubmit={handleSubmit}>
-            <DelayedComponent
-              isMount={isAvaCropPage}
-              delayUnmountTime={100}
-            >
-              <div className={classModifier('settings-general-cropper', [isAvaCropPage && 'open'])}>
+            <DelayedComponent isMount={isAvaCropPage} delayUnmountTime={100}>
+              <div
+                className={classModifier("settings-general-cropper", [
+                  isAvaCropPage && "open",
+                ])}
+              >
                 <div className="settings-general-cropper__cropper">
                   <ImgCropper
-                    image={cropperPhotoUrl || ''}
+                    image={cropperPhotoUrl || ""}
                     onCrop={onCrop}
                     onCancel={() => setIsAvaCropPage(false)}
                     aspect={1}
-                    cropShape={'round'}
+                    cropShape={"round"}
                     classPrefix="avatar-cropper"
                   />
                 </div>
@@ -139,13 +153,16 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
 
             <div className="settings-general__avatar-select">
               <div className="settings-general__avatar">
-                <LazyLoadImage 
-                  src={croppedPhoto.url || getContactAvatar({ img: userPhotoUrl, type: user.type })} 
-                  classPrefix="round-img" 
-                  alt="avatar" 
+                <LazyLoadImage
+                  src={
+                    croppedPhoto.url ||
+                    getContactAvatar({ img: userPhotoUrl, type: user.type })
+                  }
+                  classPrefix="round-img"
+                  alt="avatar"
                 />
 
-                {(croppedPhoto.url || userPhotoUrl) &&
+                {(croppedPhoto.url || userPhotoUrl) && (
                   <button
                     className="settings-general__avatar-icon"
                     type="button"
@@ -153,7 +170,7 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
                   >
                     <TrashIcon />
                   </button>
-                }
+                )}
               </div>
 
               <div className="settings-general__avatar-btn-wrap">
@@ -162,8 +179,10 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
                   accept="image/*"
                   ref={imageInputRef}
                   onChange={onSelectImage}
-                  onClick={() => imageInputRef.current && (imageInputRef.current.value = '')}
-                  style={{ display: 'none' }}
+                  onClick={() =>
+                    imageInputRef.current && (imageInputRef.current.value = "")
+                  }
+                  style={{ display: "none" }}
                 />
 
                 <button
@@ -207,11 +226,9 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
               />
             </div>
 
-            {user.type === 2 &&
+            {user.type === 2 && (
               <div className="form-group">
-                <label className="label label--optional">
-                  Website
-                </label>
+                <label className="label label--optional">Website</label>
 
                 <Field
                   name="url"
@@ -223,7 +240,7 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
                   serverErrors={serverErrors}
                 />
               </div>
-            }
+            )}
 
             <div className="form-group">
               <label className="label label--optional">
@@ -256,22 +273,22 @@ const SettingsGeneral = (props: ISettingsGeneralProps) => {
           </form>
         )}
       </Form>
-    </div >
-  )
-}
+    </div>
+  );
+};
 
 const validateMainInfo = ({ name }: { name: string }) => {
   const errors: any = {};
 
   if (validateFormValues.isEmpty(name)) {
-    errors.name = 'This field can`t be empty';
+    errors.name = "This field can`t be empty";
   }
 
   return errors;
-}
+};
 
 const mapStateToProps = (state: AppState) => ({
-  user: state.user.user
-})
+  user: state.user.user,
+});
 
 export default connect(mapStateToProps)(SettingsGeneral);

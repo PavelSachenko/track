@@ -26,7 +26,7 @@ const SettingsSchedule = () => {
 
   const [pending, setPending] = useState(true);
   const [data, setData] = useState<IData>({
-    mode: "everyday",
+    mode: "every_day",
     timeData: {
       everydayWeekdays: [],
       custom: [],

@@ -14,7 +14,7 @@ class AllRequestsRequest extends BaseRequest
 {
     protected function prepareForValidation()
     {
-        $this->merge(['limit' => $this->limit? : 20, 'offset' => $this->offset? : 0]);
+        $this->merge(['limit' => $this->limit ?: 20, 'offset' => $this->offset ?: 0]);
     }
 
     public function rules(): array

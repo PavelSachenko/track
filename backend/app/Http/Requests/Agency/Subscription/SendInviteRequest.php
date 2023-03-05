@@ -14,8 +14,8 @@ class SendInviteRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'email' => ['required','email', new SelfEmailRule()],
-            'message' => ['string','max:255']
+            'email' => ['required', 'email', new SelfEmailRule()],
+            'message' => ['string', 'max:255']
         ];
     }
 

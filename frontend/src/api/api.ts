@@ -13,20 +13,42 @@ const getUser = () => {
 const updateUser = (user: {
   img?: any;
   url?: string;
-  name?: string;
+  name: string;
   type?: number;
   phone?: string;
   description?: string;
 }) => {
-  const User = new FormData();
+  // const User = new FormData();
 
-  User.set("name", user.name || "");
-  User.set("phone", user.phone || "");
-  User.set("description", user.description || "");
-  typeof user.img !== "string" && User.set("img", user.img || "");
-  user.type === 2 && User.set("url", user.url || "");
+  // User.set("name", user.name || "");
+  // User.set("phone", user.phone || "");
+  // User.set("description", user.description || "");
+  // typeof user.img !== "string" && User.set("img", user.img || "");
+  // user.type === 2 && User.set("url", user.url || "");
 
-  return axiosInstance.post("user/update", User);
+  const UserInfo: {
+    name: string;
+    description: string;
+    phone: string;
+    url: string;
+  } = {
+    name: user.name ? user.name : "",
+    description: user.description ? user.description : "",
+    phone: user.phone ? user.phone : "",
+    url: user.url ? user.url : "",
+  };
+
+  console.log(user);
+
+  return axiosInstance.patch("user/update", UserInfo);
+};
+
+const updateUserAvatar = (img: any) => {
+  const UserAvatar = new FormData();
+
+  typeof img !== "string" && UserAvatar.set("img", img || "");
+
+  return axiosInstance.post("user/update-avatar", UserAvatar);
 };
 
 const deleteUser = () => {
@@ -34,12 +56,17 @@ const deleteUser = () => {
 };
 
 const changePassword = (values: IResetPasswordFormValues) => {
-  const Password = new FormData();
+  const Password: {
+    old_password: string;
+    new_password: string;
+    new_password_confirmation: string;
+  } = {
+    old_password: values.oldPassword,
+    new_password: values.newPassword,
+    new_password_confirmation: values.passwordConfirmation,
+  };
 
-  Password.set("oldPassword", values.oldPassword);
-  Password.set("newPassword", values.newPassword);
-
-  return axiosInstance.post("user/change-password", Password);
+  return axiosInstance.put("user/update-password", Password);
 };
 
 const getAgencies = (limit: number = 10, offset?: number, search?: string) => {
@@ -117,6 +144,10 @@ const getInvites = (offset?: number) => {
 };
 
 const getInvitesCount = () => {
+  return axiosInstance.get("agency/subscription/count-requests");
+};
+
+const getAgentsCount = () => {
   return axiosInstance.get("agency/subscription/count-follows");
 };
 
@@ -128,8 +159,8 @@ const sendInvite = (email: string) => {
   return axiosInstance.post("agency/subscription/send-request", Invite);
 };
 
-const unsubscribeAgent = (email: string) => {
-  return axiosInstance.delete(`subscription/unsubscribe-agent/${email}`);
+const unsubscribeAgent = (id: string) => {
+  return axiosInstance.delete(`agency/subscription/unsubscribe/${id}`);
 };
 
 const getNotificationsCount = () => {
@@ -174,7 +205,7 @@ const declineNotification = (id: number) => {
 };
 
 const deleteInvite = (id: number) => {
-  return axiosInstance.delete(`subscription/delete-invite/${id}`);
+  return axiosInstance.delete(`agency/subscription/invite/${id}`);
 };
 
 const getWorkTime = () => {
@@ -197,7 +228,7 @@ const setWorkTime = (config: { mode: string; times: IDay | IDay[] }) => {
 };
 
 const getAgentSchedule = (date: number) => {
-  return axiosInstance.get("schedule/get-agent-schedule", { params: { date } });
+  return axiosInstance.get("agent/schedule", { params: { date } });
 };
 
 const addEvent = (
@@ -216,21 +247,42 @@ const addEvent = (
   WorkRecord.set("end", JSON.stringify(config.end));
   WorkRecord.set("type", config.type);
   WorkRecord.set("start", JSON.stringify(config.start));
-  WorkRecord.set("description", config.description);
+  config.description && WorkRecord.set("description", config.description);
   config.agencyId &&
     WorkRecord.set("agencyId", JSON.stringify(config.agencyId));
 
-  if (action === "update") {
-    WorkRecord.set("id", JSON.stringify(config.id));
+  let configApi: {
+    id: number | null;
+    start: number;
+    end: number;
+    agencyId?: number;
+    type: string;
+    description?: string;
+  } = {
+    id: config.id,
+    start: config.start,
+    end: config.end,
+    type: config.type,
+  };
+
+  if (config.description) {
+    configApi.description = config.description;
+  }
+
+  if (config.agencyId != 0) {
+    configApi.agencyId = config.agencyId;
   }
 
   return action === "update"
-    ? axiosInstance.post("/schedule/change-work-record", WorkRecord)
-    : axiosInstance.post("/schedule/add-work-record", WorkRecord);
+    ? axiosInstance.put(
+        `agent/schedule/update-work-record/${config.id}`,
+        configApi
+      )
+    : axiosInstance.post("agent/schedule/add-work-record", WorkRecord);
 };
 
 const deleteEvent = (eventId: number) => {
-  return axiosInstance.delete(`/schedule/delete-work-record/${eventId}`);
+  return axiosInstance.delete(`agent/schedule/drop-work-record/${eventId}`);
 };
 
 const changeWorkingStatus = (status: 0 | 1) => {
@@ -273,6 +325,8 @@ const API = {
   deleteEvent,
   changeWorkingStatus,
   getNotificationsCountAgency,
+  updateUserAvatar,
+  getAgentsCount,
 };
 
 export default API;

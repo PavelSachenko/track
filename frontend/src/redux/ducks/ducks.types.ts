@@ -34,6 +34,7 @@ export interface IAgentsState {
   ids: number[];
   auxiliaryIds: number[];
   entities: { [key: string]: IAgent };
+  agentsCount: number;
   search: string;
   pending: boolean;
   filterStatus: number;

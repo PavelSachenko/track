@@ -1,13 +1,17 @@
 <?php
 
+use App\Events\TestEvent;
 use App\Http\Controllers\Agent\ScheduleController;
 use App\Http\Controllers\Agent\Settings\ScheduleController as SettingScheduleController;
 use App\Http\Controllers\Agent\SubscriptionController as AgentSubscriptionController;
 use App\Http\Controllers\Agency\SubscriptionController as AgencySubscriptionController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\ResetPasswordController;
+use App\Http\Controllers\User\SettingsController;
+use App\Http\Controllers\User\SocketController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Agency\ScheduleController as AgencyScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 | api/auth ...
 | api/auth/email ...
 | api/auth/reset-password ...
+| api/auth/socket ...
 |--------------------------------------------------------------------------
 */
 Route::prefix('/auth')->group(function (){
@@ -42,6 +47,11 @@ Route::prefix('/auth')->group(function (){
         Route::get('token-validation', [ResetPasswordController::class, 'tokenValidation']);
         Route::put('set-new-password', [ResetPasswordController::class, 'setNewPassword']);
     });
+
+    Route::group(['prefix' => 'socket', 'middleware' => 'auth:sanctum'], function (){
+        Route::post('registration-channel', [SocketController::class, 'registrationChannel']);
+        Route::post('set-user-connection', [SocketController::class, 'setUserConnection']);
+    });
 });
 
 /*
@@ -51,6 +61,9 @@ Route::prefix('/auth')->group(function (){
 */
 Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function (){
     Route::get('', [UserController::class, 'index']);
+    Route::patch('update', [SettingsController::class, 'update']);
+    Route::post('update-avatar', [SettingsController::class, 'updateAvatar']);
+    Route::put('update-password', [SettingsController::class, 'updatePassword']);
 });
 
 /*
@@ -107,6 +120,13 @@ Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']]
         Route::get('count-requests', [AgencySubscriptionController::class, 'countRequests']);
         Route::get('follows', [AgencySubscriptionController::class, 'follows']);
         Route::get('requests', [AgencySubscriptionController::class, 'requests']);
+
+        Route::delete('unsubscribe/{id}', [AgencySubscriptionController::class, 'unsubscribe'])->where(['id' => '[0-9]+']);
+        Route::delete('invite/{id}', [AgencySubscriptionController::class, 'inviteDelete'])->where(['id' => '[0-9]+']);
+    });
+
+    Route::prefix('/schedule')->group(function (){
+        Route::get('/', [AgencyScheduleController::class, 'index']);
     });
 
 });

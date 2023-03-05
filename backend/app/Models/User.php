@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Exceptions\ForbiddenException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,6 +18,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+//@codingStandardsIgnoreLine
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
@@ -44,6 +43,11 @@ class User extends Authenticatable
 
     const TYPE_AGENT = 1;
     const TYPE_AGENCY = 2;
+
+    const USER_TYPES = [
+        self::TYPE_AGENT => 'agent',
+        self::TYPE_AGENCY => 'agency',
+    ];
 
     const TYPE_TABLES = [
         self::TYPE_AGENT => 'agents',
@@ -90,9 +94,8 @@ class User extends Authenticatable
         return $this->hasOne(Agent::class, 'user_id', 'id');
     }
 
-    public function agency()
+    public function agency(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Agency::class, 'user_id');
     }
-
 }

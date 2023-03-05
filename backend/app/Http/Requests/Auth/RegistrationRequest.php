@@ -16,6 +16,7 @@ class RegistrationRequest extends BaseRequest
             'password' => ['required', 'string', 'min:6', 'confirmed'],
             'token' => ['required', 'string'],
             'img' => ['nullable', 'image'],
+            'description' => ['string', 'max:500'],
         ];
     }
 
