@@ -14,7 +14,7 @@ services:
             - ./docker/nginx:/var/www/docker/nginx
             - ../frontend/build:/var/www/build
             - ./docker/nginx/track.conf:/etc/nginx/conf.d/track.conf
-            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+#            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
         networks:
             - "net-track"
         depends_on:
@@ -61,6 +61,10 @@ services:
             - "net-track"
         depends_on:
             - "track-postgres"
+        ports:
+            - "8000:8000"
+        expose:
+            - 8000
 
     track-postgres:
         image: postgres:15-alpine
