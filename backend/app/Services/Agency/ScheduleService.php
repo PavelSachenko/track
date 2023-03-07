@@ -23,8 +23,8 @@ class ScheduleService implements ISchedule
 
         return [
             'work_times' => [
-                'from' => strtotime(date('Y-m-d 03:00:00', strtotime($date))),
-                'to' => strtotime(date('Y-m-d 22:00:00', strtotime($date))),
+                'from' => strtotime(date('Y-m-d 03:00:00', strtotime($date))) * 1000,
+                'to' => strtotime(date('Y-m-d 22:00:00', strtotime($date))) * 1000,
             ],
             'agents' => $this->repo->all(\Auth::user()->id, $from, $to, $request->search)
         ];
