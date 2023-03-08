@@ -2,14 +2,15 @@
 
 namespace App\Services\Contracts\Agency;
 
-use App\Http\Requests\Agency\Subscription\AllRequestsRequest;
+use App\DTO\User\Agency\Follows\AllInvitesSearchDTO;
+use App\Http\Requests\Agency\Subscription\AllAgencyInvitesRequest;
 use App\Http\Requests\Agency\Subscription\SendInviteRequest;
 
 interface IInviteAgencyService
 {
-    public function sendInvite(SendInviteRequest $request): bool;
+    public function sendInvite(int $userID, string $email, string $message = null): bool;
 
-    public function allRequests(AllRequestsRequest $request): array;
+    public function allInvites(AllInvitesSearchDTO $allInvitesSearchDTO): array;
 
-    public function deleteInvite(int $inviteID): bool;
+    public function deleteInvite(int $userID, int $inviteID): bool;
 }

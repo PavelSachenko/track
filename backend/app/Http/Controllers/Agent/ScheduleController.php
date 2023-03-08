@@ -11,6 +11,7 @@ use App\Models\WorkSchedule;
 use App\Rules\DateInWorkScheduleRule;
 use App\Services\Contracts\Agent\IScheduleAgentService;
 use App\Services\Contracts\Socket\ISocket;
+use Illuminate\Http\JsonResponse;
 
 class ScheduleController extends Controller
 {
@@ -21,22 +22,22 @@ class ScheduleController extends Controller
         $this->schedule = $schedule;
     }
 
-    public function index(ScheduleRequest $request)
+    public function index(ScheduleRequest $request): JsonResponse
     {
         return response()->json($this->schedule->oneDay($request));
     }
 
-    public function add(SetWorkRecordRequest $request)
+    public function add(SetWorkRecordRequest $request): JsonResponse
     {
         return response()->json($this->schedule->addWorkRecord($request));
     }
 
-    public function drop(int $id)
+    public function drop(int $id): JsonResponse
     {
         return response()->json($this->schedule->deleteWorkRecord($id));
     }
 
-    public function update(int $id, SetWorkRecordRequest $request)
+    public function update(int $id, SetWorkRecordRequest $request): JsonResponse
     {
         return response()->json($this->schedule->updateWorkRecord($id, $request));
     }

@@ -24,7 +24,7 @@ class SubscriptionController extends Controller
     /**
      * @return JsonResponse
      */
-    public function countFollowers()
+    public function countFollowers(): JsonResponse
     {
         return response()->json($this->follower->totalFollowers());
     }
@@ -33,7 +33,7 @@ class SubscriptionController extends Controller
      * @param AllFollowersRequest $request
      * @return JsonResponse
      */
-    public function followers(AllFollowersRequest $request)
+    public function followers(AllFollowersRequest $request): JsonResponse
     {
         return response()->json($this->follower->allFollowers($request));
     }
@@ -41,7 +41,7 @@ class SubscriptionController extends Controller
     /**
      * @return JsonResponse
      */
-    public function countRequests()
+    public function countRequests(): JsonResponse
     {
         return response()->json($this->follower->totalRequests());
     }
@@ -50,7 +50,7 @@ class SubscriptionController extends Controller
      * @param DecisionInviteRequest $request
      * @return JsonResponse
      */
-    public function accept(DecisionInviteRequest $request)
+    public function accept(DecisionInviteRequest $request): JsonResponse
     {
         return response()
             ->json($this->follower->accept($request));
@@ -60,7 +60,7 @@ class SubscriptionController extends Controller
      * @param DecisionInviteRequest $request
      * @return JsonResponse
      */
-    public function decline(DecisionInviteRequest $request)
+    public function decline(DecisionInviteRequest $request): JsonResponse
     {
         return response()
             ->json($this->follower->decline($request));
@@ -70,7 +70,7 @@ class SubscriptionController extends Controller
      * @param AllRequestsRequest $request
      * @return JsonResponse
      */
-    public function requests(AllRequestsRequest $request)
+    public function requests(AllRequestsRequest $request): JsonResponse
     {
         return response()
             ->json($this->follower->allRequests($request));

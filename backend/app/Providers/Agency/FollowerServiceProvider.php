@@ -2,6 +2,7 @@
 
 namespace App\Providers\Agency;
 
+use App\DTO\User\Agency\Follows\Factory\IFollowAgencyDTOFactory;
 use App\Repositories\PostgreSql\Agency\FollowerAgencyRepo;
 use App\Repositories\PostgreSql\User\AuthRepo;
 use App\Services\Agency\FollowerAgencyService;

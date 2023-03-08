@@ -21,7 +21,7 @@ class SocketController extends Controller
      * @param Request $request
      * @return string
      */
-    public function registrationChannel(Request $request)
+    public function registrationChannel(Request $request): string
     {
         preg_match('/^(private|presence)/', $request->get('channel_name'), $matches);
         if ($matches) {
@@ -43,7 +43,7 @@ class SocketController extends Controller
      * @param Request $request
      * @return string
      */
-    public function setUserConnection(Request $request)
+    public function setUserConnection(Request $request): string
     {
         $user = \Auth::user();
         return $this->socket->authenticateUser(

@@ -2,6 +2,8 @@
 
 namespace App\Repositories\PostgreSql\Agency;
 
+use App\DTO\User\Agency\Follows\AllFollowsSearchDTO;
+use App\DTO\User\Agency\Follows\AllInvitesSearchDTO;
 use App\Enums\SubscriptionRequestStatus;
 use App\Exceptions\BadRequestException;
 use App\Models\Subscription;
@@ -23,7 +25,7 @@ class FollowerAgencyRepo implements ISubscriptionAgencyRepo
     /**
      * @throws \Throwable
      */
-    public function createInviteRequest(string $userReceiverEmail, string $inviteMessage, string $token): int
+    public function createInviteRequest(int $userID, string $userReceiverEmail, string $inviteMessage = null): int
     {
         $id = \DB::table('users')
             ->select('id')
@@ -36,15 +38,14 @@ class FollowerAgencyRepo implements ISubscriptionAgencyRepo
                 $id = $this->createEmptyUser($userReceiverEmail);
             }
 
-            if (\DB::table('subscriptions')->where([['user_id', $id], ['user_subscriber_id', \Auth::user()->id]])->exists()) {
+            if (\DB::table('subscriptions')->where([['user_id', $id], ['user_subscriber_id', $userID]])->exists()) {
                 throw new BadRequestException("You already have subscribed");
             }
 
             $id = DB::table('subscription_requests')->insertGetId([
-                'user_sender_id' => \Auth::user()->id,
+                'user_sender_id' => $userID,
                 'user_receiver_id' => $id,
                 'message' => $inviteMessage,
-                'token' => $token,
                 'created_at' => date('Y-m-d H:i:m')
             ]);
 
@@ -62,22 +63,22 @@ class FollowerAgencyRepo implements ISubscriptionAgencyRepo
         return $this->auth->createEmptyUserWithEmail($email)->id;
     }
 
-    public function totalFollows(): int
+    public function totalFollows(int $userID): int
     {
         return DB::table('subscriptions')
-            ->where('user_subscriber_id', \Auth::user()->id)
+            ->where('user_subscriber_id', $userID)
             ->count();
     }
 
-    public function totalRequest(): int
+    public function totalRequest(int $userID): int
     {
         return DB::table('subscription_requests')
-            ->where('user_sender_id', \Auth::user()->id)
+            ->where('user_sender_id', $userID)
             ->where('status', '<>', SubscriptionRequestStatus::REJECT)
             ->count();
     }
 
-    public function allFollows(int $limit, int $offset, string $search): array
+    public function allFollows(AllFollowsSearchDTO $allFollowsSearchDTO): array
     {
         $query = DB::table('subscriptions', 's')
             ->join('agents as a', 'a.user_id', '=', 's.user_id')
@@ -92,21 +93,21 @@ class FollowerAgencyRepo implements ISubscriptionAgencyRepo
                 'a.created_at',
                 'a.updated_at',
             ])
-            ->where('s.user_subscriber_id', \Auth::user()->id);
+            ->where('s.user_subscriber_id', $allFollowsSearchDTO->userID);
 
-        if ($search != '') {
+        if ($allFollowsSearchDTO->search != null) {
             $query
-                ->where('a.name', 'ilike', $search . '%')
-                ->orWhere('a.email', 'ilike', $search . '%');
+                ->where('a.name', 'ilike', $allFollowsSearchDTO->search . '%')
+                ->orWhere('a.email', 'ilike', $allFollowsSearchDTO->search . '%');
         }
 
-        return $query->limit($limit)
-            ->offset($offset)
+        return $query->limit($allFollowsSearchDTO->limit)
+            ->offset($allFollowsSearchDTO->offset)
             ->orderByDesc('s.created_at')
             ->get()->toArray();
     }
 
-    public function allRequests(int $limit, int $offset, string $search): array
+    public function allInvites(AllInvitesSearchDTO $allInvitesSearchDTO): array
     {
         $query = DB::table('subscription_requests', 'sr')
             ->leftJoin('agents as a', 'a.user_id', '=', 'sr.user_receiver_id')
@@ -119,13 +120,13 @@ class FollowerAgencyRepo implements ISubscriptionAgencyRepo
             ->where('sr.user_sender_id', \Auth::user()->id)
             ->where('sr.status', '<>', SubscriptionRequestStatus::REJECT);
 
-        if ($search != '') {
-            $query->where('a.name', 'ilike', $search . '%')
-                ->orWhere('a.email', 'ilike', $search . '%');
+        if ($allInvitesSearchDTO->search != null) {
+            $query->where('a.name', 'ilike', $allInvitesSearchDTO->search . '%')
+                ->orWhere('a.email', 'ilike', $allInvitesSearchDTO->search . '%');
         }
 
-        return $query->limit($limit)
-            ->offset($offset)
+        return $query->limit($allInvitesSearchDTO->limit)
+            ->offset($allInvitesSearchDTO->offset)
             ->orderByDesc('sr.created_at')
             ->get()->toArray();
     }
@@ -149,19 +150,19 @@ class FollowerAgencyRepo implements ISubscriptionAgencyRepo
             ->first();
     }
 
-    public function deleteFollow(int $followID): bool
+    public function deleteFollow(int $userID, int $followID): bool
     {
         return DB::table('subscriptions')
             ->where('user_id', $followID)
-            ->where('user_subscriber_id', \Auth::user()->id)
+            ->where('user_subscriber_id', $userID)
             ->delete();
     }
 
-    public function deleteInviteFollow(int $inviteID): bool
+    public function deleteInviteFollow(int $userID, int $inviteID): bool
     {
         return DB::table('subscription_requests')
             ->where('id', $inviteID)
-            ->where('user_sender_id', \Auth::user()->id)
+            ->where('user_sender_id', $userID)
             ->delete();
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Agency\Subscription;
 
+use App\DTO\User\Agency\Follows\AllFollowsSearchDTO;
+use App\DTO\User\Agency\Follows\Factory\IFollowAgencyDTOFactory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -11,14 +13,8 @@ use Illuminate\Validation\Rule;
  * @property string $search
  * @property string $status
  */
-class AllFollowsRequest extends FormRequest
+class AllAgencyFollowsRequest extends FormRequest
 {
-    protected function prepareForValidation()
-    {
-        // set default value
-        $this->merge(['limit' => $this->limit ?: 20, 'offset' => $this->offset ?: 0]);
-    }
-
     public function rules(): array
     {
         return [
@@ -32,5 +28,14 @@ class AllFollowsRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    /**
+     * @param IFollowAgencyDTOFactory $DTOFactory
+     * @return AllFollowsSearchDTO
+     */
+    public function getDTO(): AllFollowsSearchDTO
+    {
+        return $DTOFactory->createAllFollowSearchDTO($this);
     }
 }

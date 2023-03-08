@@ -10,13 +10,8 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property int $offset
  * @property string $search
  */
-class AllRequestsRequest extends BaseRequest
+class AllAgencyInvitesRequest extends BaseRequest
 {
-    protected function prepareForValidation()
-    {
-        $this->merge(['limit' => $this->limit ?: 20, 'offset' => $this->offset ?: 0]);
-    }
-
     public function rules(): array
     {
         return [

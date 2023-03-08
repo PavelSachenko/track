@@ -15,6 +15,9 @@ run:
 
 stop:
 	cd backend && docker-compose down && cd ..
+	
+php-reload:
+	clear && cd backend && docker-compose stop track-php && docker-compose start track-php && cd ..
 
 migrate:
 	cd backend docker-compose exec track-php bash -c  "cd /var/www && php artisan migrate --seed" && cd ..

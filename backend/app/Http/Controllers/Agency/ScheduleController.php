@@ -7,6 +7,7 @@ use App\Http\Requests\Agency\Schedule\AllRequest;
 use App\Models\WorkSchedule;
 use App\Models\WorkTime;
 use App\Services\Contracts\Agency\IScheduleAgencyService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class ScheduleController extends Controller
@@ -18,8 +19,8 @@ class ScheduleController extends Controller
         $this->schedule = $schedule;
     }
 
-    public function index(AllRequest $request)
+    public function index(AllRequest $request): JsonResponse
     {
-        return $this->schedule->agentsSchedules($request);
+        return response()->json($this->schedule->agentsSchedules($request));
     }
 }

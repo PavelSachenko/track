@@ -116,8 +116,8 @@ Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']]
     Route::prefix('/subscription')->group(function (){
         Route::post('send-request', [AgencySubscriptionController::class, 'sendRequest']);
 
-        Route::get('count-follows', [AgencySubscriptionController::class, 'countFollows']);
-        Route::get('count-requests', [AgencySubscriptionController::class, 'countRequests']);
+        Route::get('count-follows', [AgencySubscriptionController::class, 'totalFollows']);
+        Route::get('count-requests', [AgencySubscriptionController::class, 'totalRequests']);
         Route::get('follows', [AgencySubscriptionController::class, 'follows']);
         Route::get('requests', [AgencySubscriptionController::class, 'requests']);
 
@@ -126,23 +126,9 @@ Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']]
     });
 
     Route::prefix('/schedule')->group(function (){
-        Route::get('/', function (){
-            $test = new Test();
-            $test->test = 'asdasd';
-            newTest($test);
-            dd($test);
-        });
-//        Route::get('/', [AgencyScheduleController::class, 'index']);
+        Route::get('/', [AgencyScheduleController::class, 'index']);
     });
 
 });
 
-function newTest(Test $test)
-{
-    $test->test = "loh";
-}
 
-class Test
-{
-    public string $test = "";
-}
