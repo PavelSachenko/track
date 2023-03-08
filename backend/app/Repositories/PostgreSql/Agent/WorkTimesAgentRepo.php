@@ -7,22 +7,22 @@ use App\Models\WorkTime;
 class WorkTimesAgentRepo implements \App\Repositories\Contracts\Agent\IWorkTimesAgentRepo
 {
 
-    public function updateWorkTime(string $mode, array|object $times): bool
+    public function updateWorkTime(int $userID, string $mode, array $times): bool
     {
         return (bool)\DB::table('work_times')
-            ->where('user_id', \Auth::user()->id)
+            ->where('user_id', $userID)
             ->update(['current_mode' => $mode, $mode . '_times' => $times]);
     }
 
-    public function updateIsAvailable(bool $isAvailable): bool
+    public function updateIsAvailable(int $userID, bool $isAvailable): bool
     {
         return (bool)\DB::table('agents')
-            ->where('user_id', \Auth::user()->id)
+            ->where('user_id', $userID)
             ->update(['is_available' => $isAvailable]);
     }
 
-    public function agentWorkTimes(): array
+    public function agentWorkTimes(int $userID): array
     {
-        return WorkTime::where('user_id', \Auth::user()->id)->first()->toArray();
+        return WorkTime::where('user_id', $userID)->first()->toArray();
     }
 }

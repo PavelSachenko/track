@@ -2,11 +2,8 @@
 
 namespace App\Services\Agent;
 
-use App\Http\Requests\Agent\Schedule\SetWorkRecordRequest;
-use App\Http\Requests\Agent\Schedule\UpdateWorkRecordRequest;
-use App\Http\Requests\Agent\Schedule\DeleteWorkRecordRequest;
-use App\Http\Requests\Agent\Schedule\ScheduleRequest;
-use App\Models\WorkSchedule;
+use App\DTO\User\Agent\Schedule\AddAgentWorkRecordDTO;
+use App\DTO\User\Agent\Schedule\UpdateAgentWorkRecordDTO;
 use App\Repositories\Contracts\Agent\IScheduleAgentRepo;
 use App\Services\Contracts\Socket\ISocket;
 use App\Enums\Socket\Agent\Schedule as EnumSchedule;
@@ -22,23 +19,20 @@ class ScheduleAgentService implements \App\Services\Contracts\Agent\IScheduleAge
         $this->socket = $socket;
     }
 
-    public function oneDay(ScheduleRequest $request): array
+    public function oneDay(int $userID, int $date): array
     {
-        $date = date("Y-m-d", $request->date / 1000);
+        $date = date("Y-m-d", $date / 1000);
         $from = $date . ' 00:00:00';
         $to = date('Y-m-d', strtotime("+1 day", strtotime($date))) . ' 00:00:00';
 
-        return $this->scheduleRepo->scheduleForOneDay(\Auth::user()->id, $from, $to);
+        return $this->scheduleRepo->scheduleForOneDay($userID, $from, $to);
     }
 
-    public function addWorkRecord(SetWorkRecordRequest $request): array
+    public function addWorkRecord(AddAgentWorkRecordDTO $addAgentWorkRecordDTO): array
     {
-        $workRecord = $this->scheduleRepo->addWorkRecord(
-            date("Y-m-d H:i:s", $request->start / 1000),
-            date("Y-m-d H:i:s", $request->end / 1000),
-            WorkSchedule::TYPE[$request->type],
-            $request?->description,
-            $request?->agencyId,
+        $workRecord = $this->scheduleRepo->addWorkRecord($addAgentWorkRecordDTO,
+            date("Y-m-d H:i:s", $addAgentWorkRecordDTO->start / 1000),
+            date("Y-m-d H:i:s", $addAgentWorkRecordDTO->end / 1000),
         );
 
         $this->socket->sendToUser(\Auth::user()->id, EnumSchedule::ADD_EVENT, $workRecord);
@@ -46,21 +40,17 @@ class ScheduleAgentService implements \App\Services\Contracts\Agent\IScheduleAge
         return $workRecord;
     }
 
-    public function updateWorkRecord(int $id, SetWorkRecordRequest $request): array
+    public function updateWorkRecord(UpdateAgentWorkRecordDTO $updateAgentWorkRecordDTO): array
     {
-
         return $this->scheduleRepo->updateWorkRecord(
-            $id,
-            date("Y-m-d H:i:s", $request->start / 1000),
-            date("Y-m-d H:i:s", $request->end / 1000),
-            WorkSchedule::TYPE[$request->type],
-            $request?->description,
-            $request?->agencyId,
+            $updateAgentWorkRecordDTO,
+            date("Y-m-d H:i:s", $updateAgentWorkRecordDTO->start / 1000),
+            date("Y-m-d H:i:s", $updateAgentWorkRecordDTO->end / 1000),
         );
     }
 
-    public function deleteWorkRecord(int $id): bool
+    public function deleteWorkRecord(int $userID, int $id): bool
     {
-        return $this->scheduleRepo->deleteWorkRecord($id);
+        return $this->scheduleRepo->deleteWorkRecord($userID, $id);
     }
 }

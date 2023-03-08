@@ -21,6 +21,12 @@ class ScheduleController extends Controller
 
     public function index(AllRequest $request): JsonResponse
     {
-        return response()->json($this->schedule->agentsSchedules($request));
+        return response()->json(
+            $this->schedule->agentsSchedules(
+                \Auth::user()->id,
+                $request->date,
+                $request?->search
+            )
+        );
     }
 }

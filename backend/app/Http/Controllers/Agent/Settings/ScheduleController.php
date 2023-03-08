@@ -19,16 +19,16 @@ class ScheduleController extends Controller
 
     public function getWorkTime(): JsonResponse
     {
-        return response()->json($this->settings->getWorkingSchedule());
+        return response()->json($this->settings->getWorkingSchedule(\Auth::user()->id));
     }
 
     public function setWorkStatus(UpdateWorkStatusRequest $request): JsonResponse
     {
-        return response()->json($this->settings->setIsAvailableForToday($request->is_available));
+        return response()->json($this->settings->setIsAvailableForToday(\Auth::user()->id, $request->is_available));
     }
 
     public function setWorkTime(UpdateWorkingScheduleRequest $request): JsonResponse
     {
-        return response()->json($this->settings->setWorkingSchedule($request));
+        return response()->json($this->settings->setWorkingSchedule(\Auth::user()->id, $request->mode, $request->times));
     }
 }

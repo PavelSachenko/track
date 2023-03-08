@@ -14,19 +14,20 @@ class SettingsAgentService implements \App\Services\Contracts\Agent\ISettingsAge
         $this->workTimes = $workTimes;
     }
 
-    public function setIsAvailableForToday(bool $isAvailable): bool
+    public function setIsAvailableForToday(int $userID, bool $isAvailable): bool
     {
-        return $this->workTimes->updateIsAvailable($isAvailable);
+        return $this->workTimes->updateIsAvailable($userID, $isAvailable);
     }
 
-    public function setWorkingSchedule(UpdateWorkingScheduleRequest $request): bool
+    public function setWorkingSchedule(int $userID, string $mode, string $jsonTimes): bool
     {
+        $decodedTimes = json_decode($jsonTimes, true, 512, JSON_OBJECT_AS_ARRAY);
         //TODO validation json $request
-        return $this->workTimes->updateWorkTime($request->mode, (array)json_decode($request->times));
+        return $this->workTimes->updateWorkTime($userID, $mode, $decodedTimes);
     }
 
-    public function getWorkingSchedule(): array
+    public function getWorkingSchedule(int $userID): array
     {
-        return $this->workTimes->agentWorkTimes();
+        return $this->workTimes->agentWorkTimes($userID);
     }
 }

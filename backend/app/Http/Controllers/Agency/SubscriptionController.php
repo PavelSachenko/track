@@ -8,7 +8,6 @@ use App\Http\Requests\Agency\Subscription\AllAgencyFollowsRequest;
 use App\Http\Requests\Agency\Subscription\AllAgencyInvitesRequest;
 use App\Http\Requests\Agency\Subscription\SendInviteRequest;
 use App\Services\Contracts\Agency\IFollowerAgencyService;
-use App\Services\User\Auth;
 use Illuminate\Http\JsonResponse;
 
 class SubscriptionController extends Controller

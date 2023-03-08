@@ -2,18 +2,16 @@
 
 namespace App\Services\Contracts\Agent;
 
-use App\Http\Requests\Agent\Schedule\SetWorkRecordRequest;
-use App\Http\Requests\Agent\Schedule\UpdateWorkRecordRequest;
-use App\Http\Requests\Agent\Schedule\DeleteWorkRecordRequest;
-use App\Http\Requests\Agent\Schedule\ScheduleRequest;
+use App\DTO\User\Agent\Schedule\AddAgentWorkRecordDTO;
+use App\DTO\User\Agent\Schedule\UpdateAgentWorkRecordDTO;
 
 interface IScheduleAgentService
 {
-    public function oneDay(ScheduleRequest $request): array;
+    public function oneDay(int $userID, int $date): array;
 
-    public function addWorkRecord(SetWorkRecordRequest $request): array;
+    public function addWorkRecord(AddAgentWorkRecordDTO $addAgentWorkRecordDTO): array;
 
-    public function deleteWorkRecord(int $id): bool;
+    public function deleteWorkRecord(int $userID, int $id): bool;
 
-    public function updateWorkRecord(int $id, SetWorkRecordRequest $request): array;
+    public function updateWorkRecord(UpdateAgentWorkRecordDTO $updateAgentWorkRecordDTO): array;
 }

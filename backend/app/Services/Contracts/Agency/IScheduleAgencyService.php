@@ -6,5 +6,5 @@ use App\Http\Requests\Agency\Schedule\AllRequest;
 
 interface IScheduleAgencyService
 {
-    public function agentsSchedules(AllRequest $request): array;
+    public function agentsSchedules(int $userID, int $date, string $search = null): array;
 }

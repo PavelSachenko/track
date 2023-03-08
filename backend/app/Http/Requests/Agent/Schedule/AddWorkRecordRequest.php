@@ -4,8 +4,6 @@ namespace App\Http\Requests\Agent\Schedule;
 
 use App\Http\Requests\BaseRequest;
 use App\Rules\DateInWorkScheduleRule;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 /**
  * @property int $start
@@ -14,7 +12,7 @@ use Illuminate\Validation\Rule;
  * @property string $type
  * @property ?string $description
  */
-class SetWorkRecordRequest extends BaseRequest
+class AddWorkRecordRequest extends BaseRequest
 {
     public function rules(): array
     {

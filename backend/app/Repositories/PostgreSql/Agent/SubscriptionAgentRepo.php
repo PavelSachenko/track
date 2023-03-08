@@ -2,6 +2,9 @@
 
 namespace App\Repositories\PostgreSql\Agent;
 
+use App\DTO\User\Agency\Follows\AllFollowsSearchDTO;
+use App\DTO\User\Agent\Followers\AllInviteAgentSearchDTO;
+use App\DTO\User\DefaultAgentDTO;
 use App\Enums\SubscriptionRequestStatus;
 use App\Exceptions\BadRequestException;
 use App\Models\Agent;
@@ -15,12 +18,12 @@ class SubscriptionAgentRepo implements \App\Repositories\Contracts\Agent\ISubscr
     /**
      * @throws \Throwable
      */
-    public function createSubscriptionFromRequest(int $subscriptionRequestID): array
+    public function createSubscriptionFromRequest(DefaultAgentDTO $agentDTO, int $subscriptionInviteID): array
     {
         DB::beginTransaction();
         try {
-            $subscriptionRequest = SubscriptionRequest::where('user_receiver_id', \Auth::user()->id)
-                ->where('id', $subscriptionRequestID)
+            $subscriptionRequest = SubscriptionRequest::where('user_receiver_id', $agentDTO->id)
+                ->where('id', $subscriptionInviteID)
                 ->first();
 
             if (is_null($subscriptionRequest)) {
@@ -45,9 +48,12 @@ class SubscriptionAgentRepo implements \App\Repositories\Contracts\Agent\ISubscr
         }
     }
 
-    public function setRejectStatusForRequest(int $subscriptionRequestID): array
+    public function setRejectStatusForInvite(int $userID, int $subscriptionInviteID): array
     {
-        $subscriptionRequest = SubscriptionRequest::where('id', $subscriptionRequestID)->first();
+        $subscriptionRequest = SubscriptionRequest::where('id', $subscriptionInviteID)
+            ->where('user_receiver_id', $userID)
+            ->first();
+
         $response['updated'] = $subscriptionRequest->update(['status' => SubscriptionRequestStatus::REJECT]);
         $response['user_sender_id'] = $subscriptionRequest->user_sender_id;
         $response['subscription_request_id'] = $subscriptionRequest->id;
@@ -56,22 +62,22 @@ class SubscriptionAgentRepo implements \App\Repositories\Contracts\Agent\ISubscr
     }
 
 
-    public function totalSubscriber(): int
+    public function totalSubscriber(int $userID): int
     {
         return DB::table('subscriptions')
-            ->where('user_id', \Auth::user()->id)
+            ->where('user_id', $userID)
             ->count();
     }
 
-    public function totalRequestToSubscribe(): int
+    public function totalInvitesToSubscribe(int $userID): int
     {
         return DB::table('subscription_requests')
-            ->where('user_receiver_id', \Auth::user()->id)
+            ->where('user_receiver_id', $userID)
             ->where('status', '<>', SubscriptionRequestStatus::REJECT)
             ->count();
     }
 
-    public function allSubscriber(int $limit, int $offset, string $search): array
+    public function allSubscriber(AllFollowsSearchDTO $followerSearchDTO): array
     {
         $query = DB::table('subscriptions', 's')
             ->leftJoin('agencies as a', 'a.user_id', '=', 's.user_subscriber_id')
@@ -86,20 +92,20 @@ class SubscriptionAgentRepo implements \App\Repositories\Contracts\Agent\ISubscr
                 'a.created_at',
                 'a.updated_at',
             ])
-            ->where('s.user_id', \Auth::user()->id);
+            ->where('s.user_id', $followerSearchDTO->userID);
 
-        if ($search != '') {
-            $query->where('a.name', 'ilike', $search . '%')
-                ->orWhere('a.email', 'ilike', $search . '%');
+        if ($followerSearchDTO->search != null) {
+            $query->where('a.name', 'ilike', $followerSearchDTO->search . '%')
+                ->orWhere('a.email', 'ilike', $followerSearchDTO->search . '%');
         }
 
-        return $query->limit($limit)
-            ->offset($offset)
+        return $query->limit($followerSearchDTO->limit)
+            ->offset($followerSearchDTO->offset)
             ->orderByDesc('s.created_at')
             ->get()->toArray();
     }
 
-    public function allRequests(int $limit, int $offset, string $search): array
+    public function allRequests(AllInviteAgentSearchDTO $inviteSearchDTO): array
     {
         $query = DB::table('subscription_requests', 'sr')
             ->leftJoin('agencies as a', 'a.user_id', '=', 'sr.user_sender_id')
@@ -113,16 +119,16 @@ class SubscriptionAgentRepo implements \App\Repositories\Contracts\Agent\ISubscr
                 'sr.message',
                 'u.type'
             ])
-            ->where('sr.user_receiver_id', \Auth::user()->id)
+            ->where('sr.user_receiver_id', $inviteSearchDTO->userID)
             ->where('sr.status', '<>', SubscriptionRequestStatus::REJECT);
 
-        if ($search != '') {
-            $query->where('a.name', 'ilike', $search . '%')
-                ->orWhere('a.email', 'ilike', $search . '%');
+        if ($inviteSearchDTO->search != null) {
+            $query->where('a.name', 'ilike', $inviteSearchDTO->search . '%')
+                ->orWhere('a.email', 'ilike', $inviteSearchDTO->search . '%');
         }
 
-        return $query->limit($limit)
-            ->offset($offset)
+        return $query->limit($inviteSearchDTO->limit)
+            ->offset($inviteSearchDTO->offset)
             ->orderByDesc('sr.created_at')
             ->get()->toArray();
     }

@@ -2,16 +2,16 @@
 
 namespace App\Services\Contracts\Agent;
 
-use App\Http\Requests\Agent\Subscription\AllRequestsRequest;
-use App\Http\Requests\Agent\Subscription\DecisionInviteRequest;
+use App\DTO\User\Agent\Followers\AllInviteAgentSearchDTO;
+use App\DTO\User\DefaultAgentDTO;
 
 interface IInviteAgentService
 {
-    public function accept(DecisionInviteRequest $request): bool;
+    public function accept(DefaultAgentDTO $agentDTO, int $inviteID): bool;
 
-    public function decline(DecisionInviteRequest $request): bool;
+    public function decline(int $userID, int $inviteID): bool;
 
-    public function totalRequests(): int;
+    public function totalInvites(int $userID): int;
 
-    public function allRequests(AllRequestsRequest $request): array;
+    public function allInvites(AllInviteAgentSearchDTO $inviteSearchDTO): array;
 }

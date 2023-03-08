@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 
 /**
  * @property string mode
- * @property array times
+ * @property string times
  */
 class UpdateWorkingScheduleRequest extends BaseRequest
 {

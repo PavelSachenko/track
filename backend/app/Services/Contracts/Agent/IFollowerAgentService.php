@@ -2,11 +2,12 @@
 
 namespace App\Services\Contracts\Agent;
 
-use App\Http\Requests\Agent\Subscription\AllFollowersRequest;
+use App\DTO\User\Agency\Follows\AllFollowsSearchDTO;
+use App\Http\Requests\Agent\Subscription\AllAgentFollowerRequest;
 
 interface IFollowerAgentService extends IInviteAgentService
 {
-    public function totalFollowers(): int;
+    public function totalFollowers(int $userID): int;
 
-    public function allFollowers(AllFollowersRequest $request): array;
+    public function allFollowers(AllFollowsSearchDTO $followerSearchDTO): array;
 }

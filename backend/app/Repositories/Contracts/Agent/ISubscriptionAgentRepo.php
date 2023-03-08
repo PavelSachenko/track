@@ -2,17 +2,21 @@
 
 namespace App\Repositories\Contracts\Agent;
 
+use App\DTO\User\Agency\Follows\AllFollowsSearchDTO;
+use App\DTO\User\Agent\Followers\AllInviteAgentSearchDTO;
+use App\DTO\User\DefaultAgentDTO;
+
 interface ISubscriptionAgentRepo
 {
-    public function createSubscriptionFromRequest(int $subscriptionRequestID): array;
+    public function createSubscriptionFromRequest(DefaultAgentDTO $agentDTO, int $subscriptionInviteID): array;
 
-    public function setRejectStatusForRequest(int $subscriptionRequestID): array;
+    public function setRejectStatusForInvite(int $userID, int $subscriptionInviteID): array;
 
-    public function totalSubscriber(): int;
+    public function totalSubscriber(int $userID): int;
 
-    public function totalRequestToSubscribe(): int;
+    public function totalInvitesToSubscribe(int $userID): int;
 
-    public function allSubscriber(int $limit, int $offset, string $search): array;
+    public function allSubscriber(AllFollowsSearchDTO $followerSearchDTO): array;
 
-    public function allRequests(int $limit, int $offset, string $search): array;
+    public function allRequests(AllInviteAgentSearchDTO $inviteSearchDTO): array;
 }

@@ -7,7 +7,7 @@ use App\DTO\User\Agency\Follows\AllInvitesSearchDTO;
 use App\Http\Requests\Agency\Subscription\AllAgencyFollowsRequest;
 use App\Http\Requests\Agency\Subscription\AllAgencyInvitesRequest;
 
-class FollowAgencyFactory implements IFollowAgencyDTOFactory
+class FollowAgencyDTOFactory implements IFollowAgencyDTOFactory
 {
     /**
      * @param AllAgencyFollowsRequest $request

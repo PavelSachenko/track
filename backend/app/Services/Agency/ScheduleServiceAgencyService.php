@@ -15,9 +15,9 @@ class ScheduleServiceAgencyService implements IScheduleAgencyService
         $this->repo = $repo;
     }
 
-    public function agentsSchedules(AllRequest $request): array
+    public function agentsSchedules(int $userID, int $date, string $search = null): array
     {
-        $date = date("Y-m-d", $request->date / 1000);
+        $date = date("Y-m-d", $date / 1000);
         $from = $date . ' 00:00:00';
         $to = date('Y-m-d', strtotime("+1 day", strtotime($date))) . ' 00:00:00';
 
@@ -26,7 +26,7 @@ class ScheduleServiceAgencyService implements IScheduleAgencyService
                 'from' => strtotime(date('Y-m-d 03:00:00', strtotime($date))) * 1000,
                 'to' => strtotime(date('Y-m-d 22:00:00', strtotime($date))) * 1000,
             ],
-            'agents' => $this->repo->all(\Auth::user()->id, $from, $to, $request->search)
+            'agents' => $this->repo->all($userID, $from, $to, $search)
         ];
     }
 }

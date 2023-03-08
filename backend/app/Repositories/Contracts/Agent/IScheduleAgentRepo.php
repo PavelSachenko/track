@@ -2,20 +2,16 @@
 
 namespace App\Repositories\Contracts\Agent;
 
+use App\DTO\User\Agent\Schedule\AddAgentWorkRecordDTO;
+use App\DTO\User\Agent\Schedule\UpdateAgentWorkRecordDTO;
+
 interface IScheduleAgentRepo
 {
     public function scheduleForOneDay(int $agentID, string $dateFrom, string $dateTo): array;
 
-    public function addWorkRecord(string $dateFrom, string $dateTo, int $type, ?string $description, ?int $agencyID);
+    public function addWorkRecord(AddAgentWorkRecordDTO $addAgentWorkRecordDTO, string $dateFrom, string $dateTo);
 
-    public function deleteWorkRecord(int $id): bool;
+    public function deleteWorkRecord(int $userID, int $id): bool;
 
-    public function updateWorkRecord(
-        int $id,
-        string $dateFrom,
-        string $dateTo,
-        int $type,
-        ?string $description,
-        ?int $agencyID
-    ): array;
+    public function updateWorkRecord(UpdateAgentWorkRecordDTO $updateAgentWorkRecordDTO, string $dateFrom, string $dateTo): array;
 }
