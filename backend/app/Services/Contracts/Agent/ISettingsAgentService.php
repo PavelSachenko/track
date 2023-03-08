@@ -4,7 +4,7 @@ namespace App\Services\Contracts\Agent;
 
 use App\Http\Requests\Agent\Settings\UpdateWorkingScheduleRequest;
 
-interface Settings
+interface ISettingsAgentService
 {
     public function setIsAvailableForToday(bool $isAvailable): bool;
 

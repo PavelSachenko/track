@@ -5,9 +5,9 @@ namespace App\Repositories\PostgreSql\Agent;
 use App\Models\WorkSchedule;
 use App\Models\WorkTime;
 
-class ScheduleRepo implements \App\Repositories\Contracts\Agent\ScheduleRepo
+class ScheduleAgentRepo implements \App\Repositories\Contracts\Agent\IScheduleAgentRepo
 {
-    public function getScheduleForOneDay(int $agentID, string $dateFrom, string $dateTo): array
+    public function scheduleForOneDay(int $agentID, string $dateFrom, string $dateTo): array
     {
         $workTime = WorkTime::where('user_id', $agentID)->first();
         if ($workTime->current_mode == WorkTime::CUSTOM_MODE) {

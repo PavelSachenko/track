@@ -7,15 +7,16 @@ use App\Http\Requests\User\SettingsRequest;
 use App\Http\Requests\User\UpdateAvatarRequest;
 use App\Http\Requests\User\UpdatePasswordRequest;
 use App\Models\User;
-use App\Repositories\Contracts\User\AuthRepo;
-use App\Repositories\Contracts\User\SettingsRepo;
+use App\Repositories\Contracts\User\IAuthRepo;
+use App\Repositories\Contracts\User\ISettingsRepo;
+use Illuminate\Support\Facades\Hash;
 
-class Settings implements \App\Services\Contracts\User\Settings
+class Settings implements \App\Services\Contracts\User\ISettings
 {
-    private SettingsRepo $settingsRepo;
-    private AuthRepo $authRepo;
+    private ISettingsRepo $settingsRepo;
+    private IAuthRepo $authRepo;
 
-    public function __construct(SettingsRepo $repo, AuthRepo $authRepo)
+    public function __construct(ISettingsRepo $repo, IAuthRepo $authRepo)
     {
         $this->settingsRepo = $repo;
         $this->authRepo = $authRepo;
@@ -48,6 +49,6 @@ class Settings implements \App\Services\Contracts\User\Settings
             throw new ForbiddenException("Wrong old password");
         }
 
-        return $this->authRepo->createNewPassword(\Auth::user()->id, $request->new_password);
+        return $this->authRepo->createNewPassword(\Auth::user()->id,  Hash::make($request->new_password));
     }
 }

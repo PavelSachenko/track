@@ -4,12 +4,12 @@ namespace App\Repositories\PostgreSql\Agency;
 
 use App\Models\WorkSchedule;
 use App\Models\WorkTime;
-use App\Repositories\Contracts\Agent\ScheduleRepo as IAgentScheduleRepo;
-use App\Repositories\PostgreSql\Agent\ScheduleRepo as AgentScheduleRepo;
-use App\Repositories\Contracts\Agency\IScheduleRepo;
+use App\Repositories\Contracts\Agent\IScheduleAgentRepo as IAgentScheduleRepo;
+use App\Repositories\PostgreSql\Agent\ScheduleAgentRepo as AgentScheduleRepo;
+use App\Repositories\Contracts\Agency\IScheduleAgencyRepo;
 use Illuminate\Support\Facades\DB;
 
-class ScheduleRepo implements IScheduleRepo
+class ScheduleAgencyRepo implements IScheduleAgencyRepo
 {
     private IAgentScheduleRepo $agentScheduleRepo;
 
@@ -39,7 +39,7 @@ class ScheduleRepo implements IScheduleRepo
 
 
         foreach ($agentsSchedules as $agent) {
-            $worksRecords = $this->agentScheduleRepo->getScheduleForOneDay($agent->id, $dateFrom, $dateTo);
+            $worksRecords = $this->agentScheduleRepo->scheduleForOneDay($agent->id, $dateFrom, $dateTo);
             $agent->work_time = $worksRecords['date'];
             $agent->schedule_events = $worksRecords['schedule'];
         }

@@ -6,7 +6,7 @@ use App\Enums\Socket\Agency\Subscription;
 use App\Enums\Socket\Agent\Invite;
 use App\Models\Agency;
 use App\Models\Agent;
-use App\Services\Contracts\Socket\Socket;
+use App\Services\Contracts\Socket\ISocket;
 use Illuminate\Console\Command;
 
 class SocketNewInviteCommand extends Command
@@ -15,7 +15,7 @@ class SocketNewInviteCommand extends Command
 
     protected $description = 'Command description';
 
-    public function handle(Socket $socket)
+    public function handle(ISocket $socket)
     {
 
         switch ($this->argument('event')) {

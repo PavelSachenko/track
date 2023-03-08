@@ -126,7 +126,23 @@ Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']]
     });
 
     Route::prefix('/schedule')->group(function (){
-        Route::get('/', [AgencyScheduleController::class, 'index']);
+        Route::get('/', function (){
+            $test = new Test();
+            $test->test = 'asdasd';
+            newTest($test);
+            dd($test);
+        });
+//        Route::get('/', [AgencyScheduleController::class, 'index']);
     });
 
 });
+
+function newTest(Test $test)
+{
+    $test->test = "loh";
+}
+
+class Test
+{
+    public string $test = "";
+}

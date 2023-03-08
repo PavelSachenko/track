@@ -4,7 +4,7 @@ namespace App\Services\Contracts\Agency;
 
 use App\Http\Requests\Agency\Schedule\AllRequest;
 
-interface ISchedule
+interface IScheduleAgencyService
 {
     public function agentsSchedules(AllRequest $request): array;
 }

@@ -2,7 +2,7 @@
 
 namespace App\Services\Contracts\User;
 
-interface AuthSocket
+interface IAuthSocket
 {
     public function authUser(int $userID, array $userInfo): string;
 

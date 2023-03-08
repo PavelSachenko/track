@@ -9,21 +9,21 @@ use App\Http\Requests\Agent\Schedule\UpdateWorkRecordRequest;
 use App\Http\Requests\Agent\Schedule\ScheduleRequest;
 use App\Models\WorkSchedule;
 use App\Rules\DateInWorkScheduleRule;
-use App\Services\Contracts\Agent\Schedule;
-use App\Services\Contracts\Socket\Socket;
+use App\Services\Contracts\Agent\IScheduleAgentService;
+use App\Services\Contracts\Socket\ISocket;
 
 class ScheduleController extends Controller
 {
-    private Schedule $schedule;
+    private IScheduleAgentService $schedule;
 
-    public function __construct(Schedule $schedule)
+    public function __construct(IScheduleAgentService $schedule)
     {
         $this->schedule = $schedule;
     }
 
     public function index(ScheduleRequest $request)
     {
-        return response()->json($this->schedule->getOneDay($request));
+        return response()->json($this->schedule->oneDay($request));
     }
 
     public function add(SetWorkRecordRequest $request)

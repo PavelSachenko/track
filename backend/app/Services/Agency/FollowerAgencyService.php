@@ -6,15 +6,15 @@ use App\Enums\Socket\Agent\Invite;
 use App\Http\Requests\Agency\Subscription\AllFollowsRequest;
 use App\Http\Requests\Agency\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agency\Subscription\SendInviteRequest;
-use App\Repositories\PostgreSql\Agency\FollowerRepo;
-use App\Services\Contracts\Socket\Socket;
+use App\Repositories\PostgreSql\Agency\FollowerAgencyRepo;
+use App\Services\Contracts\Socket\ISocket;
 
-class Follower implements \App\Services\Contracts\Agency\Follower
+class FollowerAgencyService implements \App\Services\Contracts\Agency\IFollowerAgencyService
 {
-    private FollowerRepo $followerRepo;
-    private Socket $socket;
+    private FollowerAgencyRepo $followerRepo;
+    private ISocket $socket;
 
-    public function __construct(FollowerRepo $repo, Socket $socket)
+    public function __construct(FollowerAgencyRepo $repo, ISocket $socket)
     {
         $this->followerRepo = $repo;
         $this->socket = $socket;
@@ -27,7 +27,7 @@ class Follower implements \App\Services\Contracts\Agency\Follower
     {
         //TODO why we need token?
         $inviteId = $this->followerRepo->createInviteRequest($request->email, $request->message ?: "hello", "token");
-        $invite = $this->followerRepo->getOneRequest($inviteId);
+        $invite = $this->followerRepo->oneRequest($inviteId);
         $this->socket->sendToUser($invite['user_receiver_id'], Invite::NEW, $invite);
 
         return $inviteId;
@@ -35,22 +35,22 @@ class Follower implements \App\Services\Contracts\Agency\Follower
 
     public function totalFollows(): int
     {
-        return $this->followerRepo->countFollows();
+        return $this->followerRepo->totalFollows();
     }
 
     public function totalRequest(): int
     {
-        return $this->followerRepo->countRequest();
+        return $this->followerRepo->totalRequest();
     }
 
-    public function getAllFollows(AllFollowsRequest $request): array
+    public function allFollows(AllFollowsRequest $request): array
     {
-        return $this->followerRepo->getAllFollows($request->limit, $request->offset, $request->search ?: '');
+        return $this->followerRepo->allFollows($request->limit, $request->offset, $request->search ?: '');
     }
 
-    public function getAllRequests(AllRequestsRequest $request): array
+    public function allRequests(AllRequestsRequest $request): array
     {
-        return $this->followerRepo->getAllRequests($request->limit, $request->offset, $request->search ?: '');
+        return $this->followerRepo->allRequests($request->limit, $request->offset, $request->search ?: '');
     }
 
     public function deleteFollow(int $followID): bool

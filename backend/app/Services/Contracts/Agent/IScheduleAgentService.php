@@ -7,9 +7,9 @@ use App\Http\Requests\Agent\Schedule\UpdateWorkRecordRequest;
 use App\Http\Requests\Agent\Schedule\DeleteWorkRecordRequest;
 use App\Http\Requests\Agent\Schedule\ScheduleRequest;
 
-interface Schedule
+interface IScheduleAgentService
 {
-    public function getOneDay(ScheduleRequest $request): array;
+    public function oneDay(ScheduleRequest $request): array;
 
     public function addWorkRecord(SetWorkRecordRequest $request): array;
 

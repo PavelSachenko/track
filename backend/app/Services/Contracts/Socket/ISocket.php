@@ -2,7 +2,7 @@
 
 namespace App\Services\Contracts\Socket;
 
-interface Socket
+interface ISocket
 {
     public function authorizeChannel(string $channel, string $socket_id, string $custom_data = null): string;
 

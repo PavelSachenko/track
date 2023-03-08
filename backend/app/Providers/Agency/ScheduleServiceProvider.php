@@ -2,18 +2,18 @@
 
 namespace App\Providers\Agency;
 
-use App\Repositories\Contracts\Agency\IScheduleRepo;
-use App\Repositories\PostgreSql\Agency\ScheduleRepo;
-use App\Services\Agency\ScheduleService;
-use App\Services\Contracts\Agency\ISchedule;
+use App\Repositories\Contracts\Agency\IScheduleAgencyRepo;
+use App\Repositories\PostgreSql\Agency\ScheduleAgencyRepo;
+use App\Services\Agency\ScheduleServiceAgencyService;
+use App\Services\Contracts\Agency\IScheduleAgencyService;
 use Illuminate\Support\ServiceProvider;
 
 class ScheduleServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(ISchedule::class, function ($app) {
-            return new ScheduleService($app->make(ScheduleRepo::class));
+        $this->app->bind(IScheduleAgencyService::class, function ($app) {
+            return new ScheduleServiceAgencyService($app->make(ScheduleAgencyRepo::class));
         });
     }
 

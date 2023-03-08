@@ -2,11 +2,9 @@
 
 namespace App\Repositories\Contracts\Agent;
 
-use App\Http\Requests\Agent\Schedule\ScheduleRequest;
-
-interface ScheduleRepo
+interface IScheduleAgentRepo
 {
-    public function getScheduleForOneDay(int $agentID, string $dateFrom, string $dateTo): array;
+    public function scheduleForOneDay(int $agentID, string $dateFrom, string $dateTo): array;
 
     public function addWorkRecord(string $dateFrom, string $dateTo, int $type, ?string $description, ?int $agencyID);
 

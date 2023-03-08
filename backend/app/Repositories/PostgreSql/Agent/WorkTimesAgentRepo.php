@@ -4,7 +4,7 @@ namespace App\Repositories\PostgreSql\Agent;
 
 use App\Models\WorkTime;
 
-class WorkTimes implements \App\Repositories\Contracts\Agent\WorkTimes
+class WorkTimesAgentRepo implements \App\Repositories\Contracts\Agent\IWorkTimesAgentRepo
 {
 
     public function updateWorkTime(string $mode, array|object $times): bool
@@ -21,7 +21,7 @@ class WorkTimes implements \App\Repositories\Contracts\Agent\WorkTimes
             ->update(['is_available' => $isAvailable]);
     }
 
-    public function getWorkTimes(): array
+    public function agentWorkTimes(): array
     {
         return WorkTime::where('user_id', \Auth::user()->id)->first()->toArray();
     }

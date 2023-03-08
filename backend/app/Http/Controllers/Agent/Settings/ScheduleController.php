@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Agent\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agent\Settings\UpdateWorkingScheduleRequest;
 use App\Http\Requests\Agent\Settings\UpdateWorkStatusRequest;
-use App\Services\Contracts\Agent\Settings;
+use App\Services\Contracts\Agent\ISettingsAgentService;
 
 class ScheduleController extends Controller
 {
-    private Settings $settings;
+    private ISettingsAgentService $settings;
 
-    public function __construct(Settings $settings)
+    public function __construct(ISettingsAgentService $settings)
     {
         $this->settings = $settings;
     }

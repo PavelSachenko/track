@@ -10,7 +10,7 @@ use App\Models\SubscriptionRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
-class SubscriptionRepo implements \App\Repositories\Contracts\Agent\SubscriptionRepo
+class SubscriptionAgentRepo implements \App\Repositories\Contracts\Agent\ISubscriptionAgentRepo
 {
     /**
      * @throws \Throwable
@@ -56,14 +56,14 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
     }
 
 
-    public function countSubscriber(): int
+    public function totalSubscriber(): int
     {
         return DB::table('subscriptions')
             ->where('user_id', \Auth::user()->id)
             ->count();
     }
 
-    public function countRequestToSubscribe(): int
+    public function totalRequestToSubscribe(): int
     {
         return DB::table('subscription_requests')
             ->where('user_receiver_id', \Auth::user()->id)
@@ -71,7 +71,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             ->count();
     }
 
-    public function getAllSubscriber(int $limit, int $offset, string $search): array
+    public function allSubscriber(int $limit, int $offset, string $search): array
     {
         $query = DB::table('subscriptions', 's')
             ->leftJoin('agencies as a', 'a.user_id', '=', 's.user_subscriber_id')
@@ -99,7 +99,7 @@ class SubscriptionRepo implements \App\Repositories\Contracts\Agent\Subscription
             ->get()->toArray();
     }
 
-    public function getAllRequests(int $limit, int $offset, string $search): array
+    public function allRequests(int $limit, int $offset, string $search): array
     {
         $query = DB::table('subscription_requests', 'sr')
             ->leftJoin('agencies as a', 'a.user_id', '=', 'sr.user_sender_id')

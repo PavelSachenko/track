@@ -4,15 +4,15 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\Contracts\Socket\Socket;
+use App\Services\Contracts\Socket\ISocket;
 use Illuminate\Http\Request;
 use Pusher\PusherException;
 
 class SocketController extends Controller
 {
-    private Socket $socket;
+    private ISocket $socket;
 
-    public function __construct(Socket $socket)
+    public function __construct(ISocket $socket)
     {
         $this->socket = $socket;
     }

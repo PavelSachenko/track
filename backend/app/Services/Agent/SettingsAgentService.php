@@ -3,13 +3,13 @@
 namespace App\Services\Agent;
 
 use App\Http\Requests\Agent\Settings\UpdateWorkingScheduleRequest;
-use App\Repositories\Contracts\Agent\WorkTimes;
+use App\Repositories\Contracts\Agent\IWorkTimesAgentRepo;
 
-class Settings implements \App\Services\Contracts\Agent\Settings
+class SettingsAgentService implements \App\Services\Contracts\Agent\ISettingsAgentService
 {
     private $workTimes;
 
-    public function __construct(WorkTimes $workTimes)
+    public function __construct(IWorkTimesAgentRepo $workTimes)
     {
         $this->workTimes = $workTimes;
     }
@@ -27,6 +27,6 @@ class Settings implements \App\Services\Contracts\Agent\Settings
 
     public function getWorkingSchedule(): array
     {
-        return $this->workTimes->getWorkTimes();
+        return $this->workTimes->agentWorkTimes();
     }
 }

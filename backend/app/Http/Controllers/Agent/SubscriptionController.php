@@ -6,17 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Agent\Subscription\AllFollowersRequest;
 use App\Http\Requests\Agent\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agent\Subscription\DecisionInviteRequest;
-use App\Services\Contracts\Agent\Follower;
+use App\Services\Contracts\Agent\IFollowerAgentService;
 use Illuminate\Http\JsonResponse;
 
 class SubscriptionController extends Controller
 {
-    private Follower $follower;
+    private IFollowerAgentService $follower;
 
     /**
-     * @param Follower $follower
+     * @param IFollowerAgentService $follower
      */
-    public function __construct(Follower $follower)
+    public function __construct(IFollowerAgentService $follower)
     {
         $this->follower = $follower;
     }
@@ -26,7 +26,7 @@ class SubscriptionController extends Controller
      */
     public function countFollowers()
     {
-        return response()->json($this->follower->countFollowers());
+        return response()->json($this->follower->totalFollowers());
     }
 
     /**
@@ -35,7 +35,7 @@ class SubscriptionController extends Controller
      */
     public function followers(AllFollowersRequest $request)
     {
-        return response()->json($this->follower->getAllFollowers($request));
+        return response()->json($this->follower->allFollowers($request));
     }
 
     /**
@@ -43,7 +43,7 @@ class SubscriptionController extends Controller
      */
     public function countRequests()
     {
-        return response()->json($this->follower->countRequests());
+        return response()->json($this->follower->totalRequests());
     }
 
     /**
@@ -73,6 +73,6 @@ class SubscriptionController extends Controller
     public function requests(AllRequestsRequest $request)
     {
         return response()
-            ->json($this->follower->getAllRequests($request));
+            ->json($this->follower->allRequests($request));
     }
 }

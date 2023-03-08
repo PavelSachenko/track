@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordEmailValidationRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\ValidateEmailTokenRequest;
-use App\Services\Contracts\User\Auth;
+use App\Services\Contracts\User\IAuth;
 
 class ResetPasswordController extends Controller
 {
 
-    private Auth $auth;
+    private IAuth $auth;
 
-    public function __construct(Auth $auth)
+    public function __construct(IAuth $auth)
     {
         $this->auth = $auth;
     }

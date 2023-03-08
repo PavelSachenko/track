@@ -6,16 +6,16 @@ use App\Enums\SubscriptionRequestStatus;
 use App\Exceptions\BadRequestException;
 use App\Models\Subscription;
 use App\Models\SubscriptionRequest;
-use App\Repositories\Contracts\Agency\SubscriptionRepo;
-use App\Repositories\Contracts\User\AuthRepo;
+use App\Repositories\Contracts\Agency\ISubscriptionAgencyRepo;
+use App\Repositories\Contracts\User\IAuthRepo;
 use Illuminate\Support\Facades\DB;
 
-class FollowerRepo implements SubscriptionRepo
+class FollowerAgencyRepo implements ISubscriptionAgencyRepo
 {
 
-    private AuthRepo $auth;
+    private IAuthRepo $auth;
 
-    public function __construct(AuthRepo $auth)
+    public function __construct(IAuthRepo $auth)
     {
         $this->auth = $auth;
     }
@@ -62,14 +62,14 @@ class FollowerRepo implements SubscriptionRepo
         return $this->auth->createEmptyUserWithEmail($email)->id;
     }
 
-    public function countFollows(): int
+    public function totalFollows(): int
     {
         return DB::table('subscriptions')
             ->where('user_subscriber_id', \Auth::user()->id)
             ->count();
     }
 
-    public function countRequest(): int
+    public function totalRequest(): int
     {
         return DB::table('subscription_requests')
             ->where('user_sender_id', \Auth::user()->id)
@@ -77,7 +77,7 @@ class FollowerRepo implements SubscriptionRepo
             ->count();
     }
 
-    public function getAllFollows(int $limit, int $offset, string $search): array
+    public function allFollows(int $limit, int $offset, string $search): array
     {
         $query = DB::table('subscriptions', 's')
             ->join('agents as a', 'a.user_id', '=', 's.user_id')
@@ -106,7 +106,7 @@ class FollowerRepo implements SubscriptionRepo
             ->get()->toArray();
     }
 
-    public function getAllRequests(int $limit, int $offset, string $search): array
+    public function allRequests(int $limit, int $offset, string $search): array
     {
         $query = DB::table('subscription_requests', 'sr')
             ->leftJoin('agents as a', 'a.user_id', '=', 'sr.user_receiver_id')
@@ -130,7 +130,7 @@ class FollowerRepo implements SubscriptionRepo
             ->get()->toArray();
     }
 
-    public function getOneRequest(int $id): array
+    public function oneRequest(int $id): array
     {
         return (array)DB::table('subscription_requests', 'sr')
             ->leftJoin('agents as a', 'a.user_id', '=', 'sr.user_receiver_id')

@@ -7,15 +7,15 @@ use App\Enums\Socket\Agent\Invite;
 use App\Http\Requests\Agent\Subscription\AllFollowersRequest;
 use App\Http\Requests\Agent\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agent\Subscription\DecisionInviteRequest;
-use App\Repositories\Contracts\Agent\SubscriptionRepo;
-use App\Services\Contracts\Socket\Socket;
+use App\Repositories\Contracts\Agent\ISubscriptionAgentRepo;
+use App\Services\Contracts\Socket\ISocket;
 
-class Follower implements \App\Services\Contracts\Agent\Follower
+class FollowerAgentService implements \App\Services\Contracts\Agent\IFollowerAgentService
 {
-    private SubscriptionRepo $subscriptionRepo;
-    private Socket $socket;
+    private ISubscriptionAgentRepo $subscriptionRepo;
+    private ISocket $socket;
 
-    public function __construct(SubscriptionRepo $subscriptionRepo, Socket $socket)
+    public function __construct(ISubscriptionAgentRepo $subscriptionRepo, ISocket $socket)
     {
         $this->subscriptionRepo = $subscriptionRepo;
         $this->socket = $socket;
@@ -52,23 +52,23 @@ class Follower implements \App\Services\Contracts\Agent\Follower
         return $subscriptionRequest['updated'];
     }
 
-    public function countFollowers(): int
+    public function totalFollowers(): int
     {
-        return $this->subscriptionRepo->countSubscriber();
+        return $this->subscriptionRepo->totalSubscriber();
     }
 
-    public function countRequests(): int
+    public function totalRequests(): int
     {
-        return $this->subscriptionRepo->countRequestToSubscribe();
+        return $this->subscriptionRepo->totalRequestToSubscribe();
     }
 
-    public function getAllFollowers(AllFollowersRequest $request): array
+    public function allFollowers(AllFollowersRequest $request): array
     {
-        return $this->subscriptionRepo->getAllSubscriber($request->limit, $request->offset, $request->search ?: '');
+        return $this->subscriptionRepo->allSubscriber($request->limit, $request->offset, $request->search ?: '');
     }
 
-    public function getAllRequests(AllRequestsRequest $request): array
+    public function allRequests(AllRequestsRequest $request): array
     {
-        return $this->subscriptionRepo->getAllRequests($request->limit, $request->offset, $request->search ?: '');
+        return $this->subscriptionRepo->allRequests($request->limit, $request->offset, $request->search ?: '');
     }
 }

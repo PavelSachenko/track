@@ -3,14 +3,14 @@
 namespace App\Services\Agency;
 
 use App\Http\Requests\Agency\Schedule\AllRequest;
-use App\Repositories\Contracts\Agency\IScheduleRepo;
-use App\Services\Contracts\Agency\ISchedule;
+use App\Repositories\Contracts\Agency\IScheduleAgencyRepo;
+use App\Services\Contracts\Agency\IScheduleAgencyService;
 
-class ScheduleService implements ISchedule
+class ScheduleServiceAgencyService implements IScheduleAgencyService
 {
-    private IScheduleRepo $repo;
+    private IScheduleAgencyRepo $repo;
 
-    public function __construct(IScheduleRepo $repo)
+    public function __construct(IScheduleAgencyRepo $repo)
     {
         $this->repo = $repo;
     }

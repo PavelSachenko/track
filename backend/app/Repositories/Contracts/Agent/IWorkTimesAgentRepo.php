@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Contracts\Agent;
 
-interface WorkTimes
+interface IWorkTimesAgentRepo
 {
     public function updateWorkTime(string $mode, array|object $times): bool;
 
     public function updateIsAvailable(bool $isAvailable): bool;
 
-    public function getWorkTimes(): array;
+    public function agentWorkTimes(): array;
 }

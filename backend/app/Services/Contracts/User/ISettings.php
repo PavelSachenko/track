@@ -6,7 +6,7 @@ use App\Http\Requests\User\SettingsRequest;
 use App\Http\Requests\User\UpdateAvatarRequest;
 use App\Http\Requests\User\UpdatePasswordRequest;
 
-interface Settings
+interface ISettings
 {
     public function updateCommonSettings(SettingsRequest $request): bool;
 

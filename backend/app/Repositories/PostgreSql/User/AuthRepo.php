@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 
-class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
+class AuthRepo implements \App\Repositories\Contracts\User\IAuthRepo
 {
     public function createEmptyUserWithEmail(string $email): \Eloquent|Model
     {
@@ -19,14 +19,7 @@ class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
         ]);
     }
 
-    public function setPassword(int $userID, string $password): bool
-    {
-        return DB::table('users')
-            ->where('id', $userID)
-            ->update(['password' => Hash::make($password)]);
-    }
-
-    public function getOneByField(string $field, $value): \Eloquent|Model
+    public function oneByField(string $field, $value): \Eloquent|Model
     {
         return User::where($field, $value)->firstOrFail();
     }
@@ -38,14 +31,13 @@ class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
             throw new InvalidTokenException();
         }
 
-        $user = $this->getOneByField('id', $personalToken->tokenable_id);
+        $user = $this->oneByField('id', $personalToken->tokenable_id);
         $user->email_verified_at = date("Y-m-d H:i:s");
         $user->save();
 
 
         return $user->email;
     }
-
 
     public function createSpecialUserAndSetPassword(int $userID, int $userType, array $params): Model|\Eloquent
     {
@@ -58,7 +50,7 @@ class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
                     'email_verified_at' => date('Y-m-d H:i:s'),
                     'type' => $userType
                 ]);
-            $user = $this->getOneByField('id', $userID);
+            $user = $this->oneByField('id', $userID);
 
             unset($params['password'], $params['type']);
             $params['user_id'] = $userID;
@@ -80,6 +72,6 @@ class AuthRepo implements \App\Repositories\Contracts\User\AuthRepo
     public function createNewPassword(int $userID, string $password): bool
     {
         return User::where('id', $userID)
-            ->update(['password' => Hash::make($password)]);
+            ->update(['password' => $password]);
     }
 }

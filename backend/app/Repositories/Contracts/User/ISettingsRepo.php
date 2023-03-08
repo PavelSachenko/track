@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts\User;
 
-interface SettingsRepo
+interface ISettingsRepo
 {
     public function update(int $userID, int $userType, array $paramsForUpdate): bool;
 }

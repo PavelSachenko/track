@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Agency\Subscription\AllFollowsRequest;
 use App\Http\Requests\Agency\Subscription\AllRequestsRequest;
 use App\Http\Requests\Agency\Subscription\SendInviteRequest;
-use App\Services\Contracts\Agency\Follower;
+use App\Services\Contracts\Agency\IFollowerAgencyService;
 
 class SubscriptionController extends Controller
 {
-    private Follower $follower;
+    private IFollowerAgencyService $follower;
 
-    public function __construct(Follower $follower)
+    public function __construct(IFollowerAgencyService $follower)
     {
         $this->follower = $follower;
     }
@@ -34,12 +34,12 @@ class SubscriptionController extends Controller
 
     public function follows(AllFollowsRequest $request)
     {
-        return response()->json($this->follower->getAllFollows($request));
+        return response()->json($this->follower->allFollows($request));
     }
 
     public function requests(AllRequestsRequest $request)
     {
-        return response()->json($this->follower->getAllRequests($request));
+        return response()->json($this->follower->allRequests($request));
     }
 
     public function unsubscribe(int $id)

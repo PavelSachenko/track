@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Agency\Schedule\AllRequest;
 use App\Models\WorkSchedule;
 use App\Models\WorkTime;
-use App\Services\Contracts\Agency\ISchedule;
+use App\Services\Contracts\Agency\IScheduleAgencyService;
 use Illuminate\Support\Facades\DB;
 
 class ScheduleController extends Controller
 {
-    private ISchedule $schedule;
+    private IScheduleAgencyService $schedule;
 
-    public function __construct(ISchedule $schedule)
+    public function __construct(IScheduleAgencyService $schedule)
     {
         $this->schedule = $schedule;
     }

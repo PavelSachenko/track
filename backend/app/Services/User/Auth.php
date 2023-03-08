@@ -13,19 +13,20 @@ use App\Http\Requests\Auth\RegistrationRequest;
 use App\Mail\EmailVerificationMail;
 use App\Mail\ResetPasswordMail;
 use App\Models\User;
-use App\Repositories\Contracts\User\AuthRepo;
+use App\Repositories\Contracts\User\IAuthRepo;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\PersonalAccessToken;
 
-class Auth implements \App\Services\Contracts\User\Auth
+class Auth implements \App\Services\Contracts\User\IAuth
 {
 
-    private AuthRepo $authRepo;
+    private IAuthRepo $authRepo;
 
-    public function __construct(AuthRepo $repo)
+    public function __construct(IAuthRepo $repo)
     {
         $this->authRepo = $repo;
     }
@@ -75,7 +76,7 @@ class Auth implements \App\Services\Contracts\User\Auth
             throw new AuthException("Invalid password or email");
         }
 
-        $user = $this->authRepo->getOneByField('email', $request['email']);
+        $user = $this->authRepo->oneByField('email', $request['email']);
 
         return [
             'token' => $user->createToken('auth_token')->plainTextToken,
@@ -116,7 +117,7 @@ class Auth implements \App\Services\Contracts\User\Auth
         //add to queue and send email
         dispatch(function () use ($email, $user) {
             Mail::to($email)->send(new ResetPasswordMail(
-                $url = env('APP_URL') . '/auth/recovery/?resetToken=' . $user->createToken('reset_password')->plainTextToken
+                $url = config('app.url') . '/auth/recovery/?resetToken=' . $user->createToken('reset_password')->plainTextToken
             ));
         })->afterResponse();
 
@@ -126,7 +127,7 @@ class Auth implements \App\Services\Contracts\User\Auth
     public function resetPassword(ResetPasswordRequest $request): array
     {
         $personalToken = $this->validatePersonalAccessTokenAndSetUser($request->token);
-        $this->authRepo->createNewPassword(\Auth::user()->id, $request->password);
+        $this->authRepo->createNewPassword(\Auth::user()->id, Hash::make($request->password));
         $personalToken->delete();
 
         return [

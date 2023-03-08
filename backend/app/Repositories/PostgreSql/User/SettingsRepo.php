@@ -6,7 +6,7 @@ use App\Models\Agency;
 use App\Models\Agent;
 use App\Models\User;
 
-class SettingsRepo implements \App\Repositories\Contracts\User\SettingsRepo
+class SettingsRepo implements \App\Repositories\Contracts\User\ШSettingsRepo
 {
     public function update(int $userID, int $userType, array $paramsForUpdate): bool
     {

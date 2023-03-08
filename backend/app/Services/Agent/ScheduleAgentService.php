@@ -7,28 +7,28 @@ use App\Http\Requests\Agent\Schedule\UpdateWorkRecordRequest;
 use App\Http\Requests\Agent\Schedule\DeleteWorkRecordRequest;
 use App\Http\Requests\Agent\Schedule\ScheduleRequest;
 use App\Models\WorkSchedule;
-use App\Repositories\Contracts\Agent\ScheduleRepo;
-use App\Services\Contracts\Socket\Socket;
+use App\Repositories\Contracts\Agent\IScheduleAgentRepo;
+use App\Services\Contracts\Socket\ISocket;
 use App\Enums\Socket\Agent\Schedule as EnumSchedule;
 
-class Schedule implements \App\Services\Contracts\Agent\Schedule
+class ScheduleAgentService implements \App\Services\Contracts\Agent\IScheduleAgentService
 {
-    private ScheduleRepo $scheduleRepo;
-    private Socket $socket;
+    private IScheduleAgentRepo $scheduleRepo;
+    private ISocket $socket;
 
-    public function __construct(ScheduleRepo $repo, Socket $socket)
+    public function __construct(IScheduleAgentRepo $repo, ISocket $socket)
     {
         $this->scheduleRepo = $repo;
         $this->socket = $socket;
     }
 
-    public function getOneDay(ScheduleRequest $request): array
+    public function oneDay(ScheduleRequest $request): array
     {
         $date = date("Y-m-d", $request->date / 1000);
         $from = $date . ' 00:00:00';
         $to = date('Y-m-d', strtotime("+1 day", strtotime($date))) . ' 00:00:00';
 
-        return $this->scheduleRepo->getScheduleForOneDay(\Auth::user()->id, $from, $to);
+        return $this->scheduleRepo->scheduleForOneDay(\Auth::user()->id, $from, $to);
     }
 
     public function addWorkRecord(SetWorkRecordRequest $request): array

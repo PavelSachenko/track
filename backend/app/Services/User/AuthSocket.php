@@ -2,7 +2,7 @@
 
 namespace App\Services\User;
 
-class AuthSocket implements \App\Services\Contracts\User\AuthSocket
+class AuthSocket implements \App\Services\Contracts\User\IAuthSocket
 {
     public function authUser(int $userID, array $userInfo): string
     {

@@ -11,7 +11,7 @@ use App\Http\Requests\Auth\RegistrationRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-interface Auth
+interface IAuth
 {
     public function registerWithEmail(EmailRegistrationRequest $request): bool;
 
