@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts\User;
 
-use App\Http\Requests\Auth\RegisterRequest;
+use App\DTO\User\RegistrationUserDTO;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +10,7 @@ interface IAuthRepo
 {
     public function createEmptyUserWithEmail(string $email): Eloquent|Model;
 
-    public function createSpecialUserAndSetPassword(int $userID, int $userType, array $params): Eloquent|Model;
+    public function createSpecialUserAndSetPassword(RegistrationUserDTO $registrationUserDTO, ?string $img = null): Eloquent|Model;
 
     public function oneByField(string $field, $value): Eloquent|Model;
 

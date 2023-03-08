@@ -2,6 +2,8 @@
 
 namespace App\Services\User;
 
+use App\DTO\Settings\UpdateGeneralSettingsDTO;
+use App\Enums\UserEnum;
 use App\Exceptions\ForbiddenException;
 use App\Http\Requests\User\SettingsRequest;
 use App\Http\Requests\User\UpdateAvatarRequest;
@@ -9,6 +11,7 @@ use App\Http\Requests\User\UpdatePasswordRequest;
 use App\Models\User;
 use App\Repositories\Contracts\User\IAuthRepo;
 use App\Repositories\Contracts\User\ISettingsRepo;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 
 class Settings implements \App\Services\Contracts\User\ISettings
@@ -22,20 +25,25 @@ class Settings implements \App\Services\Contracts\User\ISettings
         $this->authRepo = $authRepo;
     }
 
-    public function updateCommonSettings(SettingsRequest $request): bool
+    public function updateCommonSettings(UpdateGeneralSettingsDTO $updateGeneralSettingsDTO): bool
     {
-        $params = $request->validated();
-        if (\Auth::user()->type == User::TYPE_AGENT) {
-            unset($params['url']);
+        $defaultGeneralSettings = [
+            'name' => $updateGeneralSettingsDTO->name,
+            'description' => $updateGeneralSettingsDTO->description,
+            'phone' => $updateGeneralSettingsDTO->phone,
+        ];
+
+        if ($updateGeneralSettingsDTO->userType == UserEnum::AGENCY){
+            $defaultGeneralSettings['url'] = $updateGeneralSettingsDTO->url;
         }
 
-        return $this->settingsRepo->update(\Auth::user()->id, \Auth::user()->type, $params);
+        return $this->settingsRepo->update($updateGeneralSettingsDTO->userID, $updateGeneralSettingsDTO->userType, $defaultGeneralSettings);
     }
 
-    public function updateAvatar(UpdateAvatarRequest $request): bool
+    public function updateAvatar(int $userID, int $userType, UploadedFile $photo): bool
     {
-        return $this->settingsRepo->update(\Auth::user()->id, \Auth::user()->type, [
-            'img' => \Img::uploadToS3($request->file('img'))
+        return $this->settingsRepo->update($userID, $userType, [
+            'img' => \Img::uploadToS3($photo)
         ]);
     }
 
@@ -43,12 +51,12 @@ class Settings implements \App\Services\Contracts\User\ISettings
      * @param UpdatePasswordRequest $request
      * @return bool
      */
-    public function updatePassword(UpdatePasswordRequest $request): bool
+    public function updatePassword(int $userID, string $currentPassword, string $oldInputPassword, string $newInputPassword): bool
     {
-        if (!\Hash::check($request->old_password, \Auth::user()->user->password)) {
+        if (!\Hash::check($oldInputPassword, $currentPassword)) {
             throw new ForbiddenException("Wrong old password");
         }
 
-        return $this->authRepo->createNewPassword(\Auth::user()->id,  Hash::make($request->new_password));
+        return $this->authRepo->createNewPassword($userID, Hash::make($newInputPassword));
     }
 }

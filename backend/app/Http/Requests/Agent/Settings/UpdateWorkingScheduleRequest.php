@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Agent\Settings;
 
 use App\Http\Requests\BaseRequest;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**

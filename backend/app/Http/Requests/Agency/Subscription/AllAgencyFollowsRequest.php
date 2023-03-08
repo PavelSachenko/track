@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Agency\Subscription;
 
-use App\DTO\User\Agency\Follows\AllFollowsSearchDTO;
-use App\DTO\User\Agency\Follows\Factory\IFollowAgencyDTOFactory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -28,14 +26,5 @@ class AllAgencyFollowsRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
-    }
-
-    /**
-     * @param IFollowAgencyDTOFactory $DTOFactory
-     * @return AllFollowsSearchDTO
-     */
-    public function getDTO(): AllFollowsSearchDTO
-    {
-        return $DTOFactory->createAllFollowSearchDTO($this);
     }
 }

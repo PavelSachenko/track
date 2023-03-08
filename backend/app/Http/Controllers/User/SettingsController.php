@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\DTO\Settings\Factory\ISettingsDTOFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\SettingsRequest;
 use App\Http\Requests\User\UpdateAvatarRequest;
@@ -11,25 +12,32 @@ use Illuminate\Http\JsonResponse;
 
 class SettingsController extends Controller
 {
-    private ISettings $settings;
-
-    public function __construct(ISettings $settings)
+    public function __construct(
+        readonly private ISettings  $settings,
+        readonly private ISettingsDTOFactory $settingsDTOFactory
+    )
     {
-        $this->settings = $settings;
     }
 
     public function update(SettingsRequest $request): JsonResponse
     {
-        return response()->json($this->settings->updateCommonSettings($request));
+        return response()->json($this->settings->updateCommonSettings(
+            $this->settingsDTOFactory->createUpdateGeneralSettingsDTO($request)
+        ));
     }
 
     public function updateAvatar(UpdateAvatarRequest $request): JsonResponse
     {
-        return response()->json($this->settings->updateAvatar($request));
+        return response()->json($this->settings->updateAvatar(\Auth::user()->id, \Auth::user()->type, $request->file('img')));
     }
 
     public function updatePassword(UpdatePasswordRequest $request): JsonResponse
     {
-        return response()->json($this->settings->updatePassword($request));
+        return response()->json($this->settings->updatePassword(
+            \Auth::user()->id,
+            \Auth::user()->password,
+            $request->old_password,
+            $request->new_password
+        ));
     }
 }

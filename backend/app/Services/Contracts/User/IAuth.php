@@ -2,30 +2,25 @@
 
 namespace App\Services\Contracts\User;
 
-use App\Http\Requests\Auth\EmailRegistrationRequest;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\ResetPasswordEmailValidationRequest;
-use App\Http\Requests\Auth\ResetPasswordRequest;
-use App\Http\Requests\Auth\ValidateEmailTokenRequest;
-use App\Http\Requests\Auth\RegistrationRequest;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use App\DTO\User\RegistrationUserDTO;
+use Illuminate\Http\UploadedFile;
+use Laravel\Sanctum\PersonalAccessToken;
 
 interface IAuth
 {
-    public function registerWithEmail(EmailRegistrationRequest $request): bool;
+    public function registerWithEmail(string $email): bool;
 
-    public function registrationConcreteUser(RegistrationRequest $request): array;
+    public function registrationConcreteUser(RegistrationUserDTO $registrationUserDTO, PersonalAccessToken $token, ?UploadedFile $photo = null): array;
 
-    public function login(LoginRequest $request): array;
+    public function login(string $email, string $password): array;
 
-    public function logout(Request $request): bool;
+    public function logout(string $bearerToken): bool;
 
-    public function validateRegistrationToken(ValidateEmailTokenRequest $request): string;
+    public function validateRegistrationToken(string $token): string;
 
-    public function validateResetPasswordToken(ValidateEmailTokenRequest $request): bool;
+    public function validateResetPasswordToken(string $token): bool;
 
-    public function sendResetPasswordToEmail(ResetPasswordEmailValidationRequest $request): bool;
+    public function sendResetPasswordToEmail(string $email): bool;
 
-    public function resetPassword(ResetPasswordRequest $request): array;
+    public function resetPassword(int $userID, PersonalAccessToken $token, string $password): array;
 }

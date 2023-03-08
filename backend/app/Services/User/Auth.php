@@ -2,14 +2,14 @@
 
 namespace App\Services\User;
 
+use App\DTO\User\RegistrationUserDTO;
 use App\Exceptions\AuthException;
 use App\Exceptions\InvalidTokenException;
-use App\Http\Requests\Auth\EmailRegistrationRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\ResetPasswordEmailValidationRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\ValidateEmailTokenRequest;
-use App\Http\Requests\Auth\RegistrationRequest;
+use App\Jobs\UserPhotoSaverJob;
 use App\Mail\EmailVerificationMail;
 use App\Mail\ResetPasswordMail;
 use App\Models\User;
@@ -17,6 +17,7 @@ use App\Repositories\Contracts\User\IAuthRepo;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -31,34 +32,27 @@ class Auth implements \App\Services\Contracts\User\IAuth
         $this->authRepo = $repo;
     }
 
-    public function registerWithEmail(EmailRegistrationRequest $request): bool
+    public function registerWithEmail(string $email): bool
     {
-        $user = $this->authRepo->createEmptyUserWithEmail($request->email);
-        $email = $request->email;
+        $user = $this->authRepo->createEmptyUserWithEmail($email);
         //send to queues
         dispatch(function () use ($email, $user) {
             Mail::to($email)->send(new EmailVerificationMail(
-                $url = env('APP_URL') . '/auth/register?registerToken=' . $user->createToken('email_verification')->plainTextToken
+                $url = config('app.url') . '/auth/register?registerToken=' . $user->createToken('email_verification')->plainTextToken
             ));
         })->afterResponse();
 
         return $user->wasRecentlyCreated;
     }
 
-    public function registrationConcreteUser(RegistrationRequest $registrationRequest): array
+    public function registrationConcreteUser(RegistrationUserDTO $registrationUserDTO, PersonalAccessToken $token, ?UploadedFile $photo = null): array
     {
-        $personalToken = $this->validatePersonalAccessTokenAndSetUser($registrationRequest->token);
-
-        $user = $this->authRepo->createSpecialUserAndSetPassword(
-            \Auth::user()->id,
-            $registrationRequest->type,
-            array_merge(
-                ['img' => \Img::uploadToS3($registrationRequest->file('img'))],
-                $registrationRequest->except(['password_confirmation', 'token', 'img'])
-            )
-        );
-
-        $personalToken->delete();
+        $imgURL = null;
+        if ($photo != null){
+            $imgURL = \Img::uploadToS3($photo);
+        }
+        $user = $this->authRepo->createSpecialUserAndSetPassword($registrationUserDTO, $imgURL);
+        $token->delete();
 
         return [
             'token' => $user->createToken('auth_token')->plainTextToken,
@@ -70,13 +64,13 @@ class Auth implements \App\Services\Contracts\User\IAuth
     /**
      * @throws AuthorizationException
      */
-    public function login(LoginRequest $request): array
+    public function login(string $email, string $password): array
     {
-        if (!\Illuminate\Support\Facades\Auth::attempt($request->only('email', 'password'))) {
+        if (!\Illuminate\Support\Facades\Auth::attempt(['email' => $email, 'password' => $password])) {
             throw new AuthException("Invalid password or email");
         }
 
-        $user = $this->authRepo->oneByField('email', $request['email']);
+        $user = $this->authRepo->oneByField('email', $email);
 
         return [
             'token' => $user->createToken('auth_token')->plainTextToken,
@@ -85,23 +79,24 @@ class Auth implements \App\Services\Contracts\User\IAuth
         ];
     }
 
-    public function logout(Request $request): bool
+    public function logout(string $bearerToken): bool
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $token = PersonalAccessToken::findToken($bearerToken);
         if (is_null($token)) {
             throw new AuthException();
         }
+
         return $token->delete();
     }
 
-    public function validateRegistrationToken(ValidateEmailTokenRequest $request): string
+    public function validateRegistrationToken(string $token): string
     {
-        return $this->authRepo->setValidatedEmail($request->token);
+        return $this->authRepo->setValidatedEmail($token);
     }
 
-    public function validateResetPasswordToken(ValidateEmailTokenRequest $request): bool
+    public function validateResetPasswordToken(string $token): bool
     {
-        $personalToken = PersonalAccessToken::findToken($request->token);
+        $personalToken = PersonalAccessToken::findToken($token);
         if (is_null($personalToken)) {
             throw new InvalidTokenException();
         }
@@ -109,10 +104,9 @@ class Auth implements \App\Services\Contracts\User\IAuth
         return true;
     }
 
-    public function sendResetPasswordToEmail(ResetPasswordEmailValidationRequest $request): bool
+    public function sendResetPasswordToEmail(string $email): bool
     {
-        $user = User::where('email', $request->email)->first();
-        $email = $request->email;
+        $user = User::where('email', $email)->first();
 
         //add to queue and send email
         dispatch(function () use ($email, $user) {
@@ -124,17 +118,19 @@ class Auth implements \App\Services\Contracts\User\IAuth
         return true;
     }
 
-    public function resetPassword(ResetPasswordRequest $request): array
+    public function resetPassword(int $userID, PersonalAccessToken $token, string $password): array
     {
-        $personalToken = $this->validatePersonalAccessTokenAndSetUser($request->token);
-        $this->authRepo->createNewPassword(\Auth::user()->id, Hash::make($request->password));
-        $personalToken->delete();
+        $this->authRepo->createNewPassword($userID, Hash::make($password));
 
-        return [
-            'token' => \Auth::user()->createToken('auth_token')->plainTextToken,
+        $response = [
+            'token' => $token->tokenable->createToken('auth_token')->plainTextToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(time())->toDateTimeString(),
         ];
+
+        $token->delete();
+
+        return $response;
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Agent\Subscription;
 
 use App\Http\Requests\BaseRequest;
-use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property int $limit

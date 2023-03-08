@@ -2,12 +2,12 @@
 
 namespace App\Repositories\PostgreSql\User;
 
+use App\DTO\User\RegistrationUserDTO;
+use App\Enums\UserEnum;
 use App\Exceptions\InvalidTokenException;
-use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthRepo implements \App\Repositories\Contracts\User\IAuthRepo
@@ -39,25 +39,36 @@ class AuthRepo implements \App\Repositories\Contracts\User\IAuthRepo
         return $user->email;
     }
 
-    public function createSpecialUserAndSetPassword(int $userID, int $userType, array $params): Model|\Eloquent
+    public function createSpecialUserAndSetPassword(RegistrationUserDTO $registrationUserDTO, ?string $img = null): Model|\Eloquent
     {
         DB::beginTransaction();
         try {
             DB::table('users')
-                ->where('id', $userID)
+                ->where('id', $registrationUserDTO->ID)
                 ->update([
-                    'password' => Hash::make($params['password']),
+                    'password' => $registrationUserDTO->password,
                     'email_verified_at' => date('Y-m-d H:i:s'),
-                    'type' => $userType
+                    'type' => $registrationUserDTO->type
                 ]);
-            $user = $this->oneByField('id', $userID);
+            $user = $this->oneByField('id', $registrationUserDTO->ID);
 
-            unset($params['password'], $params['type']);
-            $params['user_id'] = $userID;
-            $params['email'] = $user->email;
+            $defaultDataForInsert = [
+                'name' => $registrationUserDTO->name,
+                'email' => $user->email,
+                'user_id' => $registrationUserDTO->ID,
+                'phone' => $registrationUserDTO->phone,
+                'description' => $registrationUserDTO->description,
+                'img' => $img
+            ];
 
-            DB::table(User::TYPE_TABLES[$userType])
-                ->insert($params);
+            match($registrationUserDTO->type){
+                UserEnum::AGENT => [],
+                UserEnum::AGENCY => $defaultDataForInsert['url'] = $registrationUserDTO->url,
+            };
+
+
+            DB::table(UserEnum::TABLES_TYPE[$registrationUserDTO->type])
+                ->insert($defaultDataForInsert);
 
 
             DB::commit();
