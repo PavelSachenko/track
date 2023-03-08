@@ -8,7 +8,7 @@ class AgentEnum
 {
     public const LOCAL_EMAIL = 'agent@gmail.com';
 
-    public static function localMainAgentID(): int
+    final public static function localMainAgentID(): int
     {
         return User::where('email', self::LOCAL_EMAIL)
             ->where('type', UserEnum::AGENT)

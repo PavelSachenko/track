@@ -528,6 +528,100 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "unsubscribe",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agency/subscription/unsubscribe/95",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agency",
+										"subscription",
+										"unsubscribe",
+										"95"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "invite",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agency/subscription/invite/2",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agency",
+										"subscription",
+										"invite",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "schedule",
+					"item": [
+						{
+							"name": "all-agents",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/agency/schedule?date=1677888000000",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"agency",
+										"schedule"
+									],
+									"query": [
+										{
+											"key": "date",
+											"value": "1677888000000"
+										},
+										{
+											"key": "search",
+											"value": "Genesis",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
@@ -1073,6 +1167,162 @@
 										"schedule",
 										"update-work-record",
 										"90"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "settings",
+					"item": [
+						{
+							"name": "update-avatar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "img",
+											"type": "file",
+											"src": "/home/pavel/Pictures/hah_lol.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/user/update-avatar",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"user",
+										"update-avatar"
+									],
+									"query": [
+										{
+											"key": "img",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "PashaAgency",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "url",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/user/update",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"user",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update-password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "old_password",
+											"value": "{{password}}",
+											"type": "text"
+										},
+										{
+											"key": "new_password",
+											"value": "{{password}}",
+											"type": "text"
+										},
+										{
+											"key": "new_password_confirmation",
+											"value": "{{password}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/user/update-password",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"user",
+										"update-password"
 									]
 								}
 							},

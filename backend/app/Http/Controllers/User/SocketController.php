@@ -4,15 +4,15 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\Contracts\Socket\Socket;
+use App\Services\Contracts\Socket\ISocket;
 use Illuminate\Http\Request;
 use Pusher\PusherException;
 
 class SocketController extends Controller
 {
-    private Socket $socket;
+    private ISocket $socket;
 
-    public function __construct(Socket $socket)
+    public function __construct(ISocket $socket)
     {
         $this->socket = $socket;
     }
@@ -21,7 +21,7 @@ class SocketController extends Controller
      * @param Request $request
      * @return string
      */
-    public function registrationChannel(Request $request)
+    public function registrationChannel(Request $request): string
     {
         preg_match('/^(private|presence)/', $request->get('channel_name'), $matches);
         if ($matches) {
@@ -43,7 +43,7 @@ class SocketController extends Controller
      * @param Request $request
      * @return string
      */
-    public function setUserConnection(Request $request)
+    public function setUserConnection(Request $request): string
     {
         $user = \Auth::user();
         return $this->socket->authenticateUser(

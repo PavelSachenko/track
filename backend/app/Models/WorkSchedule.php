@@ -37,16 +37,6 @@ class WorkSchedule extends Model
 
     protected $guarded = [];
 
-    const TYPE_WORK = 1;
-    const TYPE_REST = 2;
-    const TYPE_REQUEST = 3;
-
-    const TYPE = [
-        'work' => 1,
-        'rest' => 2,
-        'request' => 3
-    ];
-
     protected $with = [
         'agency'
     ];

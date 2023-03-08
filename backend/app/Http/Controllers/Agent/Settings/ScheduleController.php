@@ -5,29 +5,30 @@ namespace App\Http\Controllers\Agent\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agent\Settings\UpdateWorkingScheduleRequest;
 use App\Http\Requests\Agent\Settings\UpdateWorkStatusRequest;
-use App\Services\Contracts\Agent\Settings;
+use App\Services\Contracts\Agent\ISettingsAgentService;
+use Illuminate\Http\JsonResponse;
 
 class ScheduleController extends Controller
 {
-    private Settings $settings;
+    private ISettingsAgentService $settings;
 
-    public function __construct(Settings $settings)
+    public function __construct(ISettingsAgentService $settings)
     {
         $this->settings = $settings;
     }
 
-    public function getWorkTime()
+    public function getWorkTime(): JsonResponse
     {
-        return response()->json($this->settings->getWorkingSchedule());
+        return response()->json($this->settings->getWorkingSchedule(\Auth::user()->id));
     }
 
-    public function setWorkStatus(UpdateWorkStatusRequest $request)
+    public function setWorkStatus(UpdateWorkStatusRequest $request): JsonResponse
     {
-        return response()->json($this->settings->setIsAvailableForToday($request->is_available));
+        return response()->json($this->settings->setIsAvailableForToday(\Auth::user()->id, $request->is_available));
     }
 
-    public function setWorkTime(UpdateWorkingScheduleRequest $request)
+    public function setWorkTime(UpdateWorkingScheduleRequest $request): JsonResponse
     {
-        return response()->json($this->settings->setWorkingSchedule($request));
+        return response()->json($this->settings->setWorkingSchedule(\Auth::user()->id, $request->mode, $request->times));
     }
 }

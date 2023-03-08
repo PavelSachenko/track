@@ -4,7 +4,7 @@ namespace App\Providers\User;
 
 use App\Repositories\PostgreSql\User\AuthRepo;
 use App\Repositories\PostgreSql\User\SettingsRepo;
-use App\Services\Contracts\User\Settings as SettingsContract;
+use App\Services\Contracts\User\ISettings as SettingsContract;
 use App\Services\User\Settings;
 use Illuminate\Support\ServiceProvider;
 

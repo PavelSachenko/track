@@ -3,12 +3,11 @@
 namespace App\Http\Requests\Agent\Settings;
 
 use App\Http\Requests\BaseRequest;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
  * @property string mode
- * @property array times
+ * @property string times
  */
 class UpdateWorkingScheduleRequest extends BaseRequest
 {

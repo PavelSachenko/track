@@ -81,15 +81,15 @@ Route::group(['prefix' => '/agent', 'middleware' => ['auth:sanctum', 'agent']], 
         Route::post('accept', [AgentSubscriptionController::class, 'accept']);
         Route::patch('decline', [AgentSubscriptionController::class, 'decline']);
 
-        Route::get('count-followers', [AgentSubscriptionController::class, 'countFollowers']);
+        Route::get('count-followers', [AgentSubscriptionController::class, 'totalFollowers']);
         Route::get('followers', [AgentSubscriptionController::class, 'followers']);
-        Route::get('count-requests', [AgentSubscriptionController::class, 'countRequests']);
-        Route::get('requests', [AgentSubscriptionController::class, 'requests']);
+        Route::get('count-requests', [AgentSubscriptionController::class, 'totalInvites']);
+        Route::get('requests', [AgentSubscriptionController::class, 'invites']);
     });
 
 
     Route::prefix('/schedule')->group(function (){
-        Route::get('/', [ScheduleController::class, 'index']);
+        Route::get('/', [ScheduleController::class, 'oneDay']);
         Route::post('/add-work-record', [ScheduleController::class, 'add']);
         Route::delete('/drop-work-record/{id}', [ScheduleController::class, 'drop'])->where(['id' => '[0-9]+']);
         Route::put('/update-work-record/{id}', [ScheduleController::class, 'update'])->where(['id' => '[0-9]+']);
@@ -116,8 +116,8 @@ Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']]
     Route::prefix('/subscription')->group(function (){
         Route::post('send-request', [AgencySubscriptionController::class, 'sendRequest']);
 
-        Route::get('count-follows', [AgencySubscriptionController::class, 'countFollows']);
-        Route::get('count-requests', [AgencySubscriptionController::class, 'countRequests']);
+        Route::get('count-follows', [AgencySubscriptionController::class, 'totalFollows']);
+        Route::get('count-requests', [AgencySubscriptionController::class, 'totalRequests']);
         Route::get('follows', [AgencySubscriptionController::class, 'follows']);
         Route::get('requests', [AgencySubscriptionController::class, 'requests']);
 
@@ -130,3 +130,5 @@ Route::group(['prefix' => '/agency', 'middleware' => ['auth:sanctum', 'agency']]
     });
 
 });
+
+

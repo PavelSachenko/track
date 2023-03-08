@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://track.local'),
 
     'asset_url' => env('ASSET_URL'),
 
@@ -205,6 +205,7 @@ return [
         App\Providers\User\SettingsServiceProvider::class,
         App\Providers\SocketServiceProvider::class,
         App\Providers\Agency\ScheduleServiceProvider::class,
+        App\Providers\DTOServiceProvider::class,
     ],
 
     /*
