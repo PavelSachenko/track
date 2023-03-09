@@ -89,3 +89,15 @@ export interface IEvent {
   updated_at: string;
   description: null | string;
 }
+
+export interface IAgentSchedule {
+  email: string;
+  id: number;
+  name: string;
+  schedule_events: IEvent[];
+  type: number;
+  work_time: {
+    from: number;
+    to: number;
+  };
+}

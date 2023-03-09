@@ -5,6 +5,7 @@ import {
   IAgency,
   IInvite,
   INotification,
+  IAgentSchedule,
 } from "../../interfaces/interfaces";
 
 export interface IAction {
@@ -63,5 +64,14 @@ export interface IAgentScheduleState {
     to: number;
   };
   events: IEvent[];
+  pending: boolean;
+}
+
+export interface IAgencyScheduleState {
+  agents: IAgentSchedule[];
+  workTimes: null | {
+    from: number;
+    to: number;
+  };
   pending: boolean;
 }

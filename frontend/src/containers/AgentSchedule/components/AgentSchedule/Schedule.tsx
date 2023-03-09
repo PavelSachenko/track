@@ -160,6 +160,8 @@ const Schedule = (props: IScheduleProps) => {
     return null;
   }
 
+  console.log(scheduleData);
+
   return (
     <div className="schedule">
       <div className="schedule__grid">

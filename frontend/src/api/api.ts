@@ -231,6 +231,10 @@ const getAgentSchedule = (date: number) => {
   return axiosInstance.get("agent/schedule", { params: { date } });
 };
 
+const getAgencySchedule = (date: number) => {
+  return axiosInstance.get("agency/schedule", { params: { date } });
+};
+
 const addEvent = (
   config: {
     id: null | number;
@@ -327,6 +331,7 @@ const API = {
   getNotificationsCountAgency,
   updateUserAvatar,
   getAgentsCount,
+  getAgencySchedule,
 };
 
 export default API;

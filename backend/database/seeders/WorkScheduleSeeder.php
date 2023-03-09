@@ -43,8 +43,8 @@ class WorkScheduleSeeder extends Seeder
                         $addRecord = false;
                     }
 
-                    $from = $startDateRange['date'] . ' ' . $hours[$randStart] . $minutesWithSeconds[$randStartMinute];
-                    $to = $startDateRange['date'] . ' ' . $hours[$randEnd] . $minutesWithSeconds[$randEndMinute];
+                    $from = $startDateRange['date'] . ' ' . $hours[$randStart - 1] . $minutesWithSeconds[$randStartMinute];
+                    $to = $startDateRange['date'] . ' ' . $hours[$randEnd - 1] . $minutesWithSeconds[$randEndMinute];
 
                     if (WorkSchedule::where('user_id', $agentID)
                         ->whereRaw('("from", "to") OVERLAPS (?, ?)', [$from, $to])
