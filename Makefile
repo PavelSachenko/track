@@ -11,7 +11,10 @@ install:
 	cd ..
 
 run:
-	cd backend && docker-compose down && docker-compose up -d && cd ..
+	cd backend && \
+	docker-compose down && \
+	docker-compose up -d && \
+	cd ..
 
 stop:
 	cd backend && docker-compose down && cd ..

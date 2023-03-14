@@ -38,7 +38,7 @@ class Auth implements \App\Services\Contracts\User\IAuth
         //send to queues
         dispatch(function () use ($email, $user) {
             Mail::to($email)->send(new EmailVerificationMail(
-                $url = config('app.url') . '/auth/register?registerToken=' . $user->createToken('email_verification')->plainTextToken
+                url: config('app.url') . '/auth/register?registerToken=' . $user->createToken('email_verification')->plainTextToken
             ));
         })->afterResponse();
 

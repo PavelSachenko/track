@@ -15,6 +15,9 @@ class WorkScheduleSeeder extends Seeder
 
     public function run()
     {
+        if (strtolower(config('app.env')) == 'prod'){
+            return;
+        }
         $createdAt = date('Y-m-d H:i:s');
         $hours = $this->getHours();
         $minutesWithSeconds = ["00:00", "15:00", "30:00", "45:00"];

@@ -55,6 +55,7 @@ services:
         volumes:
             - ./:/var/www
             - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+            - ./docker/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
             - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
             - ./docker/system/supervisor-listener.conf:/etc/supervisor/conf.d/supervisor-listener.conf
         networks:
@@ -78,6 +79,22 @@ services:
             - "5435:5432"
         volumes:
             - ./docker/postgres/data:/var/lib/postgresql/data
+        networks:
+            - "net-track"
+
+
+    test-track-postgres:
+        image: postgres:15-alpine
+        container_name: test-track-postgres
+        restart: 'no'
+        environment:
+            POSTGRES_DB: "test-track"
+            POSTGRES_USER: "admin"
+            POSTGRES_PASSWORD: "pass"
+        ports:
+            - "5436:5432"
+        volumes:
+            - ./docker/postgres/test:/var/lib/postgresql/data
         networks:
             - "net-track"
 
