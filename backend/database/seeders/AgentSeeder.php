@@ -15,6 +15,9 @@ class AgentSeeder extends Seeder
      */
     public function run()
     {
+        if (strtolower(config('app.env')) == 'prod'){
+            return;
+        }
         Agent::factory()->count(4)->create();
     }
 }

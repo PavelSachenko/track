@@ -20,6 +20,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        if (strtolower(config('app.env')) == 'prod'){
+            return;
+        }
         $defaultAgentID = DB::table('users')->insertGetId([
             'email' => 'agent@gmail.com',
             'type' => 1,

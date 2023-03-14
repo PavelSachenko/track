@@ -13,6 +13,9 @@ class SubscriptionSeeder extends Seeder
 {
     public function run()
     {
+        if (strtolower(config('app.env')) == 'prod'){
+            return;
+        }
         $mainAgentID = AgentEnum::localMainAgentID();
         $mainAgencyID = AgencyEnum::localMainAgencyID();
 

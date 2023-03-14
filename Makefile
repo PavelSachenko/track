@@ -11,7 +11,10 @@ install:
 	cd ..
 
 run:
-	cd backend && docker-compose down && docker-compose up -d && cd ..
+	cd backend && \
+	docker-compose down && \
+	docker-compose up -d && \
+	cd ..
 
 stop:
 	cd backend && docker-compose down && cd ..
@@ -26,7 +29,7 @@ fresh-migrate:
 	cd backend docker-compose exec track-php bash -c  "cd /var/www && php artisan migrate:fresh --seed" && cd ..
 
 add-work-record:
-	cd backend docker-compose exec track-php bash -c  "cd /var/www && php artisan db:seed --class=SubscriptionRequestSeeder" && cd ..
+	cd backend docker-compose exec track-php bash -c  "cd /var/www && php artisan db:seed --class=WorkScheduleSeeder" && cd ..
 
 clear:
 	cd backend docker-compose exec track-php bash -c  "cd /var/www && php artisan cache:clear && php artisan config:clear && php artisan route:clear" && cd ..

@@ -83,6 +83,22 @@ services:
             - "net-track"
 
 
+    test-track-postgres:
+        image: postgres:15-alpine
+        container_name: test-track-postgres
+        restart: 'no'
+        environment:
+            POSTGRES_DB: "test-track"
+            POSTGRES_USER: "admin"
+            POSTGRES_PASSWORD: "pass"
+        ports:
+            - "5436:5432"
+        volumes:
+            - ./docker/postgres/test:/var/lib/postgresql/data
+        networks:
+            - "net-track"
+
+
 networks:
     net-track:
         driver: bridge
