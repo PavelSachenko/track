@@ -130,81 +130,20 @@ class Socket extends Component<ISocketProps> {
       this.props.addAgent(data);
     });
 
-    // @ts-ignore
-    pusher
-      .subscribe("private-channel." + 1)
-      .bind("new-message", function (data: any) {
-        console.log(data);
-      });
+    // // @ts-ignore
+    // pusher
+    //   .subscribe("private-channel." + 1)
+    //   .bind("new-message", function (data: any) {
+    //     console.log(data);
+    //   });
 
-    // @ts-ignore
-    let channel = pusher.subscribe("presence-channel");
-    channel.bind("test-event", (data: any) => {
-      console.log(data);
-    });
-
-    //--------------------------------------------------------------------------------------------------------
-
-    // const echo = new Echo({
-    //   broadcaster: 'pusher',
-    //   key: 'app-key',
-    //   wsHost: '127.0.0.1',
-    //   wsPort: 6001,
-    //   forceTLS: false,
-    //   disableStats: true,
-    //   cluster: '',
-    //   flash: true,
-    //   encrypted: true,
-    //   authEndpoint: "http://track.local/api/auth/socket/registration-channel",
-    //   auth: {
-    //     headers: {
-    //       Authorization: "Bearer " + localStorage.getItem("token"),
-    //       Accept: "application/json"
-    //     }
-    //   }
-    //
-    //
-    // });
-    //
-    //
-    // echo.private("test").listen('my-event', (data: any) => {
-    //   console.log('Received data:', data);
-    // })
-    //
-    // echo.join("test").listen('my-event', (data: any) => {
-    //     console.log('Received data:', data);
-    // })
-
-    // @ts-ignore
-    // const userId = 1; // replace with the ID of the current user
-    // echo.private(`private-channel.${userId}`).listen('.test-event', (data: any) => {
+    // // @ts-ignore
+    // let channel = pusher.subscribe("presence-channel");
+    // channel.bind("test-event", (data: any) => {
     //   console.log(data);
     // });
-    //
-    // echo.channel('private-channel.1').listen('test-event', (data: any) => {
-    //   console.log(data)
-    // }).subscribed((data: any) => {
-    //   console.log(data)
-    // })
-    //
-    // echo.channel('private-channel.1').subscribed((data: any) => {
-    //   console.log(data)
-    // })
-    // echo.channel('my-channel')
-    //     .listen('my-event', (data: any) => {
-    //       console.log('Received data:', data);
-    //       // Do something with the received data
-    //     });
 
-    // echo.
-
-    // echo.private()
-
-    // echo.listen('my-channel', 'my-event', function (e: any){
-    //   console.log(e)
-    // })
-    // @ts-ignore
-    // echo.connect()
+    //--------------------------------------------------------------------------------------------------------
 
     // client.subscribe('my-channel').bind('message', (message: { sender: any; content: any; }) => {
     //   console.log(`${message.sender} says: ${message.content}`);
