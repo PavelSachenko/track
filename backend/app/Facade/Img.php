@@ -20,12 +20,12 @@ class Img extends Facade
     public static function uploadToS3($img): ?string
     {
         if (!is_null($img)) {
-            $nameFileForAmazon = '/' . env('APP_KEY') . "/images/user/" . \Auth::user()->id . '/'
+            $nameFileForAmazon = '/' . config('app.key') . "/images/user/" . \Auth::user()->id . '/'
                 . md5($img->getClientOriginalName()) . "."
                 . $img->getClientOriginalExtension();
             Storage::disk('s3')->put($nameFileForAmazon, file_get_contents($img));
 
-            return env('AWS_URL') . $nameFileForAmazon;
+            return config('filesystems.disks.s3.url') . $nameFileForAmazon;
         }
 
         return null;

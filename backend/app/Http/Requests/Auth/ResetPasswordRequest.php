@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Exceptions\InvalidTokenException;
 use App\Http\Requests\BaseRequest;
 use Illuminate\Foundation\Http\FormRequest;
+use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * @property string $token
@@ -22,5 +24,20 @@ class ResetPasswordRequest extends BaseRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    /**
+     * @param string $token
+     * @return PersonalAccessToken
+     */
+    public function getPersonalAccessToken(string $token): PersonalAccessToken
+    {
+        $personalToken = PersonalAccessToken::findToken($token);
+        if (is_null($personalToken)) {
+            throw new InvalidTokenException();
+        }
+        \Auth::setUser($personalToken->tokenable);
+
+        return $personalToken;
     }
 }

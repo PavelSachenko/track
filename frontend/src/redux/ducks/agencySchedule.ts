@@ -26,6 +26,20 @@ export const getAgencySchedule = (date: number) => (dispatch: Dispatch) => {
     .catch(console.error);
 };
 
+export const getFilteredAgencySchedule =
+  (date: number, search: string) => (dispatch: Dispatch) => {
+    dispatch({ type: SET_PENDING_TRUE });
+
+    return API.getAgencySchedule(date, search)
+      .then(({ data }) => {
+        dispatch({
+          type: GET_AGENCY_SCHEDULE,
+          payload: data,
+        });
+      })
+      .catch(console.error);
+  };
+
 const agencyScheduleReducer = (state = initialState, action: IAction) => {
   const { type, payload } = action;
 

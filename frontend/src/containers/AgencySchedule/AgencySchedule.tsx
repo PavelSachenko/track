@@ -1,5 +1,5 @@
 import "./AgencySchedule.scss";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, ChangeEvent } from "react";
 import { useToggle } from "../../hooks";
 import { connect } from "react-redux";
 
@@ -13,7 +13,10 @@ import DropWrapper from "../../components/DropWrapper/DropWrapper";
 import Schedule from "./components/Schedule/Schedule";
 import { useDidMount, useDidUpdate } from "../../hooks";
 import { AppState } from "../../redux/store";
-import { getAgencySchedule } from "../../redux/ducks/agencySchedule";
+import {
+  getAgencySchedule,
+  getFilteredAgencySchedule,
+} from "../../redux/ducks/agencySchedule";
 
 const IS_HOUR_12 = true;
 const twentyFourHours = 86400000;
@@ -26,12 +29,18 @@ interface IAgencyScheduleProps {
   };
   agents: [];
   getAgencySchedule: (date: number) => void;
+  getFilteredAgencySchedule: (date: number, search: string) => void;
 }
 
 const AgencySchedule = (props: IAgencyScheduleProps) => {
-  const { pending, workTimes, agents, getAgencySchedule } = props;
-
-  console.log(pending);
+  const {
+    pending,
+    workTimes,
+    agents,
+    getAgencySchedule,
+    getFilteredAgencySchedule,
+  } = props;
+  const [value, setValue] = useState<string>("");
 
   const today = new Date();
   const todayByUTC =
@@ -57,7 +66,11 @@ const AgencySchedule = (props: IAgencyScheduleProps) => {
   });
 
   useDidUpdate(() => {
-    getAgencySchedule(date);
+    if (value != "") {
+      getFilteredAgencySchedule(date, value);
+    } else {
+      getAgencySchedule(date);
+    }
   }, [date]);
 
   useEffect(() => {
@@ -73,6 +86,11 @@ const AgencySchedule = (props: IAgencyScheduleProps) => {
 
     return () => clearInterval(intervalId);
   }, []);
+
+  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    getFilteredAgencySchedule(date, event.target.value);
+  };
 
   const getDateToShow = () => {
     return new Date(date).toLocaleString("en-GB", {
@@ -91,7 +109,12 @@ const AgencySchedule = (props: IAgencyScheduleProps) => {
         <div className="agency-schedule__date date-nav">
           <div className="agency-schedule__search">
             <SearchIcon />
-            <input type="text" placeholder="Search Agent" />
+            <input
+              type="text"
+              placeholder="Search Agent"
+              value={value}
+              onChange={handleInput}
+            />
           </div>
           <button
             className="date-nav__nav-btn date-nav__nav-btn--prev"
@@ -144,7 +167,7 @@ const AgencySchedule = (props: IAgencyScheduleProps) => {
           <span>{time}</span>
         </div>
       </div>
-      <div className="agency-schedule__main">
+      <div className="agency-schedule__schedule">
         {pending ? (
           <div className="agency-schedule__spinner">
             <Spinner size="100px" />
@@ -165,6 +188,7 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = {
   getAgencySchedule,
+  getFilteredAgencySchedule,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AgencySchedule);

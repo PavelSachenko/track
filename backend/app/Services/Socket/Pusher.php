@@ -2,11 +2,11 @@
 
 namespace App\Services\Socket;
 
-use App\Services\Contracts\Socket\Socket;
+use App\Services\Contracts\Socket\ISocket;
 use Pusher\Pusher as PusherLibrary;
 use Pusher\PusherException;
 
-class Pusher implements Socket
+class Pusher implements ISocket
 {
     private PusherLibrary $pusher;
 

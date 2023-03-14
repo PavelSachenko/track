@@ -1,5 +1,41 @@
 .schedule {
   padding-top: 110px;
+  position: relative;
+
+  &__time-line {
+    width: 1px;
+    height: calc(100% - 110px);
+    position: absolute;
+    // left: 152px;
+    top: 168px;
+    background-color: #ffd569;
+    z-index: 19;
+
+    &--hidden {
+      visibility: hidden;
+    }
+
+    span {
+      display: block;
+      width: 9px;
+      height: 8px;
+      background-color: #ffd569;
+      transform: translateX(-4px);
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 0px;
+        width: 0;
+        height: 0;
+        border-top: 4px solid #ffd569;
+        border-left: 4.5px solid transparent;
+        border-right: 4.5px solid transparent;
+      }
+    }
+  }
   &__head {
     background-color: rgb(255, 255, 255);
     position: sticky;
@@ -83,7 +119,6 @@
       width: 28px;
       height: 28px;
       border-radius: 100%;
-      background-color: rebeccapurple;
       overflow: hidden;
 
       img {

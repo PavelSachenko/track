@@ -4,7 +4,7 @@ namespace App\Providers\User;
 
 use App\Facade\Img;
 use App\Repositories\PostgreSql\User\AuthRepo;
-use App\Services\Contracts\User\Auth as ContractAuth;
+use App\Services\Contracts\User\IAuth as ContractAuth;
 use App\Services\User\Auth;
 use Illuminate\Support\ServiceProvider;
 

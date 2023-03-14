@@ -231,8 +231,23 @@ const getAgentSchedule = (date: number) => {
   return axiosInstance.get("agent/schedule", { params: { date } });
 };
 
-const getAgencySchedule = (date: number) => {
-  return axiosInstance.get("agency/schedule", { params: { date } });
+const getAgencySchedule = (date: number, search?: string) => {
+  const config: {
+    params: {
+      date: number;
+      search?: string;
+    };
+  } = {
+    params: {
+      date,
+    },
+  };
+
+  if (search) {
+    config.params.search = search;
+  }
+
+  return axiosInstance.get("agency/schedule", config);
 };
 
 const addEvent = (

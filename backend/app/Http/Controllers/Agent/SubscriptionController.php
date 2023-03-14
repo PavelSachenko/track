@@ -2,77 +2,79 @@
 
 namespace App\Http\Controllers\Agent;
 
+use App\DTO\User\Agent\Followers\Factory\IFollowerAgentDTOFactory;
+use App\DTO\User\Factory\IUserDTOFactory;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Agent\Subscription\AllFollowersRequest;
-use App\Http\Requests\Agent\Subscription\AllRequestsRequest;
+use App\Http\Requests\Agent\Subscription\AllAgentFollowerRequest;
+use App\Http\Requests\Agent\Subscription\AllAgentInviteRequest;
 use App\Http\Requests\Agent\Subscription\DecisionInviteRequest;
-use App\Services\Contracts\Agent\Follower;
+use App\Services\Contracts\Agent\IFollowerAgentService;
 use Illuminate\Http\JsonResponse;
 
 class SubscriptionController extends Controller
 {
-    private Follower $follower;
-
-    /**
-     * @param Follower $follower
-     */
-    public function __construct(Follower $follower)
+    public function __construct(
+        private readonly IFollowerAgentService    $follower,
+        private readonly IFollowerAgentDTOFactory $followerDTOFactory,
+        private readonly IUserDTOFactory          $userDTOFactory
+    )
     {
-        $this->follower = $follower;
     }
 
     /**
      * @return JsonResponse
      */
-    public function countFollowers()
+    public function totalFollowers(): JsonResponse
     {
-        return response()->json($this->follower->countFollowers());
+        return response()->json($this->follower->totalFollowers(\Auth::user()->id));
     }
 
     /**
-     * @param AllFollowersRequest $request
+     * @param AllAgentFollowerRequest $request
      * @return JsonResponse
      */
-    public function followers(AllFollowersRequest $request)
+    public function followers(AllAgentFollowerRequest $request): JsonResponse
     {
-        return response()->json($this->follower->getAllFollowers($request));
+        return response()->json(
+            $this->follower->allFollowers($this->followerDTOFactory->createAllAgentFollowersSearchDTO($request))
+        );
     }
 
     /**
      * @return JsonResponse
      */
-    public function countRequests()
+    public function totalInvites(): JsonResponse
     {
-        return response()->json($this->follower->countRequests());
-    }
-
-    /**
-     * @param DecisionInviteRequest $request
-     * @return JsonResponse
-     */
-    public function accept(DecisionInviteRequest $request)
-    {
-        return response()
-            ->json($this->follower->accept($request));
+        return response()->json($this->follower->totalInvites(\Auth::user()->id));
     }
 
     /**
      * @param DecisionInviteRequest $request
      * @return JsonResponse
      */
-    public function decline(DecisionInviteRequest $request)
+    public function accept($id): JsonResponse
     {
         return response()
-            ->json($this->follower->decline($request));
+            ->json($this->follower->accept($this->userDTOFactory->createAgentUserDTO(\Auth::user()->toArray()), $id));
     }
 
     /**
-     * @param AllRequestsRequest $request
+     * @param DecisionInviteRequest $request
      * @return JsonResponse
      */
-    public function requests(AllRequestsRequest $request)
+    public function decline($id): JsonResponse
     {
         return response()
-            ->json($this->follower->getAllRequests($request));
+            ->json($this->follower->decline(\Auth::user()->id, $id));
+    }
+
+    /**
+     * @param AllAgentInviteRequest $request
+     * @return JsonResponse
+     */
+    public function invites(AllAgentInviteRequest $request): JsonResponse
+    {
+        return response()
+            ->json($this->follower->allInvites($this->followerDTOFactory->createAllAgentInvitesSearchDTO($request)));
     }
 }

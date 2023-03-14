@@ -1,10 +1,11 @@
 import "./Schedule.scss";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ReactComponent as AgentsIcon } from "../../../../icons/agents.svg";
 import { ReactComponent as PlusIcon } from "../../../../icons/plus-fat.svg";
 import { IEvent } from "../../../../interfaces/interfaces";
 import { IAgentSchedule } from "../../../../interfaces/interfaces";
+import { getContactAvatar } from "../../../../utils";
 import Event from "../Event/Event";
 
 const step = 900000; //15 min
@@ -39,6 +40,60 @@ const Schedule = (props: ScheduleProps) => {
 
   const [scheduleTimes, setScheduleTimes] = useState<number[]>([]);
   const [scheduleData, setScheduleData] = useState<IScheduleData[]>([]);
+
+  const [currentTime, setCurrentTime] = useState<number>(+new Date());
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const timeLineRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(+new Date());
+    }, 15000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (
+      workTimes === null ||
+      workTimes.from > currentTime ||
+      workTimes.to < currentTime
+    ) {
+      if (timeLineRef.current) {
+        timeLineRef.current.style.display = "none";
+      }
+      return;
+    }
+
+    const diffInMin = (currentTime - workTimes.from) / 60000;
+    const diffInPix = diffInMin * (52 / 15); // 52px / 15min
+
+    if (timeLineRef.current) {
+      timeLineRef.current.style.display = "block";
+      timeLineRef.current.style.left = 152 + diffInPix + "px";
+    }
+  }, [currentTime, workTimes]);
+
+  useEffect(() => {
+    if (scrollContainerRef.current && timeLineRef.current) {
+      const middle = scrollContainerRef.current.offsetWidth / 2; //
+      const left = timeLineRef.current.offsetLeft - middle;
+
+      console.log({ timeLineOffset: timeLineRef.current.offsetLeft, middle });
+
+      console.log({ left });
+
+      setTimeout(() => {
+        window.scroll(left, 0);
+      }, 100);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   window.scroll(1700, 0);
+  // }, []);
 
   useEffect(() => {
     if (!workTimes) return;
@@ -241,7 +296,7 @@ const Schedule = (props: ScheduleProps) => {
       >
         <div className="schedule__avatar">
           <div className="avatar">
-            <img src="#" alt="ava" />
+            <img src={getContactAvatar({ img: null, type: 1 })} alt="ava" />
           </div>
         </div>
         <div className="schedule__info-cell">
@@ -254,7 +309,11 @@ const Schedule = (props: ScheduleProps) => {
   };
 
   return (
-    <div className="schedule">
+    <div
+      className="schedule"
+      ref={scrollContainerRef}
+      // style={{ width: `${152 + (scheduleTimes.length - 1) * 52}px` }}
+    >
       <div
         className="schedule__head"
         style={{
@@ -267,6 +326,10 @@ const Schedule = (props: ScheduleProps) => {
           <span>({agents.length})</span>
         </div>
         {scheduleTimes.map(getTimeCell)}
+      </div>
+
+      <div ref={timeLineRef} className={`schedule__time-line`}>
+        <span></span>
       </div>
 
       {/* <div className="schedule__row">

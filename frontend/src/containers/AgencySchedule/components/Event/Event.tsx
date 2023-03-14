@@ -3,8 +3,6 @@ import "./Event.scss";
 // import { fakeIventType } from "../Schedule/Schedule";
 import { IAgency } from "../../../../interfaces/interfaces";
 
-// const IS_HOUR_12 = true;
-
 export enum EventTypes {
   work = 1,
   rest = 2,
@@ -25,6 +23,7 @@ interface IEventProps {
     description?: null | string;
   };
   cellCount: number;
+  currentTime?: Date;
 }
 
 const Event = (props: IEventProps) => {
@@ -34,7 +33,20 @@ const Event = (props: IEventProps) => {
   classNames.push(`event--${EventTypes[event.type]}`);
 
   if (event.type === 1) {
-    const startWork = new Date(`${event.from}`)
+    const startEvent = new Date(`${event.from}`);
+    const endEvent = new Date(`${event.to}`);
+    const currentTime = new Date();
+    let isActive = false;
+
+    if (currentTime >= startEvent && currentTime < endEvent) {
+      isActive = true;
+    }
+
+    if (isActive) {
+      classNames.push("active");
+    }
+
+    const from = new Date(startEvent)
       .toLocaleString("en-US", {
         timeZone: "UTC",
         hour: "numeric",
@@ -45,7 +57,7 @@ const Event = (props: IEventProps) => {
       .split(" ")
       .join("");
 
-    const endWork = new Date(`${event.to}`)
+    const to = new Date(endEvent)
       .toLocaleString("en-US", {
         timeZone: "UTC",
         hour: "numeric",
@@ -58,7 +70,12 @@ const Event = (props: IEventProps) => {
 
     return (
       <div className={classNames.join(" ")}>
-        {cellCount > 1 ? <span>{`${startWork} - ${endWork}`}</span> : ""}
+        {cellCount > 1 ? <span>{`${from} - ${to}`}</span> : ""}
+        {isActive ? (
+          <span className="event__process">(In proccesing)</span>
+        ) : (
+          ""
+        )}
       </div>
     );
   }
